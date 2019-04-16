@@ -139,7 +139,9 @@ public abstract class BaseToolbarActivity extends BaseActivity {
      * 切换appBarLayout的显隐
      */
     protected void hideOrShowToolbar() {
-        if (mAppBar == null) return;
+        if (mAppBar == null) {
+            return;
+        }
         mAppBar.animate()
                 .translationY(isHiddenAppBar ? 0 : -mAppBar.getHeight())
                 .setInterpolator(new DecelerateInterpolator(2))

@@ -26,6 +26,14 @@ import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import ch.ethz.ssh2.Connection;
+import ch.ethz.ssh2.Session;
+import ch.ethz.ssh2.StreamGobbler;
 import ren.qinc.markdowneditors.AppContext;
 import ren.qinc.markdowneditors.R;
 import ren.qinc.markdowneditors.base.BaseDrawerLayoutActivity;
@@ -79,6 +87,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 
     @Override
     public void initData() {
+
     }
 
     @Override
@@ -208,5 +217,8 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                     }
                 });
     }
+
+
+
 
 }
