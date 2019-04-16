@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Copyright 2016. SHENQINCI(沈钦赐)<dev@qinc.me>
+  ~ Copyright 2016. SHENQINCI(沈钦赐)<dev@blxt.me>
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
               android:layout_width="match_parent"
               android:orientation="vertical"
               android:layout_height="match_parent"
-              tools:context=".view.EditorActivity"
+              tools:context="com.blxt.markdowneditors.view.EditorActivity"
 >
     <include layout="@layout/view_common_toolbar_scroll"/>
     <android.support.v4.widget.NestedScrollView

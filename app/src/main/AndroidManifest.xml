@@ -19,7 +19,7 @@
         android:xlargeScreens="true"/>
 
     <application
-        android:name=".AppContext"
+        android:name="com.blxt.markdowneditors.AppContext"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,7 +28,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         <activity
-            android:name=".view.MainActivity"
+            android:name="com.blxt.markdowneditors.view.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar.CustomCursor"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -38,30 +38,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.AboutActivity"
+            android:name="com.blxt.markdowneditors.view.AboutActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity
-            android:name=".view.CommonMarkdownActivity"
+            android:name="com.blxt.markdowneditors.view.CommonMarkdownActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity
-            android:name=".view.CommonImageDetailsActivity"
+            android:name="com.blxt.markdowneditors.view.CommonImageDetailsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity
-            android:name=".base.BaseWebActivity"
+            android:name="com.blxt.markdowneditors.base.BaseWebActivity"
             android:launchMode="singleTop"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
 
         <activity
-            android:name=".view.EditorActivity"
+            android:name="com.blxt.markdowneditors.view.EditorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">

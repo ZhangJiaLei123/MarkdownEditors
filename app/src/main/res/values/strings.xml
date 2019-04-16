@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2016. SHENQINCI(沈钦赐)<dev@qinc.me>
+  ~ Copyright 2016. SHENQINCI(沈钦赐)<dev@blxt.me>
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name" translatable="false">MarkdownEditors</string>
+    <string name="app_name" translatable="false">MdReader</string>
     <!--webViewActivity相关菜单-->
     <string name="action_refresh">刷新</string>
     <string name="action_copy_url">复制链接</string>

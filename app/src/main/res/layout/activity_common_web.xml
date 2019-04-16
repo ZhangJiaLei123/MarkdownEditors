@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Copyright 2016. SHENQINCI(沈钦赐)<dev@qinc.me>
+  ~ Copyright 2016. SHENQINCI(沈钦赐)<dev@blxt.me>
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@
         app:progress_unreached_bar_height="2dp"
         app:progress_unreached_color="#9e9e9e" />
 
-    <ren.qinc.markdowneditors.widget.ObservableWebView
+    <com.blxt.markdowneditors.widget.ObservableWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
