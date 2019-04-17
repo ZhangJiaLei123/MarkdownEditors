@@ -37,22 +37,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.blxt.markdowneditors.R;
+import com.blxt.markdowneditors.base.BaseApplication;
+import com.blxt.markdowneditors.base.BaseToolbarActivity;
 import com.blxt.markdowneditors.event.RxEvent;
 import com.blxt.markdowneditors.event.RxEventBus;
+import com.blxt.markdowneditors.lib.ExpandableLinearLayout;
+import com.blxt.markdowneditors.presenter.IEditorActivityView;
 import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.FileUtils;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
 import com.blxt.markdowneditors.utils.Toast;
+import com.blxt.markdowneditors.widget.TabIconView;
 
 import java.io.File;
 
 import butterknife.Bind;
-import com.blxt.markdowneditors.R;
-import com.blxt.markdowneditors.base.BaseApplication;
-import com.blxt.markdowneditors.base.BaseToolbarActivity;
-import com.blxt.markdowneditors.lib.ExpandableLinearLayout;
-import com.blxt.markdowneditors.presenter.IEditorActivityView;
-import com.blxt.markdowneditors.widget.TabIconView;
 
 
 public class EditorActivity extends BaseToolbarActivity implements IEditorActivityView, View.OnClickListener {
@@ -103,10 +103,11 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             @Override
             public void onPageSelected(int position) {
                 //更新标题
-                if (position == 0)
+                if (position == 0) {
                     getToolbar().setTitle("");
-                else if (mName != null)
+                } else if (mName != null) {
                     getToolbar().setTitle(mName);
+                }
 
                 //刷新渲染数据
                 if (position == 1) {
@@ -263,9 +264,11 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
         mActionOtherOperate = menu.findItem(R.id.action_other_operate);
         if (mExpandLayout.isExpanded())
             //展开，设置向上箭头
+        {
             mActionOtherOperate.setIcon(R.drawable.ic_arrow_up);
-        else
+        } else {
             mActionOtherOperate.setIcon(R.drawable.ic_add_white_24dp);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -306,13 +309,17 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             if (!mExpandLayout.isExpanded())
                 //没有展开，但是接下来就是展开，设置向上箭头
+            {
                 mActionOtherOperate.setIcon(R.drawable.ic_arrow_up);
-            else
+            } else {
                 mActionOtherOperate.setIcon(R.drawable.ic_add_white_24dp);
+            }
             mExpandLayout.toggle();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mEditorFragment.onBackPressed()) return true;
+            if (mEditorFragment.onBackPressed()) {
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -378,10 +385,12 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             }
 
 
-            if (rowNumberHint.isErrorEnabled())
+            if (rowNumberHint.isErrorEnabled()) {
                 rowNumberHint.setErrorEnabled(false);
-            if (columnNumberHint.isErrorEnabled())
+            }
+            if (columnNumberHint.isErrorEnabled()) {
                 columnNumberHint.setErrorEnabled(false);
+            }
 
             mEditorFragment.getPerformEditable().perform(R.id.id_shortcut_grid, Integer.parseInt(rowNumberStr), Integer.parseInt(columnNumberStr));
             dialog.dismiss();
@@ -424,10 +433,12 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
                 return;
             }
 
-            if (titleHint.isErrorEnabled())
+            if (titleHint.isErrorEnabled()) {
                 titleHint.setErrorEnabled(false);
-            if (linkHint.isErrorEnabled())
+            }
+            if (linkHint.isErrorEnabled()) {
                 linkHint.setErrorEnabled(false);
+            }
 
             mEditorFragment.getPerformEditable().perform(R.id.id_shortcut_insert_link, titleStr, linkStr);
             dialog.dismiss();

@@ -60,10 +60,11 @@ public class UnitsUtils {
             int hour = inter / 60;
             if (inter == 0) {
                 ftime = "刚刚";
-            } else if (hour == 0)
+            } else if (hour == 0) {
                 ftime = Math.max((cal.getTimeInMillis() - time.getTime()) / 60000, 1) + "分钟前";
-            else
+            } else {
                 ftime = hour + "小时前";
+            }
             return ftime;
         }
 
@@ -72,10 +73,11 @@ public class UnitsUtils {
         int days = (int) (ct - lt);
         if (days == 0) {
             int hour = (int) ((cal.getTimeInMillis() - time.getTime()) / 3600000);
-            if (hour == 0)
+            if (hour == 0) {
                 ftime = Math.max((cal.getTimeInMillis() - time.getTime()) / 60000, 1) + "分钟前";
-            else
+            } else {
                 ftime = hour + "小时前";
+            }
         } else if (days == 1) {
             ftime = "昨天";
         } else if (days == 2) {

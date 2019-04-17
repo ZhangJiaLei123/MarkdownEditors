@@ -16,6 +16,7 @@
 
 package com.blxt.markdowneditors.base;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
@@ -136,42 +137,43 @@ public abstract class BaseApplication extends Application {
         return snackbar;
     }
 
+    @SuppressLint("Range")
     public static Snackbar showSnackbar(@NonNull View view, @NonNull String message) {
         return showSnackbar(view, message, Snackbar.LENGTH_SHORT, null, null);
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbar(@NonNull View view, @StringRes int messageRes) {
         return showSnackbar(view, messageRes, Snackbar.LENGTH_SHORT, null, null);
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbarLong(@NonNull View view, @NonNull String message) {
         return showSnackbar(view, message, Snackbar.LENGTH_LONG, null, null);
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbarIndefinite(@NonNull View view, @NonNull String message) {
         return showSnackbar(view, message, Snackbar.LENGTH_INDEFINITE, null, null);
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbar(@NonNull View view, @NonNull String message, @Nullable View.OnClickListener listener, @Nullable String actionStr) {
         return showSnackbar(view, message, Snackbar.LENGTH_SHORT, listener, actionStr);
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbarLong(@NonNull View view, @NonNull String message, @Nullable View.OnClickListener listener, @Nullable String actionStr) {
         return showSnackbar(view, message, Snackbar.LENGTH_LONG, listener, actionStr);
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbarIndefinite(@NonNull View view, @NonNull String message, @Nullable View.OnClickListener listener, @Nullable String actionStr) {
         return showSnackbar(view, message, Snackbar.LENGTH_INDEFINITE, listener, actionStr);
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbar(@NonNull View view, @NonNull String message, @Nullable View.OnClickListener listener) {
         return showSnackbar(view, message, Snackbar.LENGTH_SHORT, listener, "确定");
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbarLong(@NonNull View view, @NonNull String message, @Nullable View.OnClickListener listener) {
         return showSnackbar(view, message, Snackbar.LENGTH_LONG, listener, "确定");
     }
-
+    @SuppressLint("Range")
     public static Snackbar showSnackbarIndefinite(@NonNull View view, @NonNull String message, @Nullable View.OnClickListener listener) {
         return showSnackbar(view, message, Snackbar.LENGTH_INDEFINITE, listener, "确定");
     }

@@ -64,7 +64,9 @@ public class Check {
     }
 
     public static void CheckNull(Object o, String message) {
-        if (o == null) throw new IllegalStateException(message);
+        if (o == null) {
+            throw new IllegalStateException(message);
+        }
     }
 
     /**
@@ -75,8 +77,9 @@ public class Check {
      * @return boolean
      */
     public static boolean isEmpty(String input) {
-        if (input == null || "".equals(input))
+        if (input == null || "".equals(input)) {
             return true;
+        }
 
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
@@ -94,8 +97,9 @@ public class Check {
      * @return
      */
     public static boolean isEmail(String email) {
-        if (email == null || email.trim().length() == 0)
+        if (email == null || email.trim().length() == 0) {
             return false;
+        }
         return emailer.matcher(email).matches();
     }
 

@@ -49,6 +49,7 @@ import com.blxt.markdowneditors.presenter.IFolderManagerView;
 import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.ViewUtils;
 import com.blxt.markdowneditors.widget.TabView;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,8 +72,8 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
 
     private FolderManagerPresenter mPresenter;
 
-    private com.getbase.floatingactionbutton.FloatingActionButton flbFabCreateFolder;
-    private com.getbase.floatingactionbutton.FloatingActionButton  flbFabCreateFile;
+    private FloatingActionButton flbFabCreateFolder;
+    private FloatingActionButton  flbFabCreateFile;
 
     private List<FileBean> files = new ArrayList<>();
     private FileListAdapter mAdapter;

@@ -65,8 +65,9 @@ public class BaseStatedFragment extends Fragment {
     ////////////////////
 
     private void saveStateToArguments() {
-        if (getView() != null)
+        if (getView() != null) {
             savedState = saveState();
+        }
         if (savedState != null) {
             Bundle b = getArguments();
             if (b != null) {

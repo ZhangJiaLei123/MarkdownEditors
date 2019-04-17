@@ -39,17 +39,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
-import com.kaopiz.kprogresshud.KProgressHUD;
+import com.blxt.markdowneditors.AppManager;
 import com.blxt.markdowneditors.event.RxEvent;
 import com.blxt.markdowneditors.event.RxEventBus;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.Field;
 
 import butterknife.ButterKnife;
-import com.blxt.markdowneditors.AppManager;
-
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -62,6 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected BaseApplication application;
     protected LayoutInflater inflater;
     protected Context mContext;
+    View rootView;
 
     /**
      * On create.
@@ -82,6 +82,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
         if (getLayoutId() != 0) {// 设置布局,如果子类有返回布局的话
             setContentView(getLayoutId());
+
+            rootView = getWindow().getDecorView().findViewById(android.R.id.content);
             ButterKnife.bind(this);
         } else {
             //没有提供ViewId
@@ -208,21 +210,24 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void hideWaitDialog() {
-        if (mWait != null && mWait.isShowing())
+        if (mWait != null && mWait.isShowing()) {
             mWait.dismiss();
+        }
     }
 
     private KProgressHUD mWait;
 
     @Override
     public KProgressHUD showWaitDialog(String message, boolean canBack) {
-        if (mWait == null)
+        if (mWait == null) {
             mWait = KProgressHUD.create(mContext)
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                     .setLabel("请稍等")
                     .setAnimationSpeed(2)
                     .setDimAmount(0.5f);
-        else if (mWait.isShowing()) mWait.dismiss();
+        } else if (mWait.isShowing()) {
+            mWait.dismiss();
+        }
         mWait.setCancellable(canBack)
                 .setDetailsLabel(message)
                 .show();
@@ -276,11 +281,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
      * @param mode
      */
     private void fixActionModeCallback(AppCompatActivity activity, ActionMode mode) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
+        }
 
-        if (!(mode instanceof StandaloneActionMode))
+        if (!(mode instanceof StandaloneActionMode)) {
             return;
+        }
 
         try {
             final Field mCallbackField = mode.getClass().getDeclaredField("mCallback");
@@ -387,6 +394,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
                         final Field mActionModeFieldFinal = mActionModeField;
 
                         mFadeAnim.setListener(new ViewPropertyAnimatorListenerAdapter() {
+                            @Override
                             public void onAnimationEnd(View view) {
                                 mActionModeViewFinal.setVisibility(View.GONE);
                                 if (mActionModePopupFinal != null) {

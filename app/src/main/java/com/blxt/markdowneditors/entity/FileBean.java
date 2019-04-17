@@ -20,7 +20,9 @@ import java.util.Date;
 
 /**
  * 文件实体
- * Created by 沈钦赐 on 16/1/26.
+ *
+ * @author 沈钦赐
+ * @date 16/1/26
  */
 public class FileBean {
     /**

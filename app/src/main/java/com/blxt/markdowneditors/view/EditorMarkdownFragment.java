@@ -45,7 +45,7 @@ import butterknife.Bind;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.blxt.markdowneditors.view.EditorFragment.isChangeContent;
-import static me.drakeet.library.ui.CrashListAdapter.TAG;
+
 
 /**
  * 编辑预览界面
@@ -174,24 +174,24 @@ public class EditorMarkdownFragment extends BaseFragment {
                 .setCallback(new mPermissionsUnit.PermissionCheckCallback() {
                     @Override
                     public void onRequest() {
-                        LOG.i(TAG, "权限请求...");
+                        LOG.i( "权限请求...");
                     }
 
                     @Override
                     public void onGranted() {
                         //  initView();
-                        LOG.i(TAG, "权限授予...");
+                        LOG.i("权限授予...");
                     }
 
                     @Override
                     public void onGrantSuccess() {
-                        LOG.i(TAG, "获取权限成功");
+                        LOG.i("获取权限成功");
                         //  initView();
                     }
 
                     @Override
                     public void onGrantFail() {
-                        LOG.i(TAG, "权限获取失败");
+                        LOG.i( "权限获取失败");
                     }
                 }).checkPermission();
 

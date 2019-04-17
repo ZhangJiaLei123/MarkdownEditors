@@ -58,7 +58,7 @@
     <string name="action_setting">设置</string>
     <string name="about">关于</string>
 
-    <string name="copy_right" translatable="false">Copyrights © 2016</string>
+    <string name="copy_right" translatable="false">Copyrights © 2019</string>
     <string name="version_string" translatable="false">Version %s</string>
     <string name="contact_me">联系我们</string>
     <string name="connect_with_us">与我们联系</string>

@@ -127,8 +127,9 @@ public class FileListAdapter extends RecyclerView.Adapter<FileListAdapter.FileVi
 
         //选择模式 颜色设置
         if (bean.isSelect) {//选择了
-            if (colorFilter == null)
+            if (colorFilter == null) {
                 colorFilter = new PorterDuffColorFilter(colorPrimary, PorterDuff.Mode.SRC_IN);
+            }
 
             holder.itemView.setBackgroundColor(alphaColorPrimary);
             holder.name.setTextColor(0xffffffff);

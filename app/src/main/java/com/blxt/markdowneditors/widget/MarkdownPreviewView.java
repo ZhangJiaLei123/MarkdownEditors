@@ -114,19 +114,21 @@ public class MarkdownPreviewView extends NestedScrollView {
             this.mMarkdownPreviewView = markdownPreviewView;
         }
 
+        @Override
         public final void onPageFinished(WebView webView, String str) {
             if (this.mMarkdownPreviewView.mLoadingFinishListener != null) {
                 this.mMarkdownPreviewView.mLoadingFinishListener.onLoadingFinish();
             }
         }
-
+        @Override
         public final void onReceivedError(WebView webView, int i, String str, String str2) {
             new StringBuilder("onReceivedError :errorCode:").append(i).append("description:").append(str).append("failingUrl").append(str2);
         }
-
+        @Override
         public final boolean shouldOverrideUrlLoading(WebView webView, String url) {
-            if (!TextUtils.isEmpty(url))
+            if (!TextUtils.isEmpty(url)) {
                 BaseWebActivity.loadUrl(webView.getContext(), url, null);
+            }
             return true;
         }
     }

@@ -16,6 +16,7 @@
 
 package com.blxt.markdowneditors.base;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
@@ -23,10 +24,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
 
 import butterknife.Bind;
-import com.blxt.markdowneditors.R;
 
 
 /**
@@ -57,10 +58,12 @@ public abstract class BaseDrawerLayoutActivity extends BaseToolbarActivity imple
         initDrawer();
     }
 
+    @Override
     protected void initStatusBar() {
         SystemBarUtils.tintStatusBarForDrawer(this, mDrawerLayout, getResources().getColor(R.color.colorPrimary));
     }
 
+    @SuppressLint("ResourceType")
     private void initDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -77,8 +80,9 @@ public abstract class BaseDrawerLayoutActivity extends BaseToolbarActivity imple
                 new int[]{BaseApplication.color(R.color.colorPrimary), BaseApplication.color(R.color.colorSecondaryText), 0xffDCDDDD});
         mNavigationView.setItemIconTintList(colorStateList);//设置图标的颜色变化
         mNavigationView.setItemTextColor(colorStateList);//设置item的颜色变化
-        if (getDefaultMenuItemId() > 0)
+        if (getDefaultMenuItemId() > 0) {
             mNavigationView.setCheckedItem(getDefaultMenuItemId());//设置默认选择
+        }
     }
 
     /**

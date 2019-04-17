@@ -42,18 +42,21 @@ public class FileModel implements IFileModel {
 
     @Override
     public Observable<FileBean> getFileBeanObservable(File file) {
-        if (file == null)
+        if (file == null) {
             return null;
+        }
         return Observable.just(getFile(file, file.getName()));
     }
 
     @Override
     public Observable<File> getFileObservable(FileBean fileBean) {
-        if (fileBean == null)
+        if (fileBean == null) {
             return null;
+        }
         return Observable.just(getFile(fileBean));
     }
 
+    @Override
     public FileBean getFile(File file, String name) {
         FileBean bean = new FileBean();
         bean.absPath = file.getAbsolutePath();

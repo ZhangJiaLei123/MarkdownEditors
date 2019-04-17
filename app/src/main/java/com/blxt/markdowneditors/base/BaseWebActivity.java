@@ -43,20 +43,19 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.Network;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
 import com.blxt.markdowneditors.utils.SystemUtils;
+import com.blxt.markdowneditors.widget.ObservableWebView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.blxt.markdowneditors.R;
-
-import com.blxt.markdowneditors.widget.ObservableWebView;
 
 
 /**
@@ -71,8 +70,8 @@ public class BaseWebActivity extends BaseToolbarActivity {
     public static final String URL_KEY = "extra_url";
     public static final String TITLE_KEY = "extra_title";
 
-    @Bind(R.id.progressbar)
-    protected NumberProgressBar mProgressBar;
+//    @Bind(R.id.progressbar)
+    protected ProgressBar mProgressBar;
     @Bind(R.id.webView)
     protected ObservableWebView mWebView;
     @Bind(R.id.tv_title)
@@ -84,12 +83,16 @@ public class BaseWebActivity extends BaseToolbarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mWebView != null) mWebView.onResume();
+        if (mWebView != null) {
+            mWebView.onResume();
+        }
     }
 
     @Override
     protected void onPause() {
-        if (mWebView != null) mWebView.onPause();
+        if (mWebView != null) {
+            mWebView.onPause();
+        }
         super.onPause();
     }
 
@@ -147,6 +150,7 @@ public class BaseWebActivity extends BaseToolbarActivity {
     }
 
 
+    @Override
     protected void initStatusBar() {
         SystemBarUtils.setHeightAndPadding(this, mToolbar);
     }
@@ -159,7 +163,6 @@ public class BaseWebActivity extends BaseToolbarActivity {
     @Override
     public final void onCreateAfter(Bundle savedInstanceState) {
         parseIntent();
-
 
         enableJavascript();
         enableCaching();
@@ -177,10 +180,15 @@ public class BaseWebActivity extends BaseToolbarActivity {
         });
         mTextSwitcher.setInAnimation(this, android.R.anim.fade_in);
         mTextSwitcher.setOutAnimation(this, android.R.anim.fade_out);
-        if (title != null) setTitle(title);
+        if (title != null) {
+            setTitle(title);
+        }
 
-        if (mProgressBar != null)
-            mProgressBar.setReachedBarColor(BaseApplication.color(R.color.colorPrimary));
+        mProgressBar = (ProgressBar)rootView.findViewById(R.id.progressbar);
+
+        if (mProgressBar != null) {
+           // mProgressBar.setReachedBarColor(BaseApplication.color(R.color.colorPrimary));
+        }
 
         //设置滑动监听
         mWebView.setOnScrollChangedCallback((dx, dy, x, y) -> {//滑动监听
@@ -285,8 +293,9 @@ public class BaseWebActivity extends BaseToolbarActivity {
     @Override
     public void setTitle(CharSequence title) {
         super.setTitle(title);
-        if (mTextSwitcher != null)
+        if (mTextSwitcher != null) {
             mTextSwitcher.setText(title);
+        }
     }
 
 
@@ -319,10 +328,14 @@ public class BaseWebActivity extends BaseToolbarActivity {
         Configuration configuration = this.getResources().getConfiguration();
         if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-            if (item != null) item.setTitle(this.getString(R.string.menu_web_vertical));
+            if (item != null) {
+                item.setTitle(this.getString(R.string.menu_web_vertical));
+            }
         } else {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
-            if (item != null) item.setTitle(this.getString(R.string.menu_web_horizontal));
+            if (item != null) {
+                item.setTitle(this.getString(R.string.menu_web_horizontal));
+            }
         }
 //        getResources().updateConfiguration(configuration,null);
     }
@@ -387,7 +400,9 @@ public class BaseWebActivity extends BaseToolbarActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if (mProgressBar == null) return;
+            if (mProgressBar == null) {
+                return;
+            }
             mProgressBar.setProgress(newProgress);
             if (newProgress == 100) {
                 mProgressBar.setVisibility(View.GONE);
@@ -432,6 +447,7 @@ public class BaseWebActivity extends BaseToolbarActivity {
         }
 
         // For Android > 5.0
+        @Override
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> uploadMsg, FileChooserParams fileChooserParams) {
             String acceptType = null;
@@ -459,8 +475,9 @@ public class BaseWebActivity extends BaseToolbarActivity {
      * @param acceptType the accept type
      */
     private void openFileChooserImpl(ValueCallback<Uri> uploadMsg, String acceptType) {
-        if (TextUtils.isEmpty(acceptType.trim()))
+        if (TextUtils.isEmpty(acceptType.trim())) {
             acceptType = "image/*";
+        }
         mUploadMessage = uploadMsg;
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
@@ -476,8 +493,9 @@ public class BaseWebActivity extends BaseToolbarActivity {
      * @param acceptType the accept type
      */
     private void openFileChooserImplForAndroid5(ValueCallback<Uri[]> uploadMsg, String acceptType) {
-        if (TextUtils.isEmpty(acceptType.trim()))
+        if (TextUtils.isEmpty(acceptType.trim())) {
             acceptType = "image/*";
+        }
         mUploadMessageForAndroid5 = uploadMsg;
         Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
         contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -494,15 +512,17 @@ public class BaseWebActivity extends BaseToolbarActivity {
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
         if (requestCode == FILECHOOSER_RESULTCODE) {
-            if (null == mUploadMessage)
+            if (null == mUploadMessage) {
                 return;
+            }
             Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();
             mUploadMessage.onReceiveValue(result);
             mUploadMessage = null;
 
         } else if (requestCode == FILECHOOSER_RESULTCODE_FOR_ANDROID_5) {
-            if (null == mUploadMessageForAndroid5)
+            if (null == mUploadMessageForAndroid5) {
                 return;
+            }
             Uri result = (intent == null || resultCode != RESULT_OK) ? null : intent.getData();
             if (result != null) {
                 mUploadMessageForAndroid5.onReceiveValue(new Uri[]{result});
@@ -514,8 +534,11 @@ public class BaseWebActivity extends BaseToolbarActivity {
     }
 
     private class WebClient extends WebViewClient {
+        @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url != null) view.loadUrl(url);
+            if (url != null) {
+                view.loadUrl(url);
+            }
             return true;
         }
 
@@ -525,6 +548,7 @@ public class BaseWebActivity extends BaseToolbarActivity {
             Snackbar.make(view, "加载错误", Snackbar.LENGTH_LONG).show();
         }
 
+        @Override
         public void onPageFinished(WebView view, String url) {
 //            Snackbar.make(view, "加载完成", Snackbar.LENGTH_SHORT).show();
         }

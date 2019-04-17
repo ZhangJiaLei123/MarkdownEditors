@@ -1,18 +1,4 @@
-/*
- * Copyright 2016. SHENQINCI(沈钦赐)<dev@blxt.me>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 
 package com.blxt.markdowneditors.engine;
 
@@ -25,7 +11,9 @@ import com.blxt.markdowneditors.utils.Check;
 
 /**
  * 输入监听
- * Created by 沈钦赐 on 16/6/24.
+ *
+ * @author 沈钦赐
+ * @date 16/6/24
  */
 public class PerformInputAfter {
 
@@ -54,7 +42,9 @@ public class PerformInputAfter {
          */
         @Override
         public final void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            if (flag) return;
+            if (flag) {
+                return;
+            }
             int end = start + count;
             if (end > start && end <= s.length()) {
                 CharSequence charSequence = s.subSequence(start, end);
@@ -75,7 +65,9 @@ public class PerformInputAfter {
          */
         @Override
         public final void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (flag) return;
+            if (flag) {
+                return;
+            }
             int end = start + count;
             if (end > start) {
                 CharSequence charSequence = s.subSequence(start, end);

@@ -25,15 +25,15 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blxt.markdowneditors.AppContext;
+import com.blxt.markdowneditors.R;
+import com.blxt.markdowneditors.base.BaseToolbarActivity;
+import com.blxt.markdowneditors.base.BaseWebActivity;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
 import com.blxt.markdowneditors.utils.SystemUtils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import com.blxt.markdowneditors.AppContext;
-import com.blxt.markdowneditors.R;
-import com.blxt.markdowneditors.base.BaseToolbarActivity;
-import com.blxt.markdowneditors.base.BaseWebActivity;
 
 /**
  * about
@@ -44,7 +44,7 @@ public class AboutActivity extends BaseToolbarActivity {
     TextView version;
     @Bind(R.id.description)
     TextView description;
-    private static final String MAIL = "mailto:qq@blxt.me";
+    private static final String MAIL = "mailto:2356636418@qq.com";
 
     @Override
     public int getLayoutId() {
@@ -66,7 +66,7 @@ public class AboutActivity extends BaseToolbarActivity {
         version.setText(String.format(getString(R.string.version_string), SystemUtils.getAppVersion(mContext)));
         String fromAssets = SystemUtils.getAssertString(mContext.getApplicationContext(), "description.txt");
         if (TextUtils.isEmpty(fromAssets)) {
-            description.setText("MarkdownEditors");
+            description.setText(R.string.app_name);
         } else {
 
             description.setText(fromAssets);
@@ -92,7 +92,7 @@ public class AboutActivity extends BaseToolbarActivity {
                 subject = "广告联系";
                 break;
             default:
-                subject = "MarkdownEditor用户";
+                subject = "MdReader用户";
                 break;
         }
 
@@ -111,7 +111,7 @@ public class AboutActivity extends BaseToolbarActivity {
 
     @OnClick(R.id.about_github)
     protected void openSource() {
-        BaseWebActivity.loadUrl(this, "https://github.com/qinci/MarkdownEditors", "源码地址");
+        BaseWebActivity.loadUrl(this, "https://github.com/ZhangJiaLei123/MdReader", "源码地址");
     }
 
     @NonNull

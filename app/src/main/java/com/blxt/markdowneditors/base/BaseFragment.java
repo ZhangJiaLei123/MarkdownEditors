@@ -49,8 +49,9 @@ public abstract class BaseFragment extends BaseStatedFragment implements BaseVie
         application = (BaseApplication) mContext.getApplicationContext();
         if (rootView == null) {
             rootView = View.inflate(getActivity(), getLayoutId(), null);
-            if (rootView == null)
+            if (rootView == null) {
                 throw new IllegalStateException(this.getClass().getSimpleName() + ":LayoutID找不到对应的布局");
+            }
 
         }
         ButterKnife.bind(this, rootView);

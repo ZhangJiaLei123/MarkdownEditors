@@ -255,7 +255,8 @@ public class DialogUtil {
                 .setMessage(content)
                 .setPositiveButton("打开app应用程序信息界面",
                         new OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                            @Override
+							public void onClick(DialogInterface dialog, int which) {
                                 startSetting(activity);
                             }
                         }).create();

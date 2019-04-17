@@ -33,12 +33,12 @@ import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
+import com.blxt.markdowneditors.R;
+import com.blxt.markdowneditors.base.BaseToolbarActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.Bind;
-import com.blxt.markdowneditors.R;
-import com.blxt.markdowneditors.base.BaseToolbarActivity;
 
 
 /**
@@ -68,7 +68,9 @@ public class CommonImageDetailsActivity extends BaseToolbarActivity {
      * @param imageUrl the image url
      */
     public static void showImage(Context context, @NonNull String imageUrl) {
-        if (context == null) return;
+        if (context == null) {
+            return;
+        }
         showImage(context, imageView, imageUrl, null);
     }
 
@@ -80,7 +82,9 @@ public class CommonImageDetailsActivity extends BaseToolbarActivity {
      * @param title    the title
      */
     public static void showImage(Context context, @NonNull String imageUrl, String title) {
-        if (context == null) return;
+        if (context == null) {
+            return;
+        }
         showImage(context, imageView, imageUrl, title);
     }
 
@@ -93,7 +97,9 @@ public class CommonImageDetailsActivity extends BaseToolbarActivity {
      * @param title         the title 标题  可为null
      */
     public static void showImage(Context context, View sharedElement, @NonNull String imageUrl, @Nullable String title) {
-        if (context == null) return;
+        if (context == null) {
+            return;
+        }
         Intent intent = new Intent(context, CommonImageDetailsActivity.class);
         intent.putExtra(CommonImageDetailsActivity.EXTRA_IMAGE_URL, imageUrl);
         intent.putExtra(CommonImageDetailsActivity.EXTRA_IMAGE_TITLE, title);
@@ -161,7 +167,9 @@ public class CommonImageDetailsActivity extends BaseToolbarActivity {
         });
         textSwitcher.setInAnimation(this, android.R.anim.fade_in);
         textSwitcher.setOutAnimation(this, android.R.anim.fade_out);
-        if (title != null) setTitle(title);
+        if (title != null) {
+            setTitle(title);
+        }
     }
 
     public void switchover(View view) {

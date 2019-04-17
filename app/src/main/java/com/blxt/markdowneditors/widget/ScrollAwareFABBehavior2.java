@@ -16,6 +16,7 @@
 
 package com.blxt.markdowneditors.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
@@ -63,14 +64,15 @@ public class ScrollAwareFABBehavior2 extends FloatingActionButton.Behavior {
         if (Build.VERSION.SDK_INT >= 14) {
             ViewCompat.animate(button).translationY(button.getHeight() + getMarginBottom(button)).setInterpolator(INTERPOLATOR).withLayer()
                     .setListener(new ViewPropertyAnimatorListener() {
+                        @Override
                         public void onAnimationStart(View view) {
                             ScrollAwareFABBehavior2.this.mIsAnimatingOut = true;
                         }
-
+                        @Override
                         public void onAnimationCancel(View view) {
                             ScrollAwareFABBehavior2.this.mIsAnimatingOut = false;
                         }
-
+                        @Override
                         public void onAnimationEnd(View view) {
                             ScrollAwareFABBehavior2.this.mIsAnimatingOut = false;
                             view.setVisibility(View.GONE);
@@ -82,6 +84,7 @@ public class ScrollAwareFABBehavior2 extends FloatingActionButton.Behavior {
     }
 
     // Same animation that FloatingActionButton.Behavior uses to show the FAB when the AppBarLayout enters
+    @SuppressLint("RestrictedApi")
     private void animateIn(FloatingActionButton button) {
         button.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= 14) {

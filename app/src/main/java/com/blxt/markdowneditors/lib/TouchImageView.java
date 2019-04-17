@@ -12,6 +12,7 @@
 
 package com.blxt.markdowneditors.lib;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -38,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
+@SuppressLint("AppCompatCustomView")
 public class TouchImageView extends ImageView {
 
     private static final String DEBUG = "DEBUG";
@@ -503,10 +505,12 @@ public class TouchImageView extends ImageView {
             maxTrans = 0;
         }
 
-        if (trans < minTrans)
+        if (trans < minTrans) {
             return -trans + minTrans;
-        if (trans > maxTrans)
+        }
+        if (trans > maxTrans) {
             return -trans + maxTrans;
+        }
         return 0;
     }
 

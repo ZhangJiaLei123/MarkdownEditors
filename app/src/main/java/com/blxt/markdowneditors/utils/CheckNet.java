@@ -78,8 +78,9 @@ public class CheckNet {
 				
 				if(infos != null){
 					for(NetworkInfo ni: infos){
-						if("WIFI".equals(ni.getTypeName()) && ni.isConnected())
+						if("WIFI".equals(ni.getTypeName()) && ni.isConnected()) {
 							return true;
+						}
 					}
 				}
 			}
@@ -97,8 +98,9 @@ public class CheckNet {
 				
 				if(infos != null){
 					for(NetworkInfo ni: infos){
-						if("WIFI".equals(ni.getTypeName()) && ni.isConnected())
+						if("WIFI".equals(ni.getTypeName()) && ni.isConnected()) {
 							return true;
+						}
 					}
 				}
 			}

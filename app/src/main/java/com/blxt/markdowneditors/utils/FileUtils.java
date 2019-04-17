@@ -345,7 +345,9 @@ public class FileUtils {
      */
     public static boolean copyFolder(@NonNull File oldFile, @NonNull File newPath) {
         if (oldFile.isFile())//如果是文件，直接复制
+        {
             return copyFile(oldFile, new File(newPath, oldFile.getName()));
+        }
         try {//文件夹
             newPath.mkdirs(); //如果文件夹不存在 则建立新文件夹
             File[] temps = oldFile.listFiles();
@@ -391,7 +393,9 @@ public class FileUtils {
             return false;
         }
         //如果是文件夹，这创建文件
-        if (newPath.isDirectory()) newPath = new File(newPath, oldPath.getName());
+        if (newPath.isDirectory()) {
+            newPath = new File(newPath, oldPath.getName());
+        }
         try {
             return oldPath.renameTo(newPath);
         } catch (Exception e) {
@@ -450,12 +454,14 @@ public class FileUtils {
      * @return the file path or null
      */
     public static String uri2FilePath(final Context context, final Uri uri) {
-        if (null == uri) return null;
+        if (null == uri) {
+            return null;
+        }
         final String scheme = uri.getScheme();
         String data = null;
-        if (scheme == null)
+        if (scheme == null) {
             data = uri.getPath();
-        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
+        } else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
             data = uri.getPath();
         } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
             Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);

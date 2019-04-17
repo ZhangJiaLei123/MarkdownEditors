@@ -91,6 +91,7 @@ public class PerformEditable implements View.OnClickListener {
             case R.id.id_shortcut_xml://xml
                 performXML();
                 break;
+                default:
         }
     }
 
@@ -113,7 +114,7 @@ public class PerformEditable implements View.OnClickListener {
         String[] split = substring.split("\n");
         StringBuffer stringBuffer = new StringBuffer();
 
-        if (split != null && split.length > 0)
+        if (split != null && split.length > 0) {
             for (String s : split) {
                 if (s.length() == 0 && stringBuffer.length() != 0) {
                     stringBuffer.append("\n");
@@ -121,13 +122,18 @@ public class PerformEditable implements View.OnClickListener {
                 }
                 if (!s.trim().startsWith(tag)) {
                     //不是 空行或者已经是序号开头
-                    if (stringBuffer.length() > 0) stringBuffer.append("\n");
+                    if (stringBuffer.length() > 0) {
+                        stringBuffer.append("\n");
+                    }
                     stringBuffer.append(tag).append(s);
                 } else {
-                    if (stringBuffer.length() > 0) stringBuffer.append("\n");
+                    if (stringBuffer.length() > 0) {
+                        stringBuffer.append("\n");
+                    }
                     stringBuffer.append(s);
                 }
             }
+        }
 
         if (stringBuffer.length() == 0) {
             stringBuffer.append(tag);
@@ -139,7 +145,9 @@ public class PerformEditable implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (mEditText == null) return;
+        if (mEditText == null) {
+            return;
+        }
         perform(v.getId());
     }
 
@@ -154,8 +162,9 @@ public class PerformEditable implements View.OnClickListener {
         int selectionEnd = mEditText.getSelectionEnd();
         StringBuilder result = new StringBuilder();
         String substring = source.substring(selectionStart, selectionEnd);
-        if (!hasNewLine(source, selectionStart))
+        if (!hasNewLine(source, selectionStart)) {
             result.append("\n");
+        }
         for (int i = 0; i < level; i++) {
             result.append("#");
         }
@@ -187,10 +196,11 @@ public class PerformEditable implements View.OnClickListener {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (!hasNewTwoLine(source, selectionStart)) {
-            if (hasNewLine(source, selectionStart))
+            if (hasNewLine(source, selectionStart)) {
                 stringBuilder.append("\n");
-            else
+            } else {
                 stringBuilder.append("\n\n");
+            }
         }
         stringBuilder.append("|");
         for (i = 0; i < column; i++) {
@@ -217,7 +227,9 @@ public class PerformEditable implements View.OnClickListener {
 
     private void performInsertPhoto(Object[] param) {
         Object[] temp = param;
-        if (param == null) param = new Object[]{""};
+        if (param == null) {
+            param = new Object[]{""};
+        }
         String source = mEditText.getText().toString();
         int selectionStart = mEditText.getSelectionStart();
 
@@ -228,10 +240,11 @@ public class PerformEditable implements View.OnClickListener {
             result = "\n" + "![image](" + param[0] + ")";
         }
         mEditText.getText().insert(selectionStart, result);
-        if (temp == null || temp[0].toString().length() == 0)
+        if (temp == null || temp[0].toString().length() == 0) {
             mEditText.setSelection(result.length() + selectionStart - 1);
-        else
+        } else {
             mEditText.setSelection(result.length() + selectionStart);
+        }
         completed();
     }
 
@@ -291,10 +304,11 @@ public class PerformEditable implements View.OnClickListener {
         String substring = source.substring(selectionStart, selectionEnd);
 
         String result;
-        if (hasNewLine(source, selectionStart))
+        if (hasNewLine(source, selectionStart)) {
             result = "```\n" + substring + "\n```\n";
-        else
+        } else {
             result = "\n```\n" + substring + "\n```\n";
+        }
 
         mEditText.getText().replace(selectionStart, selectionEnd, result);
         mEditText.setSelection(result.length() + selectionStart - 5);
@@ -368,7 +382,9 @@ public class PerformEditable implements View.OnClickListener {
     }
 
     private boolean hasNewLine(String source, int selectionStart) {
-        if (source.isEmpty()) return true;
+        if (source.isEmpty()) {
+            return true;
+        }
         source = source.substring(0, selectionStart);
         return source.charAt(source.length() - 1) == 10;
     }
@@ -379,8 +395,12 @@ public class PerformEditable implements View.OnClickListener {
     }
 
     private boolean isEmptyLine(String source, int selectionStart) {
-        if (source.isEmpty()) return true;
-        if (selectionStart == source.length()) return hasNewLine(source, selectionStart);
+        if (source.isEmpty()) {
+            return true;
+        }
+        if (selectionStart == source.length()) {
+            return hasNewLine(source, selectionStart);
+        }
 
         String startStr = source.substring(0, selectionStart);
         //最后一行

@@ -27,13 +27,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.DecelerateInterpolator;
 
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.ViewUtils;
 
 import java.lang.reflect.Method;
 
 import butterknife.Bind;
-import com.blxt.markdowneditors.R;
 
 
 /**
@@ -58,7 +58,9 @@ public abstract class BaseToolbarActivity extends BaseActivity {
     }
 
     protected void initAppBarLayout(AppBarLayout appBar) {
-        if (appBar == null) return;
+        if (appBar == null) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= 21) {
             this.mAppBar.setElevation(getElevation());
         }
@@ -91,7 +93,9 @@ public abstract class BaseToolbarActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         if (hasBackButton()) {//如果需要返回按钮
             ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
 
         }
     }

@@ -1,5 +1,6 @@
 package com.blxt.markdowneditors.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
  * The type Ratio image view.
  * 来至网上，作者未知（表示感谢）
  */
+@SuppressLint("AppCompatCustomView")
 public class RatioImageView extends ImageView {
 
     private int originalWidth;

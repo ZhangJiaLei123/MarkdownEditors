@@ -1,0 +1,42 @@
+<html> 
+<head> 
+  <title>highlight</title> 
+  <meta http-equiv="content-type" content="text/html;charset=utf-8"> 
+  <link rel="stylesheet" href="styles/androidstudio.css" rel="external nofollow" rel="external nofollow" > 
+  <script src="highlight.pack.js"></script> 
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head> 
+<body> 
+<div id="changeStyleSelect"></div> 
+<pre> 
+<code class="java"> 
+  package l2f.gameserver.model; 
+  import java.util.ArrayList; 
+  public abstract class L2Character extends L2Object { 
+   public static final Short ABNORMAL_EFFECT_BLEEDING = 0x0_0_0_1; // not sure 
+   public void moveTo(int x, int y, int z) { 
+    _ai = null; 
+    _log.warning("Should not be called"); 
+    if (1 > 5) { 
+     return; 
+    } 
+   } 
+   /** Task of AI notification */
+   @SuppressWarnings( { "nls", "unqualified-field-access", "boxing" }) 
+   public class NotifyAITask implements Runnable { 
+    private final CtrlEvent _evt; 
+    List mList = new ArrayList() 
+    public void run() { 
+     try { 
+      getAI().notifyEvent(_evt, _evt.class, null); 
+     } catch (Throwable t) { 
+      t.printStackTrace(); 
+     } 
+    } 
+   } 
+  } 
+</code> 
+</pre>   
+
+</body> 
+</html>

@@ -33,12 +33,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.blxt.markdowneditors.base.BaseApplication;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.List;
-
-import com.blxt.markdowneditors.base.BaseApplication;
 
 /**
  * 系统相关工具集合
@@ -71,8 +71,9 @@ public class SystemUtils {
      * @param view
      */
     public static void hideSoftKeyboard(View view) {
-        if (view == null)
+        if (view == null) {
             return;
+        }
         ((InputMethodManager) BaseApplication.context().getSystemService(Context.INPUT_METHOD_SERVICE))
                 .hideSoftInputFromWindow(view.getWindowToken(), 0);
     }

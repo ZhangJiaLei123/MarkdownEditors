@@ -68,19 +68,22 @@ public class mPermissionsUnit {
             return true;
         }
 
-        if (mPermissions == null || mActivity == null || mPermissions == null)
+        if (mPermissions == null || mActivity == null || mPermissions == null) {
             return false;
+        }
 
         List<String> permissionToRequestList = new LinkedList<String>();
         for (String permission : mPermissions) {
-            if(mActivity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED)
+            if(mActivity.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                 permissionToRequestList.add(permission);
+            }
         }
         String[] permissionToRequest = (String[])permissionToRequestList.toArray(new String[permissionToRequestList.size()]);
         if(permissionToRequest.length > 0){
             mActivity.requestPermissions(permissionToRequest, REQUST_CODE);
-            if (mCallback != null)
+            if (mCallback != null) {
                 mCallback.onRequest();
+            }
         } else {
             if (mCallback != null) {
                 mCallback.onGranted();
@@ -113,8 +116,9 @@ public class mPermissionsUnit {
             case REQUST_CODE:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (mCallback != null)
+                    if (mCallback != null) {
                         mCallback.onGrantSuccess();
+                    }
                 } else {
                     Log.v(TAG, "未检测到权限");
                     if (isDefaultDialog) {
@@ -142,8 +146,9 @@ public class mPermissionsUnit {
             public void onClick(DialogInterface dialog, int which) {
                 switch(which){
                     case Dialog.BUTTON_POSITIVE:
-                        if (mCallback != null)
+                        if (mCallback != null) {
                             mCallback.onGranted();
+                        }
                         break;
                     case Dialog.BUTTON_NEGATIVE:
                         mActivity.finish();

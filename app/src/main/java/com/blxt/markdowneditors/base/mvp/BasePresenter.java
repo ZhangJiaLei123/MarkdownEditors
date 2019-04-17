@@ -63,22 +63,30 @@ public class BasePresenter<T extends IMvpView> implements IPresenter<T> {
 
 
     protected void callFailure(int errorCode, String message, int flag) {
-        if (getMvpView() == null) return;
+        if (getMvpView() == null) {
+            return;
+        }
         getMvpView().onFailure(errorCode, message, flag);
     }
 
     protected void callShowProgress(String message, boolean canBack, int flag) {
-        if (getMvpView() == null) return;
+        if (getMvpView() == null) {
+            return;
+        }
         getMvpView().showWait(message, canBack, flag);
     }
 
     protected void callHideProgress(int flag) {
-        if (getMvpView() == null) return;
+        if (getMvpView() == null) {
+            return;
+        }
         getMvpView().hideWait(flag);
     }
 
     protected void callOtherSuccess(int flag) {
-        if (getMvpView() == null) return;
+        if (getMvpView() == null) {
+            return;
+        }
         getMvpView().otherSuccess(flag);
     }
 
