@@ -59,4 +59,6 @@
     <dimen name="space_1">1.0dp</dimen>
     <dimen name="space_05" format="float">0.5dp</dimen>
 
+    <dimen name="fab_margin">16dp</dimen>
+
 </resources>

@@ -27,19 +27,19 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView"/>
 
-    <item
-        android:id="@+id/action_create_file"
-        android:icon="@drawable/ic_action_new_file"
-        android:orderInCategory="97"
-        android:title="@string/action_create_file"
-        app:showAsAction="never"/>
+    <!--<item-->
+        <!--android:id="@+id/action_create_file"-->
+        <!--android:icon="@drawable/ic_action_new_file"-->
+        <!--android:orderInCategory="97"-->
+        <!--android:title="@string/action_create_file"-->
+        <!--app:showAsAction="never"/>-->
 
-    <item
-        android:id="@+id/action_create_folder"
-        android:icon="@drawable/ic_action_create_folder_g"
-        android:orderInCategory="98"
-        android:title="@string/create_folder"
-        app:showAsAction="never"/>
+    <!--<item-->
+        <!--android:id="@+id/action_create_folder"-->
+        <!--android:icon="@drawable/ic_action_create_folder_g"-->
+        <!--android:orderInCategory="98"-->
+        <!--android:title="@string/create_folder"-->
+        <!--app:showAsAction="never"/>-->
 
 
 </menu>

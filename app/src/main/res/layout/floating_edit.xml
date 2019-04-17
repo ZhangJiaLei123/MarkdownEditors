@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/color_null">
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/flb_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        fab:fab_addButtonColorNormal="@color/colorAccent"
+        fab:fab_icon="@drawable/ic_add_white_24dp"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/flb_fab_create_folder"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_icon="@drawable/ic_action_create_folder"
+            fab:fab_size="mini"
+            fab:fab_title="@string/create_folder" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/flb_fab_create_file"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_icon="@drawable/ic_action_new_file"
+            fab:fab_size="mini"
+            fab:fab_title="@string/action_create_file" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+</LinearLayout>

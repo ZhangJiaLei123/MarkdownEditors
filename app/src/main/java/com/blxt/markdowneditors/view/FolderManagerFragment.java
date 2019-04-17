@@ -18,7 +18,6 @@ package com.blxt.markdowneditors.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -37,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.adapter.FileListAdapter;
 import com.blxt.markdowneditors.adapter.OnItemClickLitener;
 import com.blxt.markdowneditors.base.BaseApplication;
@@ -55,8 +55,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
-import com.blxt.markdowneditors.R;
 
 /**
  * 文件管理界面
@@ -70,10 +68,11 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     protected TabView mTabView;
     @Bind(R.id.noContent)
     protected View noContent;
-    @Bind(R.id.fab)
-    protected FloatingActionButton mActionButton;
 
     private FolderManagerPresenter mPresenter;
+
+    private com.getbase.floatingactionbutton.FloatingActionButton flbFabCreateFolder;
+    private com.getbase.floatingactionbutton.FloatingActionButton  flbFabCreateFile;
 
     private List<FileBean> files = new ArrayList<>();
     private FileListAdapter mAdapter;
@@ -127,6 +126,15 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     @Override
     public void initData() {
         mPresenter.initRoot(mContext);
+
+
+        flbFabCreateFolder = rootView.findViewById(R.id.flb_fab_create_folder);
+        flbFabCreateFile = rootView.findViewById(R.id.flb_fab_create_file);
+        flbFabCreateFolder.setIcon(R.drawable.ic_action_create_folder);
+        flbFabCreateFile.setIcon(R.drawable.ic_action_create_file_w_24);
+
+        flbFabCreateFolder.setOnClickListener(this);
+        flbFabCreateFile.setOnClickListener(this);
     }
 
     /**
@@ -169,7 +177,6 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         }
     }
 
-
     @Override
     public void getFileListSuccess(List<FileBean> files) {
         mAdapter.notifyDataSetChanged();
@@ -181,7 +188,6 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         }
         finishRefresh();
     }
-
 
     @Override
     public void otherSuccess(int flag) {
@@ -208,7 +214,6 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
                 default:
         }
     }
-
 
     private void closeEditMode() {
         mAdapter.setEditMode(false);
@@ -322,6 +327,13 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
                     mPresenter.backFolder(index);
                 }
                 break;
+            case R.id.flb_fab_create_file: // 创建文件
+                createNote();
+                break;
+            case R.id.flb_fab_create_folder: // 创建文件夹
+                createFolder();
+                break;
+                default:
         }
 
     }
@@ -386,12 +398,13 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_create_folder:
-                createFolder();
-                break;
-            case R.id.action_create_file:
-                createNote();
-                break;
+//            case R.id.action_create_folder:
+//                createFolder();
+//                break;
+//            case R.id.action_create_file:
+//                createNote();
+//                break;
+            default:
         }
         return super.onOptionsItemSelected(item);
     }
@@ -408,16 +421,6 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         intent.setDataAndType(Uri.fromFile(new File(path)), "file");
         mContext.startActivity(intent);
 
-    }
-
-    @OnClick(R.id.fab)
-    public void newNote(View v) {
-        Intent intent = new Intent(mContext, EditorActivity.class);
-        intent.setAction(Intent.ACTION_VIEW);
-        //设置数据URI与数据类型匹配
-        String path = new File(mPresenter.currentPath()).getPath();
-        intent.setDataAndType(Uri.fromFile(new File(path)), "file");
-        startActivity(intent);
     }
 
     /**
@@ -486,9 +489,9 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
 
             @Override
             public boolean onCreateActionModeCustom(ActionMode mode, Menu menu) {
-                MenuInflater inflater = mode.getMenuInflater();
-                mode.setTitle("1");
-                inflater.inflate(R.menu.menu_action_paste, menu);
+           //     MenuInflater inflater = mode.getMenuInflater();
+           //     mode.setTitle("1");
+           //     inflater.inflate(R.menu.menu_action_paste, menu);
                 return true;
             }
 

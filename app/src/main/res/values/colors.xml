@@ -23,6 +23,8 @@
     <!--<color name="colorPrimaryText">#212121</color>-->
     <!--<color name="colorSecondaryText">#727272</color>-->
     <!--<color name="ColorDivider">#B6B6B6</color>-->
+    <color name="color_null">#00FFFFFF</color>
+    <color name="color_hulf">#5303f98e</color>
     <color name="colorPrimary">#795548</color>
     <color name="colorPrimary66">#66795548</color>
     <color name="colorPrimaryTransparent">#99795548</color>
