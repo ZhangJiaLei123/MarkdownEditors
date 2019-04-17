@@ -25,12 +25,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blxt.markdowneditors.BuildConfig;
 import com.blxt.markdowneditors.event.RxEvent;
 import com.blxt.markdowneditors.event.RxEventBus;
 import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.ButterKnife;
-import ren.qinc.markdowneditors.BuildConfig;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 

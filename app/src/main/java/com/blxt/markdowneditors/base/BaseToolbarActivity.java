@@ -33,7 +33,7 @@ import com.blxt.markdowneditors.utils.ViewUtils;
 import java.lang.reflect.Method;
 
 import butterknife.Bind;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 
 
 /**

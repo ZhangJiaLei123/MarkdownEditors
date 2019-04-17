@@ -34,6 +34,7 @@ import rx.Subscriber;
 /**
  * 主界面的Presenter
  * Created by 沈钦赐 on 16/1/18.
+ * Changed by Blxt on 19/04/16.
  */
 public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
     /** 目录等级 */
@@ -79,32 +80,31 @@ public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
         mCompositeSubscription.add(
                 mDataManager.getFileListData(currentFolder, key)
                         .subscribe(new Subscriber<List<FileBean>>() {
-                                       @Override
-                                       public void onCompleted() {
-                                           mCompositeSubscription.remove(this);//任务完成
-                                           callHideProgress(IFolderManagerView.CALL_GET_FILES);
-                                       }
+                               @Override
+                               public void onCompleted() {
+                                   mCompositeSubscription.remove(this);//任务完成
+                                   callHideProgress(IFolderManagerView.CALL_GET_FILES);
+                               }
 
-                                       @Override
-                                       public void onError(Throwable e) {
-                                           mCompositeSubscription.remove(this);//任务完成
-                                           callFailure(-1, "异常", IFolderManagerView.CALL_GET_FILES);
-                                       }
+                               @Override
+                               public void onError(Throwable e) {
+                                   mCompositeSubscription.remove(this);//任务完成
+                                   callFailure(-1, "异常", IFolderManagerView.CALL_GET_FILES);
+                               }
 
-                                       @Override
-                                       public void onNext(List<FileBean> fileBeans) {
-                                           if(fileStack.size() <= 1){ // 目录等级为1时,添加默认文件夹
-                                               fileBeans.addAll(mDataManager.getDefaultPath());
-                                           }
-
-
-                                           files.clear();
-                                           files.addAll(fileBeans);
-                                           if (getMvpView() != null) {
-                                               getMvpView().getFileListSuccess(fileBeans);
-                                           }
-                                       }
+                               @Override
+                               public void onNext(List<FileBean> fileBeans) {
+                                   if(fileStack.size() <= 1){ // 目录等级为1时,添加默认文件夹
+                                       fileBeans.addAll(mDataManager.getDefaultPath());
                                    }
+
+                                   files.clear();
+                                   files.addAll(fileBeans);
+                                   if (getMvpView() != null) {
+                                       getMvpView().getFileListSuccess(fileBeans);
+                                   }
+                               }
+                           }
                         ));
     }
 

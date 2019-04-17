@@ -31,7 +31,7 @@ import com.blxt.markdowneditors.utils.SystemUtils;
 import butterknife.Bind;
 import butterknife.OnClick;
 import com.blxt.markdowneditors.AppContext;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseToolbarActivity;
 import com.blxt.markdowneditors.base.BaseWebActivity;
 

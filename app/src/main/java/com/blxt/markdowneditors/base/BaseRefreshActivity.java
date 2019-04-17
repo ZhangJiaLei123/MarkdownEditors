@@ -19,7 +19,7 @@ package com.blxt.markdowneditors.base;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import butterknife.Bind;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 
 
 /**

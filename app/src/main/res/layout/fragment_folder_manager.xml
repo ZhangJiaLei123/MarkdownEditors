@@ -106,5 +106,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_white_24dp"
-        app:layout_behavior="ren.qinc.markdowneditors.widget.ScrollAwareFABBehavior2"/>
+        app:layout_behavior="com.blxt.markdowneditors.widget.ScrollAwareFABBehavior2"/>
 </android.support.design.widget.CoordinatorLayout>

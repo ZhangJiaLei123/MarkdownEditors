@@ -54,7 +54,7 @@ import com.blxt.markdowneditors.utils.SystemUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 
 import com.blxt.markdowneditors.widget.ObservableWebView;
 

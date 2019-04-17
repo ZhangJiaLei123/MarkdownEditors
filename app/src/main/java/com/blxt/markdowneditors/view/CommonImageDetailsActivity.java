@@ -37,7 +37,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.Bind;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseToolbarActivity;
 
 

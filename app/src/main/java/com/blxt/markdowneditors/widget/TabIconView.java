@@ -26,7 +26,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 
 
 /**

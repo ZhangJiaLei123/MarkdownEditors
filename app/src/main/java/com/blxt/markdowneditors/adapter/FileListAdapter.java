@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseApplication;
 import com.blxt.markdowneditors.entity.FileBean;
 import com.blxt.markdowneditors.utils.ColorUtils;
@@ -35,7 +36,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import ren.qinc.markdowneditors.R;
 
 /**
  * 文件管理器的Adapter

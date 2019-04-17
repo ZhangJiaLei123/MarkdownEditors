@@ -26,7 +26,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
 
 import butterknife.Bind;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 
 
 /**

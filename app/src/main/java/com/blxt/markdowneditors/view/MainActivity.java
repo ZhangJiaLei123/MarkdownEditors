@@ -28,7 +28,7 @@ import com.pgyersdk.update.UpdateManagerListener;
 import com.blxt.markdowneditors.utils.Toast;
 
 import com.blxt.markdowneditors.AppContext;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseDrawerLayoutActivity;
 import com.blxt.markdowneditors.base.BaseFragment;
 

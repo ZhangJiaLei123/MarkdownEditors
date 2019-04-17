@@ -19,7 +19,7 @@ package com.blxt.markdowneditors.engine;
 import android.view.View;
 import android.widget.EditText;
 
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.utils.Check;
 
 

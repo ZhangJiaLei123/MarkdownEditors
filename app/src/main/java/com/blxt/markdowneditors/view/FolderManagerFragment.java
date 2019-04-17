@@ -56,7 +56,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 
 /**
  * 文件管理界面

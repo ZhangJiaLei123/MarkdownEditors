@@ -25,7 +25,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 
 
 /**

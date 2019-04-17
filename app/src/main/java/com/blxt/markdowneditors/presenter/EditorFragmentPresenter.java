@@ -29,11 +29,11 @@ import java.io.File;
  * Created by 沈钦赐 on 16/1/18.
  */
 public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> {
-    //当前文件路径
+    /** 当前文件路径 */
     private String filePath;
-    //当前本地文件名字(如果创建,则为"",可以和当前标题输入框的值不同)
+    /** 当前本地文件名字(如果创建,则为"",可以和当前标题输入框的值不同) */
     private String fileName;
-    //时候为新创建文件
+    /** 时候为新创建文件 */
     private boolean isCreateFile;
 
     public EditorFragmentPresenter(File file) {
@@ -54,7 +54,9 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
     public void loadFile() {
         mCompositeSubscription.add(mDataManager.readFile(getMDFile())
                 .subscribe(content -> {
-                    if (getMvpView() == null) return;
+                    if (getMvpView() == null) {
+                        return;
+                    }
                     getMvpView().onReadSuccess(fileName, content);
                 }, throwable -> {
                     callFailure(-1, throwable.getMessage(), IEditorFragmentView.CALL_LOAOD_FILE);
@@ -73,11 +75,14 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
      * 刷新保存图标的状态
      */
     public void refreshMenuIcon() {
-        if (getMvpView() != null) return;
-        if (textChanged)
+        if (getMvpView() != null) {
+            return;
+        }
+        if (textChanged) {
             getMvpView().otherSuccess(IEditorFragmentView.CALL_NO_SAVE);
-        else
+        } else {
             getMvpView().otherSuccess(IEditorFragmentView.CALL_SAVE);
+        }
 
     }
 
@@ -111,7 +116,9 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
             callFailure(-1, "名字不能为空", IEditorFragmentView.CALL_SAVE);
             return;
         }
-        if (content == null) return;
+        if (content == null) {
+            return;
+        }
 
         //上一次文件名为空
         if (TextUtils.isEmpty(fileName)) {
@@ -142,10 +149,11 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
                     return;
                 }
                 if (getMvpView() != null) {
-                    if (exit)
+                    if (exit) {
                         getMvpView().otherSuccess(IEditorFragmentView.CALL_EXIT);
-                    else
+                    } else {
                         getMvpView().otherSuccess(IEditorFragmentView.CALL_SAVE);
+                    }
                 }
             } else {
                 callFailure(-1, "保存失败", IEditorFragmentView.CALL_SAVE);
@@ -159,7 +167,9 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
 
         int end = fileName.lastIndexOf(".");
         String name = fileName.substring(0, end);
-        if (newName.equals(name)) return true;
+        if (newName.equals(name)) {
+            return true;
+        }
 
         String suffix = fileName.substring(end, fileName.length());
         if (suffix.endsWith(".md") ||
@@ -168,12 +178,16 @@ public class EditorFragmentPresenter extends BasePresenter<IEditorFragmentView> 
             //重命名
             File oldFile = getMDFile();
             File newPath = new File(filePath, newName + suffix);
-            if (oldFile.getAbsolutePath().equals(newPath.getAbsolutePath())) return true;
+            if (oldFile.getAbsolutePath().equals(newPath.getAbsolutePath())) {
+                return true;
+            }
 
             fileName = newPath.getName();
 
             if (newPath.exists())//文件已经存在了
+            {
                 return false;
+            }
             boolean b = oldFile.renameTo(newPath);
             return b;
         }

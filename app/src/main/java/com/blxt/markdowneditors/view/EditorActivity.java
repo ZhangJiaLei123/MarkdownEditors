@@ -47,7 +47,7 @@ import com.blxt.markdowneditors.utils.Toast;
 import java.io.File;
 
 import butterknife.Bind;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseApplication;
 import com.blxt.markdowneditors.base.BaseToolbarActivity;
 import com.blxt.markdowneditors.lib.ExpandableLinearLayout;

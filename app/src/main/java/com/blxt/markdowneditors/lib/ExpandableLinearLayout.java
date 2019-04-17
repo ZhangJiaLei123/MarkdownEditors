@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 
 /**
  * 可以展开收缩View

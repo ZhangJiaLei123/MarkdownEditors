@@ -27,7 +27,7 @@ import com.blxt.markdowneditors.utils.SystemUtils;
 import java.io.InputStream;
 
 import butterknife.Bind;
-import ren.qinc.markdowneditors.R;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseToolbarActivity;
 import com.blxt.markdowneditors.widget.MarkdownPreviewView;
 

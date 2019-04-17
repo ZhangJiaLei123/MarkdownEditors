@@ -30,7 +30,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bigbai.mlog.LOG;
 import com.blxt.markdowneditors.AppContext;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseApplication;
 import com.blxt.markdowneditors.base.BaseFragment;
 import com.blxt.markdowneditors.base.mvp.IMvpView;
@@ -47,15 +49,18 @@ import java.io.File;
 import butterknife.Bind;
 import de.mrapp.android.bottomsheet.BottomSheet;
 import ren.qinc.edit.PerformEdit;
-import ren.qinc.markdowneditors.R;
 
 
 /**
  * 编辑界面
- * Created by 沈钦赐 on 16/1/21.
+ * @change blxt
+ * @author 沈钦赐
+ * @date 19/04/17
  */
 public class EditorFragment extends BaseFragment implements IEditorFragmentView, View.OnClickListener {
     public static final String FILE_PATH_KEY = "FILE_PATH_KEY";
+    /** 编辑内容改变 */
+    public static boolean isChangeContent = true;
     @Bind(R.id.title)
     protected EditText mName;
     @Bind(R.id.content)
@@ -68,6 +73,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     private PerformEdit mPerformNameEdit;
 
     public EditorFragment() {
+        isChangeContent = true;
     }
 
     public static EditorFragment getInstance(String filePath) {
@@ -108,6 +114,8 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             protected void onTextChanged(Editable s) {
                 //文本改变
                 mPresenter.textChange();
+                isChangeContent = true;
+                LOG.i("文本改变");
             }
         };
 
@@ -123,8 +131,9 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         PerformInputAfter.start(mContent);
 
         //装置数据
-        if (file.isFile())
+        if (file.isFile()) {
             mPresenter.loadFile();
+        }
     }
 
 
@@ -135,8 +144,9 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mPresenter != null)
+        if (mPresenter != null) {
             mPresenter.detachView();//VP分离
+        }
         mPresenter = null;
     }
 
@@ -315,12 +325,16 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     }
 
     public void noSave() {
-        if (mActionSave == null) return;
+        if (mActionSave == null) {
+            return;
+        }
         mActionSave.setIcon(R.drawable.ic_action_unsave);
     }
 
     public void saved() {
-        if (mActionSave == null) return;
+        if (mActionSave == null) {
+            return;
+        }
         mActionSave.setIcon(R.drawable.ic_action_save);
     }
 

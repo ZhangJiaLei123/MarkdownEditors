@@ -31,20 +31,20 @@ import com.bigbai.mfileutils.spControl.FalBoolean;
 import com.bigbai.mfileutils.spControl.FalInt;
 import com.bigbai.mfileutils.spControl.spBaseControl;
 import com.bigbai.mlog.LOG;
+import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseFragment;
 import com.blxt.markdowneditors.event.RxEvent;
 import com.blxt.markdowneditors.utils.UnzipFromAssets;
 import com.blxt.markdowneditors.utils.mPermissionsUnit;
-import com.blxt.markdowneditors.widget.MarkdownPreviewView;
 import com.md2html.Markdown2Html;
 
 import java.io.IOException;
 import java.util.Calendar;
 
 import butterknife.Bind;
-import ren.qinc.markdowneditors.R;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.blxt.markdowneditors.view.EditorFragment.isChangeContent;
 import static me.drakeet.library.ui.CrashListAdapter.TAG;
 
 /**
@@ -53,13 +53,11 @@ import static me.drakeet.library.ui.CrashListAdapter.TAG;
  */
 public class EditorMarkdownFragment extends BaseFragment {
     View view;
-    @Bind(R.id.markdownView)
-    protected MarkdownPreviewView mMarkdownPreviewView;
     @Bind(R.id.title)
     protected TextView mName;
     private String mContent;
-
-    private WebView mainViewWeb;
+    /** 用于显示md预览的web视图 */
+    private WebView webView;
 
 
     public EditorMarkdownFragment() {
@@ -84,13 +82,15 @@ public class EditorMarkdownFragment extends BaseFragment {
     public void onEventMainThread(RxEvent event) {
         if (event.isTypeAndData(RxEvent.TYPE_REFRESH_DATA)) {
             //页面还没有加载完成
-            mContent = event.o[1].toString();
-            mName.setText(event.o[0].toString());
-            if (isPageFinish){
-               // mMarkdownPreviewView.parseMarkdown(mContent, true);
-                md2htmlString(mContent);
+            if(isChangeContent){ // 文本改变后,才刷新
+                mContent = event.o[1].toString();
+                mName.setText(event.o[0].toString());
+                if (isPageFinish){
+                    // mMarkdownPreviewView.parseMarkdown(mContent, true);
+                    md2htmlString(mContent);
+                }
+                isChangeContent = false;
             }
-
         }
     }
 
@@ -101,16 +101,12 @@ public class EditorMarkdownFragment extends BaseFragment {
 
     @Override
     public void onCreateAfter(Bundle savedInstanceState) {
-        mMarkdownPreviewView.setOnLoadingFinishListener(() -> {
-            if (!isPageFinish && mContent != null)//
-             {
-               //  mMarkdownPreviewView.parseMarkdown(mContent, true);
-                 md2htmlString(mContent);
-             }
-
-
-            isPageFinish = true;
-        });
+        if (!isPageFinish && mContent != null && isChangeContent)//
+         {
+             md2htmlString(mContent);
+             isChangeContent = false;
+         }
+        isPageFinish = true;
     }
 
     @Override
@@ -142,7 +138,7 @@ public class EditorMarkdownFragment extends BaseFragment {
     FalBoolean isNewResult; // 是否解压资源
     @Override
     public void initData() {
-        mainViewWeb = rootView.findViewById(R.id.mainViewWeb);
+        webView = rootView.findViewById(R.id.mainViewWeb);
 
         SP = getContext().getSharedPreferences("com.bigbai.mdview.preferences", MODE_PRIVATE);
         spC = new spBaseControl(SP);
@@ -150,16 +146,16 @@ public class EditorMarkdownFragment extends BaseFragment {
 
 
         //支持javascript
-        mainViewWeb.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
         // 设置可以支持缩放
-        mainViewWeb.getSettings().setSupportZoom(true);
+        webView.getSettings().setSupportZoom(true);
         // 设置出现缩放工具
-        mainViewWeb.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setBuiltInZoomControls(true);
         //扩大比例的缩放
-        mainViewWeb.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setUseWideViewPort(true);
         //自适应屏幕
-        mainViewWeb.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        mainViewWeb.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webView.getSettings().setLoadWithOverviewMode(true);
         initDataM();
     }
 
@@ -259,9 +255,8 @@ public class EditorMarkdownFragment extends BaseFragment {
         Markdown2Html.setMdText(strMd);
         Markdown2Html.analysis();
         String str = Markdown2Html.getHtmlCode();
-        mainViewWeb.freeMemory();
-        mainViewWeb.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
-        LOG.i(str);
+        webView.freeMemory();
+        webView.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
     }
 
 }
