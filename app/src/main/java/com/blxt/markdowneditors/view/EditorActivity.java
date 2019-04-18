@@ -284,9 +284,11 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             case R.id.action_other_operate://展开和收缩
                 if (!mExpandLayout.isExpanded())
                     //没有展开，但是接下来就是展开，设置向上箭头
+                {
                     mActionOtherOperate.setIcon(R.drawable.ic_arrow_up);
-                else
+                } else {
                     mActionOtherOperate.setIcon(R.drawable.ic_add_white_24dp);
+                }
                 mExpandLayout.toggle();
                 return true;
             case R.id.action_preview://预览
@@ -300,6 +302,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
                 return true;
 //            case R.id.action_setting://设置
 //                return true;
+            default:
         }
         return super.onOptionsItemSelected(item);
     }
@@ -418,7 +421,6 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
         TextInputLayout linkHint = (TextInputLayout) rootView.findViewById(R.id.inputHint);
         EditText title = (EditText) rootView.findViewById(R.id.name);
         EditText link = (EditText) rootView.findViewById(R.id.text);
-
 
         rootView.findViewById(R.id.sure).setOnClickListener(v -> {
             String titleStr = title.getText().toString().trim();

@@ -26,6 +26,7 @@ import com.blxt.markdowneditors.utils.FileUtils;
 import com.blxt.markdowneditors.utils.RxUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -109,25 +110,56 @@ public class DataManager {
     public List<FileBean> getDefaultPath(){
         List<FileBean> fileList = new ArrayList<>();
         String SdPath = Environment.getExternalStorageDirectory().getPath();
+
         LOG.i("获取默认文件夹" , SdPath);
-        String[] defaultPath = new String[]{ "tencent/QQfile_recv", "tencent/TIMfile_recv", "tencent/MicroMsg/Download", "DingTalk"};
-        String[] defaultPathName = new String[]{ "QQ", "TIM", "微信", "钉钉"};
+        String[] defaultPath = new String[]{ "","tencent/QQfile_recv", "tencent/TIMfile_recv", "tencent/MicroMsg/Download", "DingTalk"};
+        String[] defaultPathName = new String[]{ "根目录","QQ", "TIM", "微信", "钉钉"};
 
+        // 添加默认文件到集合
         for (int i= 0; i < defaultPath.length; i++){
-            File file = new File(SdPath + "/" + defaultPath[i]);
-            if(!file.exists()){ // 跳过不存在的路径
-                continue;
+            FileBean fileBean = createFileBean(SdPath + "/" + defaultPath[i],
+                    defaultPathName[i],true);
+            if(fileBean != null) {
+                fileList.add(fileBean);
             }
-
-            FileBean fileBean = new FileBean();
-            fileBean.absPath = SdPath + "/" + defaultPath[i];
-            fileBean.name = defaultPathName[i];
-            fileBean.isDirectory = true;
-            fileBean.lastTime = new Date(file.lastModified()); // 最后修改时间
-            fileList.add(fileBean);
         }
 
         return fileList;
+    }
+
+    /**
+     * 创建一个 FileBean
+     * @param path
+     * @param name
+     * @param isDirectory
+     * @return
+     */
+    public static FileBean createFileBean(String path,String name,boolean isDirectory){
+        boolean isCreate = false;
+        File file = new File(path.trim());
+        if(!file.exists()){ // 跳过不存在的路径
+            if(!isCreate){ // 不存在,是否创建
+                return null;
+            }
+            else if(isDirectory) { // 创建文件夹
+                file.mkdir();
+            }else{ // 创建文件
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        }
+
+        FileBean fileBean = new FileBean();
+        fileBean.absPath = path;
+        fileBean.name = name;
+        fileBean.isDirectory = isDirectory;
+        fileBean.lastTime = new Date(file.lastModified()); // 最后修改时间
+
+        return  fileBean;
     }
 
     /**

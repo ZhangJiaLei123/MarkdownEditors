@@ -50,6 +50,16 @@ allprojects {
     }
 }
 
+allprojects {
+    repositories {
+        google()
+        jcenter()
+
+        maven { url 'https://dl.bintray.com/umsdk/release' }
+
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

@@ -27,12 +27,13 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import com.bigbai.mlog.LOG;
 import com.blxt.markdowneditors.AppManager;
 import com.blxt.markdowneditors.utils.Check;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import me.drakeet.library.CrashWoodpecker;
+//import me.drakeet.library.CrashWoodpecker;
 
 
 /**
@@ -56,7 +57,8 @@ public abstract class BaseApplication extends Application {
             refWatcher = LeakCanary.install(this);//预定义的 RefWatcher，同时也会启用一个 ActivityRefWatcher
         }
         if (hasCrashLog()) {
-            CrashWoodpecker.fly().to(this);//崩溃异常捕获
+          //  CrashWoodpecker.fly().to(this);//崩溃异常捕获
+            LOG.i("崩溃异常捕获");
         }
 
     }

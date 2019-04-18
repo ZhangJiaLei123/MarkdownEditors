@@ -124,6 +124,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             protected void onTextChanged(Editable s) {
                 //文本改变
                 mPresenter.textChange();
+                isChangeContent = true;
             }
         };
 
@@ -162,6 +163,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             case CALL_SAVE:
                 saved();
                 break;
+                default:
         }
     }
 
@@ -242,6 +244,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             case R.id.action_save://保存
                 mPresenter.save(mName.getText().toString().trim(), mContent.getText().toString().trim());
                 return true;
+                default:
         }
 
         return super.onOptionsItemSelected(item);
@@ -250,7 +253,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     private void shareMenu() {
         SystemUtils.hideSoftKeyboard(mContent);
         if (mName.getText().toString().isEmpty()) {
-            AppContext.showSnackbar(mContent, "当前标题为空");
+            AppContext.showSnackbar(mName, "当前标题为空");
             return;
         }
         if (mContent.getText().toString().isEmpty()) {
@@ -279,6 +282,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
                 case 2://分享md文件
                     shareMD();
                     break;
+                    default:
             }
 
         });

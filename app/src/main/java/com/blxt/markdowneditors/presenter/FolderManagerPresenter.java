@@ -296,6 +296,8 @@ public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
     }
 
 
+
+
     //===========编辑模式相关==============
 
     public void closeEditMode() {

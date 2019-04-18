@@ -47,8 +47,8 @@
             <item
                 android:id="@+id/other"
                 android:checkable="false"
-                android:icon="@drawable/ic_dropbox"
-                android:title="其他"/>
+                android:icon="@mipmap/ic_github"
+                android:title="Git"/>
         </menu>
     </item>
     <item android:title="其他">
@@ -57,20 +57,21 @@
                 android:id="@+id/menu_helper"
                 android:icon="@drawable/ic_help"
                 android:title="参考语法"/>
-            <!--<item-->
-                <!--android:id="@+id/menu_setting"-->
-                <!--android:icon="@drawable/ic_settings"-->
-                <!--android:title="设置"/>-->
+            <item
+                android:id="@+id/menu_setting"
+                android:icon="@drawable/ic_settings"
+                android:title="设置"/>
             <item
                 android:id="@+id/menu_update"
-                android:icon="@drawable/ic_settings"
+                android:icon="@drawable/ic_file_upload_black_24dp"
                 android:title="检测更新"/>
-            <!--<item-->
-            <!--android:icon="@drawable/ic_message"-->
-            <!--android:title="反馈" />-->
-            <item android:id="@+id/menu_about"
-                  android:icon="@drawable/ic_information"
-                  android:title="关于"/>
+            <item
+                android:icon="@drawable/ic_message"
+                android:title="反馈" />
+            <item
+                android:id="@+id/menu_about"
+                android:icon="@drawable/ic_information"
+                android:title="关于"/>
         </menu>
     </item>
 

@@ -93,7 +93,7 @@ public class Toast {
         showToast(context, context.getResources().getString(message), duration);
     }
 
-    private static void showToast(Context context, String message, int duration) {
+    public static void showToast(Context context, String message, int duration) {
 //		if(context==null){
 //			context = NewsApplication.getInstance();
 //		}

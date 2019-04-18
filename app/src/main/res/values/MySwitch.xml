@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MySwitch">
+        <attr name="isCheck" format="boolean" />
+        <attr name="checkColor" format="color|reference" />
+        <attr name="noCheckColor" format="color|reference" />
+        <attr name="circleColor" format="color|reference"></attr>
+        <attr name="outLineWidth" format="dimension|reference"></attr>
+        <attr name="outLineColor" format="color|reference"></attr>
+        <attr name="circleColorFalse" format="color|reference"></attr>
+    </declare-styleable>
+
+</resources>

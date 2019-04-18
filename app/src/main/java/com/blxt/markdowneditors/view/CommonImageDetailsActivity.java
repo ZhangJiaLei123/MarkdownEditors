@@ -228,6 +228,7 @@ public class CommonImageDetailsActivity extends BaseToolbarActivity {
             case R.id.action_save:
                 saveImageToGallery();
                 break;
+                default:
         }
 
         return super.onOptionsItemSelected(item);

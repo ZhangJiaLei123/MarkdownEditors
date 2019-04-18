@@ -59,4 +59,5 @@
     <string name="share_md">Share md</string>
     <string name="share_png">Share png</string>
     <string name="share_text">Share text</string>
+    <string name="title_activity_settings">settings</string>
 </resources>
