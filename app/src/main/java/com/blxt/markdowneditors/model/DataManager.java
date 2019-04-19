@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.bigbai.mlog.LOG;
+import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.entity.FileBean;
 import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.FileUtils;
@@ -39,8 +40,10 @@ import rx.Subscriber;
  * Created by 沈钦赐 on 16/1/26.
  */
 public class DataManager {
+
+
+
     private IFileModel mFileModel;
-    private boolean isOnlyMd = true; // 只显示md文件
 
     public static DataManager getInstance() {
         return DataManagerInstance.getManager();
@@ -174,7 +177,7 @@ public class DataManager {
 
         if (Check.isEmpty(key))//默认，文件夹和文件
         {
-            if(isOnlyMd){
+            if(AppConfig.isOnlyShowMd){
                 files = currentFolder
                         .listFiles(file -> file.isDirectory() ||
                                 file.getName().endsWith(".md") ||
@@ -195,7 +198,7 @@ public class DataManager {
 
         } else //搜索
         {
-            if(isOnlyMd){
+            if(AppConfig.isOnlyShowMd){
                 files = currentFolder
                         .listFiles(file -> file.getName().contains(key) &&
                                 (
@@ -219,6 +222,23 @@ public class DataManager {
 
         if (files == null) {
             return getCommonObservable();
+        }else{
+            for(int i = 0; i < files.length ; i++){
+                if(!AppConfig.isShowHideMkdir){ // 屏蔽隐藏文件/夹
+                    if( files[i].getName().startsWith(".")){
+                        files[i] = null;
+                        continue;
+                    }
+                }
+                if(AppConfig.isHideSystemMkdir){ // 屏蔽系统文件夹
+                    if(files[i].isDirectory()){
+                        if(compareFileByName(files[i])){
+                            files[i] = null;
+                        }
+                    }
+                }
+            }
+
         }
 
         return Observable
@@ -348,5 +368,19 @@ public class DataManager {
         public static DataManager getManager() {
             return manager;
         }
+    }
+
+    /**
+     * 判断文件是否符合类型
+     * @return true 符合比较类型 false 不符合比较类型
+     */
+    private boolean compareFileByName(File file){
+
+        for(String s : AppConfig.hideFileRm){
+            if(file.getName().equals(s)){
+                return true;
+            }
+        }
+        return false;
     }
 }

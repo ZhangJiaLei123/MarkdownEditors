@@ -142,4 +142,13 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+    // ID
+    <string name="sw_is_only_md" translatable="false">只显示md文件</string>
+    <string name="sw_is_show_more_mkdir" translatable="false">显示更多文件夹</string>
+    <string name="sw_is_hide_system_mkdir" translatable="false">隐藏系统文件夹</string>
+    <string name="sw_is_show_hide_mkdir" translatable="false">显示隐藏文件夹</string>
+    <string name="sw_is_use_ttf" translatable="false">使用字体拓展</string>
+    <string name="sw_is_auto_md_size" translatable="false">自适应图片大小</string>
+
 </resources>

@@ -29,6 +29,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -320,6 +321,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
 
     @Override
     public void onClick(View v) {
+        Log.i("点击","onClick");
         switch (v.getId()) {
             case R.id.file_name:
                 Object tag = v.getTag(R.id.tag);
@@ -345,6 +347,11 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     }
 
 
+    /**
+     *  普通模
+     * @param menu     the menu
+     * @param inflater the inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_folder_manager, menu);
@@ -464,20 +471,28 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
 
     @Override
     public boolean onBackPressed() {//返回按钮
-        if (searchView != null && searchView.isShown() && searchViewIsShow) {//搜索菜单打开了
+        Log.i("返回按钮","返回按钮");
+        if(mPresenter.closeEditMode()){ // 关闭文件夹编辑模式
+            Log.i("返回按钮","关闭文件夹编辑模式");
+            this.refresh();
+
+            return true;
+        }else if (searchView != null && searchView.isShown() && searchViewIsShow) {//搜索菜单打开了
             searchView.onActionViewCollapsed();  //关闭ActionView(SearchView)
             searchView.setQuery("", false);       //清空输入框
             getActivity().supportInvalidateOptionsMenu();//恢复
             searchViewIsShow = false;
             return true;
-        } else {
+        }
+        else {
             return mPresenter.backFolder();
         }
     }
 
 
     /**
-     * 初始化ActionMode的CallBack
+     * 编辑模式
+     * 初始化的CallBack
      * Init action mode.
      */
 
@@ -696,5 +711,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
             mPresenter.closeEditMode();
         }
     }
+
+
 
 }

@@ -15,32 +15,36 @@
  */
 package com.blxt.markdowneditors.view;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.bigbai.mfileutils.FileUtils;
 import com.bigbai.mfileutils.spControl.FalBoolean;
 import com.bigbai.mfileutils.spControl.FalInt;
 import com.bigbai.mfileutils.spControl.spBaseControl;
 import com.bigbai.mlog.LOG;
-import com.blxt.markdowneditors.utils.UnzipFromAssets;
-import com.blxt.markdowneditors.utils.mPermissionsUnit;
-import com.md2html.Markdown2Html;
-import com.pgyersdk.javabean.AppBean;
-import com.pgyersdk.update.PgyUpdateManager;
-import com.pgyersdk.update.UpdateManagerListener;
-import com.blxt.markdowneditors.utils.Toast;
-
+import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.AppContext;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseDrawerLayoutActivity;
 import com.blxt.markdowneditors.base.BaseFragment;
+import com.blxt.markdowneditors.utils.Toast;
+import com.blxt.markdowneditors.utils.UnzipFromAssets;
+import com.blxt.markdowneditors.utils.mPermissionsUnit;
+import com.md2html.Markdown2Html;
+import com.mdEntity.MdBaseConfig;
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 
 import java.io.IOException;
 
@@ -103,15 +107,14 @@ public class MainActivity extends BaseDrawerLayoutActivity {
             "android.permission.WRITE_EXTERNAL_STORAGE"};
 
     spBaseControl spC;
-    SharedPreferences SP; // 管理类
+    public static SharedPreferences SP; // 管理类
     FalInt oldDay ;
     FalBoolean isNewApp; // 是否最新app
     FalBoolean isNewResult; // 是否解压资源
 
     @Override
     public void initData() {
-
-        SP = getSharedPreferences("com.bigbai.mdview.preferences", MODE_PRIVATE);
+        SP = getSharedPreferences(this.getPackageName(), MODE_PRIVATE);
         spC = new spBaseControl(SP);
         oldDay = new FalInt(SP,"lastDay",20181220);
 
@@ -172,6 +175,8 @@ public class MainActivity extends BaseDrawerLayoutActivity {
             LOG.i("已是最新版");
         }
         initDataM();
+
+        AppConfig.initAppConfig(SP,this);
     }
 
     void initDataM() {
@@ -185,6 +190,14 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         Markdown2Html.isUseFlash = true;
         Markdown2Html.isActionMenu = true;
         Markdown2Html.isTocTop = true;
+        MdBaseConfig.isMobile = true;
+
+        WindowManager wm = (WindowManager) this
+                .getSystemService(Context.WINDOW_SERVICE);
+        int width = wm.getDefaultDisplay().getWidth();
+        int height = wm.getDefaultDisplay().getHeight();
+      //  MdBaseConfig.iMobileWidth = width - 50;
+      //  MdBaseConfig.iMobileHeight = width * 3 / 4
 
         Markdown2Html.initHighlightSty();
         Markdown2Html.loadMdFormat();
@@ -194,6 +207,8 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         Markdown2Html.loadActionFrame();
         Markdown2Html.loadActionMenuBtn(30,30);
         Markdown2Html.loadTableList();
+
+
     }
 
     @Override
@@ -259,6 +274,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
      */
     @Override
     public void onBackPressed() {
+        Log.i("返回按钮","MainActivity");
         if (getDrawerLayout().isDrawerOpen(GravityCompat.START)) {//侧滑菜单打开，关闭菜单
             getDrawerLayout().closeDrawer(GravityCompat.START);
             return;

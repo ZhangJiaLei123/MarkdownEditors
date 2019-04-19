@@ -12,13 +12,78 @@
 
         <include layout="@layout/view_common_toolbar_scroll"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:text="文件设置" />
+
         <com.blxt.markdowneditors.widget.MySwitch
             android:id="@+id/sw_is_only_md"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:tag="只显示md文件"
-            android:text="只显示.md文件" />
+            android:checked="true"
+            android:tag="@string/sw_is_only_md"
+            android:text="@string/sw_is_only_md" />
+
+        <com.blxt.markdowneditors.widget.MySwitch
+            android:id="@+id/sw_is_show_more_mkdir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:checked="true"
+            android:tag="@string/sw_is_show_more_mkdir"
+            android:text="@string/sw_is_show_more_mkdir" />
+
+        <com.blxt.markdowneditors.widget.MySwitch
+            android:id="@+id/sw_is_hide_system_mkdir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:checked="true"
+            android:tag="@string/sw_is_hide_system_mkdir"
+            android:text="@string/sw_is_hide_system_mkdir" />
+
+        <com.blxt.markdowneditors.widget.MySwitch
+            android:id="@+id/sw_is_show_hide_mkdir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:tag="@string/sw_is_show_hide_mkdir"
+            android:text="@string/sw_is_show_hide_mkdir" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            android:text="Markdown设置" />
+
+        <com.blxt.markdowneditors.widget.MySwitch
+            android:id="@+id/sw_is_use_ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:tag="@string/sw_is_use_ttf"
+            android:text="@string/sw_is_use_ttf" />
+
+        <com.blxt.markdowneditors.widget.MySwitch
+            android:id="@+id/sw_is_auto_md_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:checked="true"
+            android:tag="@string/sw_is_auto_md_size"
+            android:text="@string/sw_is_auto_md_size" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

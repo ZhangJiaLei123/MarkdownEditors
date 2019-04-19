@@ -30,6 +30,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -277,6 +278,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Log.i("返回按钮","onOptionsItemSelected");
                 if (mEditorFragment.onBackPressed()) {
                     return true;
                 }
@@ -320,6 +322,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             mExpandLayout.toggle();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.i("返回按钮","mEditorFragment");
             if (mEditorFragment.onBackPressed()) {
                 return true;
             }

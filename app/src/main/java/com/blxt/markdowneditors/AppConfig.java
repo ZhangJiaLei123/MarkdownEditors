@@ -15,11 +15,44 @@
  */
 package com.blxt.markdowneditors;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.bigbai.mfileutils.spControl.FalBoolean;
+
+
 /**
  * 相关配置(后续用到)
- * Created by 沈钦赐 on 16/1/16.
+ *
+ * @author Zhang
  */
 public class AppConfig {
+    /** 只显示md文件 */
+    public static boolean isOnlyShowMd = true;
+    /** 显示更多文件夹,如QQ文件夹,微信文件夹等 */
+    public static boolean isOnlyShowMoreDir = true;
+    /** 显示隐藏文件夹 */
+    public static boolean isShowHideMkdir = true;
+    /** 隐藏系统文件夹 */
+    public static boolean isHideSystemMkdir = true;
+    /** 文件夹屏蔽列表 */
+    public static String[] hideFileRm = {"360","10086","Android","DCIM","MIUI","Movies","Music","Ccb","MIUI"};
+
+    public static void initAppConfig(SharedPreferences SP, Context context){
+
+        FalBoolean f1 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_only_md),true );
+        FalBoolean f2 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_show_more_mkdir),true );
+        FalBoolean f3 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_hide_system_mkdir),true );
+        FalBoolean f4 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_show_hide_mkdir),false );
+
+        AppConfig.isOnlyShowMd = f1.getValue();
+        AppConfig.isOnlyShowMoreDir = f2.getValue();
+        AppConfig.isHideSystemMkdir = f3.getValue();
+        AppConfig.isShowHideMkdir = f4.getValue();
+//        AppConfig.isOnlyShowMoreDir = swIsShowMoreMkdir.getFalData().getValue();
+//        AppConfig.isHideSystemMkdir = swIsHideSystemMkdir.getFalData().getValue();
+//        AppConfig.isShowHideMkdir = swIsShowHideMkdir.getFalData().getValue();
+    }
 //    //==================缓存文件相关==================
 //    // 设置文件sharedPreference的文件名字
 //    public static String SETTING_FILE_NAME = "setting_file";

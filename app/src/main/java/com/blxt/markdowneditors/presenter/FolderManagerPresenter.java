@@ -19,6 +19,7 @@ package com.blxt.markdowneditors.presenter;
 
 import android.content.Context;
 
+import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.base.mvp.BasePresenter;
 import com.blxt.markdowneditors.entity.FileBean;
 import com.blxt.markdowneditors.utils.Check;
@@ -37,6 +38,8 @@ import rx.Subscriber;
  * Changed by Blxt on 19/04/16.
  */
 public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
+
+
     /** 目录等级 */
     private Stack<String> fileStack = new Stack<>();
     private List<FileBean> files = new ArrayList<>();
@@ -94,7 +97,7 @@ public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
 
                                @Override
                                public void onNext(List<FileBean> fileBeans) {
-                                   if(fileStack.size() <= 1){ // 目录等级为1时,添加默认文件夹
+                                   if(AppConfig.isOnlyShowMoreDir && fileStack.size() <= 1){ // 目录等级为1时,添加默认文件夹
                                        fileBeans.addAll(mDataManager.getDefaultPath());
                                    }
 
@@ -300,15 +303,16 @@ public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
 
     //===========编辑模式相关==============
 
-    public void closeEditMode() {
+    public boolean closeEditMode() {
         if (files == null || mEditMode != EDIT_MODE_OPEN) {
-            return;
+            return false;
         }
         for (FileBean file : files) {
             file.isSelect = false;
         }
         mEditMode = EDIT_MODE_CLOSE;
         callOtherSuccess(IFolderManagerView.CALL_CLOSE_EDIT_MODE);
+        return true;
     }
 
     public void openEditMode() {
