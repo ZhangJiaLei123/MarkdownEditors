@@ -208,7 +208,6 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         Markdown2Html.loadActionMenuBtn(30,30);
         Markdown2Html.loadTableList();
 
-
     }
 
     @Override
@@ -274,7 +273,6 @@ public class MainActivity extends BaseDrawerLayoutActivity {
      */
     @Override
     public void onBackPressed() {
-        Log.i("返回按钮","MainActivity");
         if (getDrawerLayout().isDrawerOpen(GravityCompat.START)) {//侧滑菜单打开，关闭菜单
             getDrawerLayout().closeDrawer(GravityCompat.START);
             return;
@@ -293,12 +291,12 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         }
     }
 
-
     /**
      * 更新检查
      * @param isShow
      */
     private void initUpdate(boolean isShow) {
+        Log.i("检查更新","" + isShow);
         PgyUpdateManager.register(MainActivity.this,
                 new UpdateManagerListener() {
                     @Override

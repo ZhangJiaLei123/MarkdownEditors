@@ -17,9 +17,12 @@
 package com.blxt.markdowneditors.view;
 
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -28,6 +31,8 @@ import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseFragment;
 import com.blxt.markdowneditors.event.RxEvent;
 import com.md2html.Markdown2Html;
+
+import java.io.File;
 
 import butterknife.Bind;
 
@@ -131,6 +136,18 @@ public class EditorMarkdownFragment extends BaseFragment {
         webView.getSettings().setLoadWithOverviewMode(true);
         enableJavascript();
 
+        WebSettings webSettings=webView.getSettings();
+        //允许webview对文件的操作
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowFileAccessFromFileURLs(true);
+
+        //用于js调用Android
+        webSettings.setJavaScriptEnabled(true);
+        //设置编码方式
+        webSettings.setDefaultTextEncodingName("utf-8");
+        webView.setWebChromeClient(new chromClient());
+
     }
     //支持javascript
     private void enableJavascript() {
@@ -157,5 +174,20 @@ public class EditorMarkdownFragment extends BaseFragment {
 
         return true;
     }
+
+    private class chromClient extends WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            if(newProgress==100){
+                //页面加载完成执行的操作
+                String path= "file://"+ Environment.getExternalStorageDirectory()+ File.separator+"123.jpg";
+                String action="javascript:aa('"+path+"')";
+                Log.i("页面加载完成",action);
+              //  runWebView(action);
+            }
+            super.onProgressChanged(view, newProgress);
+        }
+    }
+
 
 }

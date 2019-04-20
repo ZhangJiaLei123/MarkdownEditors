@@ -316,6 +316,19 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         builder.setIntent(getActivity(), shareIntent);
         BottomSheet bottomSheet = builder.create();
         bottomSheet.show();
+
+//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//        Uri photoUri = FileProvider.getUriForFile(
+//                getContext(),
+//                "com.blxt.markdowneditors.view",
+//                mPresenter.getMDFile());
+//        shareIntent.putExtra(Intent.EXTRA_STREAM, photoUri);
+//        shareIntent.setType("*/*");
+//
+//        BottomSheet.Builder builder = new BottomSheet.Builder(getActivity());
+//        builder.setIntent(getActivity(), shareIntent);
+//        BottomSheet bottomSheet = builder.create();
+//        bottomSheet.show();
     }
 
     @Override

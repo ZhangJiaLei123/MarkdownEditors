@@ -106,6 +106,22 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5cb6bf5c3fc1954606000506" />
+
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="205e54e112a0536a7b21b92d276cf213">
+        </meta-data>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
     </application>
 
 </manifest>
