@@ -33,10 +33,6 @@
             android:exported="false"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity
-            android:name=".view.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/SetingTitle" /> <!-- 小米8不加这行会报错闪退 -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="true" />
@@ -59,12 +55,12 @@
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".view.CommonMarkdownActivity"
+            android:name=".view.HelpActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".view.CommonImageDetailsActivity"
+            android:name=".view.ImagePreviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />

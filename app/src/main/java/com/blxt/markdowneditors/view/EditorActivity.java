@@ -299,8 +299,8 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             case R.id.action_edit://编辑
                 mViewPager.setCurrentItem(0, true);
                 return true;
-            case R.id.action_helper:
-                CommonMarkdownActivity.startHelper(this);
+            case R.id.action_helper: // 参考语法
+                HelpActivity.startHelper(this);
                 return true;
 //            case R.id.action_setting://设置
 //                return true;

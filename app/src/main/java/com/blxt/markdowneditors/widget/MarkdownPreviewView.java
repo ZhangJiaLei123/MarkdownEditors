@@ -21,20 +21,23 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Build.VERSION;
-import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import com.blxt.markdowneditors.base.BaseWebActivity;
+import com.blxt.markdowneditors.view.EditorMarkdownFragment;
 
 /**
- * Markdown View
+ * 基于WebView的Markdown预览
  * The type Markdown preview view.
+ * @author Zhang
  */
-public class MarkdownPreviewView extends NestedScrollView {
+public class MarkdownPreviewView extends LinearLayout {
     public WebView mWebView;
     private Context mContext;
     private OnLoadingFinishListener mLoadingFinishListener;
@@ -59,7 +62,7 @@ public class MarkdownPreviewView extends NestedScrollView {
     private void init(Context context) {
         if (!isInEditMode()) {
             this.mContext = context;
-//            setOrientation(VERTICAL);
+            setOrientation(VERTICAL);
             if (VERSION.SDK_INT >= 21) {
                 WebView.enableSlowWholeDocumentDraw();
             }
@@ -69,13 +72,56 @@ public class MarkdownPreviewView extends NestedScrollView {
             this.mWebView.setHorizontalScrollBarEnabled(false);
             this.mWebView.addJavascriptInterface(new JavaScriptInterface(this), "handler");
             this.mWebView.setWebViewClient(new MdWebViewClient(this));
-            this.mWebView.loadUrl("file:///android_asset/Web/README.html");
             addView(this.mWebView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            init2();
         }
     }
 
+    /**
+     * 加载路径文件
+     * @param str
+     */
+    public void loadUrl(String str){
+        this.mWebView.loadUrl(str);
+    }
+
+    /***
+     * 加载html字符串
+     * @param str
+     */
+    public void loadHtmlStr(String str){
+        EditorMarkdownFragment.md2htmlString(this.mWebView, str);
+    }
+    public void init2() {
+
+        // 设置可以支持缩放
+        this.mWebView.getSettings().setSupportZoom(true);
+        // 设置出现缩放工具
+        this.mWebView.getSettings().setBuiltInZoomControls(true);
+        //扩大比例的缩放
+        this.mWebView.getSettings().setUseWideViewPort(true);
+        //自适应屏幕
+        this.mWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        this.mWebView.getSettings().setLoadWithOverviewMode(true);
+
+        WebSettings webSettings=this.mWebView.getSettings();
+        //允许webview对文件的操作
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowFileAccessFromFileURLs(true);
+
+        //用于js调用Android
+        this.mWebView.getSettings().setJavaScriptEnabled(true);// 能够执行Javascript脚本
+        this.mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        //设置编码方式
+        webSettings.setDefaultTextEncodingName("utf-8");
+       // this.mWebView.setWebChromeClient(new EditorMarkdownFragment.chromClient());
+
+    }
+
+
     public final void parseMarkdown(String str, boolean z) {
-        this.mWebView.loadUrl("javascript:parseMarkdown(\"" + str.replace("\n", "\\n").replace("\"", "\\\"").replace("'", "\\'") + "\", " + z + ")");
+     //   this.mWebView.loadUrl("javascript:parseMarkdown(\"" + str.replace("\n", "\\n").replace("\"", "\\\"").replace("'", "\\'") + "\", " + z + ")");
     }
 
     public void setContentListener(ContentListener contentListener) {

@@ -21,24 +21,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.blxt.markdowneditors.R;
+import com.blxt.markdowneditors.base.BaseToolbarActivity;
 import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.SystemUtils;
+import com.blxt.markdowneditors.widget.MarkdownPreviewView;
 
 import java.io.InputStream;
 
 import butterknife.Bind;
-import com.blxt.markdowneditors.R;
-import com.blxt.markdowneditors.base.BaseToolbarActivity;
-import com.blxt.markdowneditors.widget.MarkdownPreviewView;
 
 
 /**
- * 通用MarkdownEditor查看器
- *
- * @author 沈钦赐
+ * Markdown语法帮助
+ * @author Zhang
  * @date 16/6/30
  */
-public class CommonMarkdownActivity extends BaseToolbarActivity implements MarkdownPreviewView.OnLoadingFinishListener {
+public class HelpActivity extends BaseToolbarActivity implements MarkdownPreviewView.OnLoadingFinishListener {
     private static final String CONTENT = "CONTENT";
     private static final String TITLE = "TITLE";
     @Bind(R.id.markdownView)
@@ -47,7 +46,7 @@ public class CommonMarkdownActivity extends BaseToolbarActivity implements Markd
     private String mContent;
 
     public static void startMarkdownActivity(Context context, String title, String content) {
-        Intent intent = new Intent(context, CommonMarkdownActivity.class);
+        Intent intent = new Intent(context, HelpActivity.class);
         intent.putExtra(CONTENT, content);
         intent.putExtra(TITLE, title);
         context.startActivity(intent);
@@ -75,7 +74,7 @@ public class CommonMarkdownActivity extends BaseToolbarActivity implements Markd
         Check.CheckNull(mTitle, "标题不能为空");
         Check.CheckNull(mContent, "内容不能为空");
         mMarkdownPreviewView.setOnLoadingFinishListener(this);
-
+        mMarkdownPreviewView.loadHtmlStr(mContent);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class CommonMarkdownActivity extends BaseToolbarActivity implements Markd
     public void onLoadingFinish() {
         if (flag) {
             flag = false;
-            mMarkdownPreviewView.parseMarkdown(mContent, true);
+          //  mMarkdownPreviewView.parseMarkdown(mContent,true);
         }
     }
 

@@ -48,7 +48,7 @@ import butterknife.Bind;
  * @author 沈钦赐
  * @date 2015/12/20
  */
-public class CommonImageDetailsActivity extends BaseToolbarActivity {
+public class ImagePreviewActivity extends BaseToolbarActivity {
 
     public static final String EXTRA_IMAGE_URL = "image_url";
     public static final String EXTRA_IMAGE_TITLE = "image_title";
@@ -100,13 +100,13 @@ public class CommonImageDetailsActivity extends BaseToolbarActivity {
         if (context == null) {
             return;
         }
-        Intent intent = new Intent(context, CommonImageDetailsActivity.class);
-        intent.putExtra(CommonImageDetailsActivity.EXTRA_IMAGE_URL, imageUrl);
-        intent.putExtra(CommonImageDetailsActivity.EXTRA_IMAGE_TITLE, title);
+        Intent intent = new Intent(context, ImagePreviewActivity.class);
+        intent.putExtra(ImagePreviewActivity.EXTRA_IMAGE_URL, imageUrl);
+        intent.putExtra(ImagePreviewActivity.EXTRA_IMAGE_TITLE, title);
         if (context instanceof Activity && sharedElement != null) {
             ActivityOptionsCompat optionsCompat
                     = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    (Activity) context, sharedElement, CommonImageDetailsActivity.TRANSIT_PIC);
+                    (Activity) context, sharedElement, ImagePreviewActivity.TRANSIT_PIC);
             try {
                 ActivityCompat.startActivity((Activity) context, intent,
                         optionsCompat.toBundle());
@@ -123,9 +123,9 @@ public class CommonImageDetailsActivity extends BaseToolbarActivity {
 
 
     public static Intent newIntent(Context context, String url, String title) {
-        Intent intent = new Intent(context, CommonImageDetailsActivity.class);
-        intent.putExtra(CommonImageDetailsActivity.EXTRA_IMAGE_URL, url);
-        intent.putExtra(CommonImageDetailsActivity.EXTRA_IMAGE_TITLE, title);
+        Intent intent = new Intent(context, ImagePreviewActivity.class);
+        intent.putExtra(ImagePreviewActivity.EXTRA_IMAGE_URL, url);
+        intent.putExtra(ImagePreviewActivity.EXTRA_IMAGE_TITLE, title);
         return intent;
     }
 

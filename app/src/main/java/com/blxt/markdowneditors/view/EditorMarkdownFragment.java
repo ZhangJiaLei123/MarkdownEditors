@@ -80,7 +80,7 @@ public class EditorMarkdownFragment extends BaseFragment {
                 mName.setText(event.o[0].toString());
                 if (isPageFinish){
                     // mMarkdownPreviewView.parseMarkdown(mEtContent, true);
-                    if(md2htmlString(mContent)){
+                    if(md2htmlString(this.webView, mContent)){
                         isShowWeb = true;
                     }
                 }
@@ -160,7 +160,7 @@ public class EditorMarkdownFragment extends BaseFragment {
      *
      * @param strMd md代码
      */
-    boolean md2htmlString(String strMd) {
+    public static boolean md2htmlString(WebView webView, String strMd) {
         if (strMd == null)
         {
             return false;

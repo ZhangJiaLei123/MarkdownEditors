@@ -247,13 +247,13 @@ public class MainActivity extends BaseDrawerLayoutActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_helper:
-                CommonMarkdownActivity.startHelper(this);
+                HelpActivity.startHelper(this);
                 return true;
             case R.id.menu_about:
                 AboutActivity.startAboutActivity(this);
                 return true;
             case R.id.menu_setting:
-                SettingsActivity.startSettingsActivity(this);
+                SetActivity.startSetActivity(this);
                 return true;
             case R.id.menu_update:
                 initUpdate(true);

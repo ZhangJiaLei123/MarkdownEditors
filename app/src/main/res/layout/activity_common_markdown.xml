@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     style="@style/root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,12 +22,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/shadow"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.blxt.markdowneditors.view.EditorActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <include layout="@layout/view_common_toolbar_scroll"/>
 
@@ -35,5 +32,5 @@
             android:id="@+id/markdownView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>
