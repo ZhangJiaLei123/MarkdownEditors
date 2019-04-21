@@ -23,6 +23,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
@@ -98,6 +99,7 @@ public abstract class BaseDrawerLayoutActivity extends BaseToolbarActivity imple
 
     @Override
     public void onBackPressed() {//返回按钮
+        // Log.i("返回按钮","BaseDrawerLayoutActivity");
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {

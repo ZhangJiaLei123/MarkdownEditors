@@ -19,8 +19,9 @@ package com.blxt.markdowneditors.base;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import butterknife.Bind;
 import com.blxt.markdowneditors.R;
+
+import butterknife.Bind;
 
 /**
  * 带下拉刷新的Fragment
@@ -83,5 +84,6 @@ public abstract class BaseRefreshFragment extends BaseFragment {
      * @param swipeRefreshLayout the swipe refresh layout
      */
     protected abstract void onRefresh(SwipeRefreshLayout swipeRefreshLayout);
+
 
 }

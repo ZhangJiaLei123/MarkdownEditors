@@ -32,7 +32,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.bigbai.mlog.LOG;
 import com.blxt.markdowneditors.AppContext;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseApplication;
@@ -121,7 +120,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
                 //文本改变
                 mPresenter.textChange();
                 isChangeContent = true;
-                LOG.i("文本改变");
+                // Log.i("文本改变");
             }
         };
 
@@ -385,10 +384,12 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 
     @Override
     public boolean onBackPressed() {
+        // Log.i("返回按钮","EditorFragment");
         if (mPresenter.isSave()) {
             return false;
         }
         onNoSave();
+        super.onBackPressed();
         return true;
     }
 

@@ -30,6 +30,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.view.StandaloneActionMode;
 import android.support.v7.widget.ActionBarContextView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -439,4 +440,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
             e.printStackTrace();
         }
     }
+
+    /**
+     * 返回按钮
+     */
+    @Override
+    public void onBackPressed() {
+        // Log.i("返回按钮","BaseActivity");
+        super.onBackPressed();
+    }
+
 }

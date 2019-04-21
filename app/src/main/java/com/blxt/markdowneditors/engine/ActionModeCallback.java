@@ -49,7 +49,6 @@ public abstract class ActionModeCallback implements ActionMode.Callback {
             statusBarColor = mActivity.getWindow().getStatusBarColor();
             //set your gray color
             mActivity.getWindow().setStatusBarColor(mActionModeStatusBarColor);
-//            mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         return onCreateActionModeCustom(mode, menu);
     }

@@ -114,7 +114,7 @@ public class DataManager {
         List<FileBean> fileList = new ArrayList<>();
         String SdPath = Environment.getExternalStorageDirectory().getPath();
 
-        LOG.i("获取默认文件夹" , SdPath);
+        // Log.i("获取默认文件夹" , SdPath);
         String[] defaultPath = new String[]{ "","tencent/QQfile_recv", "tencent/TIMfile_recv", "tencent/MicroMsg/Download", "DingTalk"};
         String[] defaultPathName = new String[]{ "根目录","QQ", "TIM", "微信", "钉钉"};
 

@@ -7,11 +7,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 
 import com.blxt.markdowneditors.R;
-import com.blxt.markdowneditors.utils.SystemUtils;
 
 /**
  * 带行号的 EditText
@@ -40,17 +38,8 @@ public class MyEditText extends AppCompatEditText {
             line_row=new Paint();
             line_row.setColor(Color.GRAY);
             line_row.setStrokeWidth(4);
-//            int lines = getLineCount();
-//            Log.i("MyEditTex大小","" + lines);
-//            int w = 1;
-//            while(lines >= 10){
-//                lines /= 10;
-//                w++;
-//            }
 
-          //  int w = SystemUtils.px2dip(getContext() , getTextSize());
             int w = (int)getTextSize() * textlines;
-            Log.i("MyEditTex大小", w + "" + getTextSize() + "-" + SystemUtils.px2dip(getContext(), getTextSize()));
 
             setPadding( w +  10,0,0,10);
             setGravity(Gravity.TOP);
@@ -86,7 +75,7 @@ public class MyEditText extends AppCompatEditText {
             int i=getLineCount();
          //   int w = (int)(SystemUtils.px2dip(getContext(), getTextSize()));
             int w = (int)getTextSize() * textlines;
-        //    w = 6 * w;
+
             //竖线
             canvas.drawLine( w ,0, w ,getHeight()+(i*k),line);
             int y=(getLayout().getLineForOffset(getSelectionStart())+1)*k;

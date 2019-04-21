@@ -87,6 +87,11 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         initUpdate(false);
     }
 
+    @Override
+    public void invalidateOptionsMenu() {
+        super.invalidateOptionsMenu();
+    }
+
     private void setDefaultFragment(@IdRes int fragmentId) {
         mCurrentFragment = new FolderManagerFragment();
         getSupportFragmentManager()
@@ -231,6 +236,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         return false;
     }
 
+
     @Override
     protected int getDefaultMenuItemId() {
         currentMenuId = R.id.localhost;
@@ -261,6 +267,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
             case R.id.other:
                 AppContext.showSnackbar(getWindow().getDecorView(), "敬请期待");
                 return true;
+
                 default:break;
         }
         return super.onOptionsItemSelected(item);// || mCurrentFragment.onOptionsItemSelected(item);
@@ -273,6 +280,8 @@ public class MainActivity extends BaseDrawerLayoutActivity {
      */
     @Override
     public void onBackPressed() {
+       // super.onBackPressed();
+
         if (getDrawerLayout().isDrawerOpen(GravityCompat.START)) {//侧滑菜单打开，关闭菜单
             getDrawerLayout().closeDrawer(GravityCompat.START);
             return;
@@ -343,5 +352,6 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                     }
                 });
     }
+
 
 }

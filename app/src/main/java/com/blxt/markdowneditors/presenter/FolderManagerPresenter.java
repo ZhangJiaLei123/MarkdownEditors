@@ -18,6 +18,7 @@ package com.blxt.markdowneditors.presenter;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.base.mvp.BasePresenter;
@@ -302,9 +303,9 @@ public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
 
 
     //===========编辑模式相关==============
-
     public boolean closeEditMode() {
-        if (files == null || mEditMode != EDIT_MODE_OPEN) {
+        // Log.i("编辑模式","关闭");
+        if (files == null || mEditMode == EDIT_MODE_CLOSE) {
             return false;
         }
         for (FileBean file : files) {
@@ -316,6 +317,7 @@ public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
     }
 
     public void openEditMode() {
+        // Log.i("编辑模式","打开");
         if (files == null || mEditMode == EDIT_MODE_OPEN) {
             return;
         }

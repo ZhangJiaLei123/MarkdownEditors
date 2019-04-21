@@ -18,6 +18,7 @@ package com.blxt.markdowneditors.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -163,6 +164,8 @@ public abstract class BaseFragment extends BaseStatedFragment implements BaseVie
      * @return the boolean
      */
     public boolean onBackPressed() {
+        // Log.i("返回按钮","BaseFragment");
+        //super.onBackPressed();
         return false;
     }
 

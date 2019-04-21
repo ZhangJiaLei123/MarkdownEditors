@@ -200,4 +200,15 @@ public abstract class BaseToolbarActivity extends BaseActivity {
             Log.d("OverflowIconVisible", e.getMessage());
         }
     }
+
+    /**
+     * 返回按钮
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Log.i("返回按钮","BaseToolbarActivity");
+    }
+
+
 }

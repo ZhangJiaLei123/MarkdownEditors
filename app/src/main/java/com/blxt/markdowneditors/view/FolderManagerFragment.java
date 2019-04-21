@@ -29,7 +29,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -98,6 +97,10 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     protected void onRefresh(SwipeRefreshLayout swipeRefreshLayout) {
         mPresenter.refreshCurrentPath();
         mPresenter.closeEditMode();
+        // Log.i("重绘",getClass().getName());
+        getActivity().invalidateOptionsMenu();
+        super.refresh();
+
     }
 
     @Override
@@ -281,6 +284,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
             if (selectCount == 0) {
                 mActionMode.setTitle("");
                 mPresenter.closeEditMode();
+                this.refresh();
             } else if (selectCount == 1) {
                 mActionMode.setTitle(String.valueOf(selectCount));
                 mActionMode.getMenu().findItem(R.id.action_edit).setVisible(true);
@@ -310,18 +314,21 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         if (mPresenter.isEditMode()) {
             return;
         }
+
         FileBean fileBean = files.get(position);
         fileBean.isSelect = !fileBean.isSelect;
         mAdapter.notifyItemChanged(position);
-        view.postDelayed(() ->
-                mPresenter.openEditMode(), 5);
+        rename();
+        /**取消文件夹编辑、剪辑等模式，只保留重命名操作*/
+//        view.postDelayed(() ->
+//                mPresenter.openEditMode(), 5);
 
     }
 
 
     @Override
     public void onClick(View v) {
-        Log.i("点击","onClick");
+        // Log.i("点击","onClick");
         switch (v.getId()) {
             case R.id.file_name:
                 Object tag = v.getTag(R.id.tag);
@@ -348,17 +355,23 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
 
 
     /**
-     *  普通模
+     *  普通模式
      * @param menu     the menu
      * @param inflater the inflater
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_folder_manager, menu);
+        // Log.i("普通模式",getClass().getName());
+
+
 
         initSearchView(menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+
+
 
     /**
      * 初始化SearchView
@@ -373,6 +386,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         //SearchView相关
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -436,8 +450,6 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
      * Create folder.
      */
     public void createFolder() {
-
-
         //显示重命名对话框
         View rootView = LayoutInflater.from(mContext).inflate(R.layout.view_common_input_view, null);
 
@@ -469,11 +481,14 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         mInputDialog.show();
     }
 
+
+
+
     @Override
     public boolean onBackPressed() {//返回按钮
-        Log.i("返回按钮","返回按钮");
+        // Log.i("返回按钮",getClass().getName());
         if(mPresenter.closeEditMode()){ // 关闭文件夹编辑模式
-            Log.i("返回按钮","关闭文件夹编辑模式");
+            // Log.i("返回按钮","关闭文件夹编辑模式");
             this.refresh();
 
             return true;
@@ -484,8 +499,11 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
             searchViewIsShow = false;
             return true;
         }
-        else {
-            return mPresenter.backFolder();
+        else if(mPresenter.backFolder()){
+            return true;
+        }
+        else{
+           return super.onBackPressed();
         }
     }
 
@@ -495,36 +513,45 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
      * 初始化的CallBack
      * Init action mode.
      */
-
     private void initActionMode() {
         pasteModeCallback = new ActionModeCallback(getActivity(), R.color.colorPrimary) {
             @Override
             public void onDestroyActionModeCustom(ActionMode mode) {
                 mActionMode = null;
+                // Log.i("编辑模式","pasteModeCallback-onDestroyActionModeCustom");
             }
 
             @Override
             public boolean onCreateActionModeCustom(ActionMode mode, Menu menu) {
-           //     MenuInflater inflater = mode.getMenuInflater();
-           //     mode.setTitle("1");
-           //     inflater.inflate(R.menu.menu_action_paste, menu);
+                // Log.i("编辑模式","pasteModeCallback-onCreateActionModeCustom");
+                MenuInflater inflater = mode.getMenuInflater();
+                mode.setTitle("普通模式");
+               // inflater.inflate(R.menu.menu_action_paste, menu);
+                menu.removeItem(R.id.action_edit);
+                menu.removeItem(R.id.action_delete);
+                menu.removeItem(R.id.action_copy);
+                menu.removeItem(R.id.action_cut);
+                inflater.inflate(R.menu.menu_folder_manager, menu);
+                // Log.i("普通模式",getClass().getName());
+
                 return true;
             }
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                // Log.i("编辑模式","pasteModeCallback-onActionItemClicked");
                 boolean flag = false;
-                switch (item.getItemId()) {
-                    case R.id.action_paste:
-                        mPresenter.paste();
-                        flag = true;
-                        break;
-                    case R.id.action_create_folder:
-                        createFolder();
-                        flag = true;
-                        break;
-                        default:
-                }
+//                switch (item.getItemId()) {
+//                    case R.id.action_paste:
+//                        mPresenter.paste();
+//                        flag = true;
+//                        break;
+//                    case R.id.action_create_folder:
+//                        createFolder();
+//                        flag = true;
+//                        break;
+//                        default:
+//                }
                 return flag;
             }
 
@@ -532,23 +559,29 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         editModeCallback = new ActionModeCallback(getActivity(), R.color.colorPrimary) {
             @Override
             public void onDestroyActionModeCustom(ActionMode mode) {
+                // Log.i("编辑模式","editModeCallback-onDestroyActionModeCustom");
                 mPresenter.closeEditMode();
+                refresh();
                 mActionMode = null;
             }
 
             @Override
             public boolean onCreateActionModeCustom(ActionMode mode, Menu menu) {
                 MenuInflater inflater = mode.getMenuInflater();
+
                 inflater.inflate(R.menu.menu_action_folder, menu);
+                // Log.i("编辑模式",getClass().getName());
                 menu.findItem(R.id.action_edit).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.action_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.action_copy).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.action_cut).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
                 return true;
             }
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                // Log.i("编辑模式","editModeCallback-onActionItemClicked");
                 boolean ret = false;
                 switch (item.getItemId()) {
                     case R.id.action_edit:
@@ -597,6 +630,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         textInputLayout.setHint("请输入" + (selectBean.isDirectory ? "文件夹名" : "文件名"));
         rootView.findViewById(R.id.sure).setOnClickListener(v -> {
             String result = text.getText().toString().trim();
+            mPresenter.refreshCurrentPath();
             if (!selectBean.isDirectory &&
                     !result.endsWith(".md") &&
                     !result.endsWith(".markdown") &&
@@ -631,6 +665,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         });
 
         rootView.findViewById(R.id.cancel).setOnClickListener(v -> {
+            mPresenter.refreshCurrentPath();
             dialog.dismiss();
         });
 
@@ -707,8 +742,9 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     @Override
     public void onEventMainThread(RxEvent event) {
         if (event.isType(RxEvent.TYPE_REFRESH_FOLDER)) {
-            mPresenter.refreshCurrentPath();
+          //  mPresenter.refreshCurrentPath();
             mPresenter.closeEditMode();
+            refresh();
         }
     }
 

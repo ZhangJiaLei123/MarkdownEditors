@@ -276,9 +276,10 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Log.i("菜单选择","onOptionsItemSelected" + item.getItemId());
         switch (item.getItemId()) {
             case android.R.id.home:
-                Log.i("返回按钮","onOptionsItemSelected");
+                // Log.i("返回按钮","onOptionsItemSelected");
                 if (mEditorFragment.onBackPressed()) {
                     return true;
                 }
@@ -311,6 +312,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Log.i("按键响应","onKeyDown" + keyCode);
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             if (!mExpandLayout.isExpanded())
                 //没有展开，但是接下来就是展开，设置向上箭头
@@ -322,7 +324,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             mExpandLayout.toggle();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.i("返回按钮","mEditorFragment");
+            // Log.i("返回按钮","mEditorFragment");
             if (mEditorFragment.onBackPressed()) {
                 return true;
             }
@@ -455,5 +457,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
         dialog.show();
     }
+
+
 
 }
