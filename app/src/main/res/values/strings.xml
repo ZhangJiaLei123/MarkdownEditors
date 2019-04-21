@@ -42,6 +42,8 @@
     <string name="please_enter">请输入</string>
     <string name="xxxx" translatable="false">xxxx</string>
 
+    <string name="action_only_read" translatable="false">只读</string>
+
     <string name="action_paste">粘贴</string>
     <string name="action_copy">复制</string>
     <string name="action_cut">剪切</string>

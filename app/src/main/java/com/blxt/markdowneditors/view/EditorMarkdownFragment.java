@@ -79,7 +79,7 @@ public class EditorMarkdownFragment extends BaseFragment {
                 mContent = event.o[1].toString();
                 mName.setText(event.o[0].toString());
                 if (isPageFinish){
-                    // mMarkdownPreviewView.parseMarkdown(mContent, true);
+                    // mMarkdownPreviewView.parseMarkdown(mEtContent, true);
                     if(md2htmlString(mContent)){
                         isShowWeb = true;
                     }
@@ -96,10 +96,10 @@ public class EditorMarkdownFragment extends BaseFragment {
 
     @Override
     public void onCreateAfter(Bundle savedInstanceState) {
-//        if (!isPageFinish && mContent != null
+//        if (!isPageFinish && mEtContent != null
 //                && isChangeContent || !isShowWeb)//
 //         {
-//             if(md2htmlString(mContent)){
+//             if(md2htmlString(mEtContent)){
 //                isShowWeb = true;
 //             }
 //             isChangeContent = false;

@@ -31,6 +31,7 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.blxt.markdowneditors.base.BaseApplication;
@@ -317,5 +318,31 @@ public class SystemUtils {
             e.printStackTrace();
         }
         return buffer;
+    }
+
+    /**
+     * 获取屏幕高
+     * @param context
+     * @return
+     */
+    public static int getWindowsH(Context context){
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+
+        int height = wm.getDefaultDisplay().getHeight();
+        return height;
+    }
+
+    /**
+     * 获取屏幕宽
+     * @param context
+     * @return
+     */
+    public static int getWindowsW(Context context){
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+
+        int width = wm.getDefaultDisplay().getWidth();
+        return width;
     }
 }

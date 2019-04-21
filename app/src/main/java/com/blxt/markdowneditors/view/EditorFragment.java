@@ -27,6 +27,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ import com.blxt.markdowneditors.event.RxEventBus;
 import com.blxt.markdowneditors.presenter.EditorFragmentPresenter;
 import com.blxt.markdowneditors.presenter.IEditorFragmentView;
 import com.blxt.markdowneditors.utils.SystemUtils;
+import com.blxt.markdowneditors.widget.MyEditText;
 
 import java.io.File;
 
@@ -57,14 +60,17 @@ import ren.qinc.edit.PerformEdit;
  * @author 沈钦赐
  * @date 19/04/17
  */
-public class EditorFragment extends BaseFragment implements IEditorFragmentView, View.OnClickListener {
+public class EditorFragment extends BaseFragment implements IEditorFragmentView, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     public static final String FILE_PATH_KEY = "FILE_PATH_KEY";
     /** 编辑内容改变 */
     public static boolean isChangeContent = true;
     @Bind(R.id.title)
     protected EditText mName;
     @Bind(R.id.content)
-    protected EditText mContent;
+    protected MyEditText mEtContent;
+    /** 只读 */
+    private CheckBox cbIsOnlyRead;
+
 
     private EditorFragmentPresenter mPresenter;
 
@@ -106,10 +112,10 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         mPresenter.attachView(this);
 
         //代码格式化或者插入操作
-        mPerformEditable = new PerformEditable(mContent);
+        mPerformEditable = new PerformEditable(mEtContent);
 
         //撤销和恢复初始化
-        mPerformEdit = new PerformEdit(mContent) {
+        mPerformEdit = new PerformEdit(mEtContent) {
             @Override
             protected void onTextChanged(Editable s) {
                 //文本改变
@@ -129,7 +135,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         };
 
         //文本输入监听(用于自动输入)
-        PerformInputAfter.start(mContent);
+        PerformInputAfter.start(mEtContent);
 
         //装置数据
         if (file.isFile()) {
@@ -140,6 +146,13 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
 
     @Override
     public void initData() {
+
+        cbIsOnlyRead = rootView.findViewById(R.id.cb_is_only_read);
+        cbIsOnlyRead.setOnCheckedChangeListener(this);
+
+        int hight =SystemUtils.getWindowsH(getContext());
+        mEtContent.setMinHeight(hight);
+        mEtContent.setDrawLine(true);
     }
 
     @Override
@@ -172,10 +185,10 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         switch (flag) {
             case CALL_SAVE:
             case CALL_LOAOD_FILE:
-                BaseApplication.showSnackbar(mContent, message);
+                BaseApplication.showSnackbar(mEtContent, message);
                 break;
             default:
-                BaseApplication.showSnackbar(mContent, message);
+                BaseApplication.showSnackbar(mEtContent, message);
                 break;
         }
     }
@@ -242,7 +255,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
                 mPerformEdit.redo();
                 return true;
             case R.id.action_save://保存
-                mPresenter.save(mName.getText().toString().trim(), mContent.getText().toString().trim());
+                mPresenter.save(mName.getText().toString().trim(), mEtContent.getText().toString().trim());
                 return true;
                 default:
         }
@@ -251,17 +264,17 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     }
 
     private void shareMenu() {
-        SystemUtils.hideSoftKeyboard(mContent);
+        SystemUtils.hideSoftKeyboard(mEtContent);
         if (mName.getText().toString().isEmpty()) {
             AppContext.showSnackbar(mName, "当前标题为空");
             return;
         }
-        if (mContent.getText().toString().isEmpty()) {
-            AppContext.showSnackbar(mContent, "当前内容为空");
+        if (mEtContent.getText().toString().isEmpty()) {
+            AppContext.showSnackbar(mEtContent, "当前内容为空");
             return;
         }
 
-        mPresenter.save(mName.getText().toString(), mContent.getText().toString());
+        mPresenter.save(mName.getText().toString(), mEtContent.getText().toString());
 
         BottomSheet.Builder builder = new BottomSheet.Builder(getActivity());
 //        builder.setTitle(R.string.bottom_sheet_title);
@@ -291,13 +304,13 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     }
 
     private void shareCopyText() {
-        SystemUtils.copyToClipBoard(getActivity(), mContent.getText().toString());
+        SystemUtils.copyToClipBoard(getActivity(), mEtContent.getText().toString());
     }
 
     private void shareText() {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, mContent.getText().toString());
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mEtContent.getText().toString());
         shareIntent.setType("text/plain");
 
         BottomSheet.Builder builder = new BottomSheet.Builder(getActivity(), R.style.AppTheme);
@@ -337,7 +350,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         mPerformEdit.setDefaultText(content);
         if (content.length() > 0) {
             //切换到预览界面
-//            RxEventBus.getInstance().send(new RxEvent(RxEvent.TYPE_SHOW_PREVIEW, mName.getText().toString(), mContent.getText().toString()));
+//            RxEventBus.getInstance().send(new RxEvent(RxEvent.TYPE_SHOW_PREVIEW, mName.getText().toString(), mEtContent.getText().toString()));
         }
     }
 
@@ -366,7 +379,7 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
     public void onEventMainThread(RxEvent event) {
         if (event.isType(RxEvent.TYPE_REFRESH_NOTIFY)) {
             //刷新markdown渲染
-            RxEventBus.getInstance().send(new RxEvent(RxEvent.TYPE_REFRESH_DATA, mName.getText().toString(), mContent.getText().toString()));
+            RxEventBus.getInstance().send(new RxEvent(RxEvent.TYPE_REFRESH_DATA, mName.getText().toString(), mEtContent.getText().toString()));
         }
     }
 
@@ -390,13 +403,26 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             dialog.dismiss();
 
         }).setPositiveButton("保存", (dialog, which) -> {
-            mPresenter.saveForExit(mName.getText().toString().trim(), mContent.getText().toString().trim(), true);
+            mPresenter.saveForExit(mName.getText().toString().trim(), mEtContent.getText().toString().trim(), true);
 
         }).show();
     }
 
     @Override
     public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        int id = buttonView.getId();
+
+        switch (id){
+            case R.id.cb_is_only_read:
+                mEtContent.setEnabled(!isChecked);
+                break;
+            default:
+        }
 
     }
 }

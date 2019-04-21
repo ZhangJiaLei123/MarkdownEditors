@@ -60,4 +60,5 @@
     <string name="share_png">Share png</string>
     <string name="share_text">Share text</string>
     <string name="title_activity_settings">settings</string>
+    <string name="action_only_read" translatable="false">onlyRead</string>
 </resources>
