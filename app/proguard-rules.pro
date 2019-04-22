@@ -36,10 +36,13 @@
 }
 
 #蒲公英
-#-libraryjars libs/pgyer_sdk_2.2.2.jar
+#-libraryjars libs/pgyer_sdk_3.0.4.jar
+#-dontwarn com.pgyersdk.**
+#-keep class com.pgyersdk.** { *; }
+-libraryjars libs/pgyer_sdk_2.2.2.jar
 -dontwarn com.pgyersdk.**
 -keep class com.pgyersdk.** { *; }
-
+-keep class com.pgyersdk.**$* { *; }
 
 #View的构造函数
 -keepclasseswithmembers class * {

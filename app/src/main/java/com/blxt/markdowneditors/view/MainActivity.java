@@ -15,13 +15,14 @@
  */
 package com.blxt.markdowneditors.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.v4.view.GravityCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +30,6 @@ import android.view.WindowManager;
 
 import com.bigbai.mfileutils.FileUtils;
 import com.bigbai.mfileutils.spControl.FalBoolean;
-import com.bigbai.mfileutils.spControl.FalInt;
 import com.bigbai.mfileutils.spControl.spBaseControl;
 import com.bigbai.mlog.LOG;
 import com.blxt.markdowneditors.AppConfig;
@@ -42,9 +42,10 @@ import com.blxt.markdowneditors.utils.UnzipFromAssets;
 import com.blxt.markdowneditors.utils.mPermissionsUnit;
 import com.md2html.Markdown2Html;
 import com.mdEntity.MdBaseConfig;
-import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.DownloadFileListener;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
+import com.pgyersdk.update.javabean.AppBean;
 
 import java.io.IOException;
 
@@ -112,8 +113,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
             "android.permission.WRITE_EXTERNAL_STORAGE"};
 
     spBaseControl spC;
-    public static SharedPreferences SP; // 管理类
-    FalInt oldDay ;
+    public static SharedPreferences SP; // 管理类;
     FalBoolean isNewApp; // 是否最新app
     FalBoolean isNewResult; // 是否解压资源
 
@@ -121,7 +121,6 @@ public class MainActivity extends BaseDrawerLayoutActivity {
     public void initData() {
         SP = getSharedPreferences(this.getPackageName(), MODE_PRIVATE);
         spC = new spBaseControl(SP);
-        oldDay = new FalInt(SP,"lastDay",20181220);
 
         // 权限检查和初始文件解压
         mPermissions.setActivity(this);
@@ -176,9 +175,8 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                 isReadLockStyle = false;
             }
 
-        } else {
-            LOG.i("已是最新版");
         }
+
         initDataM();
 
         AppConfig.initAppConfig(SP,this);
@@ -305,12 +303,24 @@ public class MainActivity extends BaseDrawerLayoutActivity {
      * @param isShow
      */
     private void initUpdate(boolean isShow) {
-        Log.i("检查更新","" + isShow);
-        PgyUpdateManager.register(MainActivity.this,
-                new UpdateManagerListener() {
+        /** 新版本 **/
+        new PgyUpdateManager.Builder()
+                .setForced(true)                //设置是否强制提示更新,非自定义回调更新接口此方法有用
+                .setUserCanRetry(false)         //失败后是否提示重新下载，非自定义下载 apk 回调此方法有用
+                .setDeleteHistroyApk(false)     // 检查更新前是否删除本地历史 Apk， 默认为true
+                .setUpdateManagerListener(new UpdateManagerListener() {
                     @Override
-                    public void onUpdateAvailable(final String result) {
-                        final AppBean appBean = getAppBeanFromString(result);
+                    public void onNoUpdateAvailable() {
+                        //没有更新是回调此方法
+                        Log.d("pgyer", "there is no new version");
+                        Toast.showShort(mContext, "已经是最新版本");
+                    }
+                    @Override
+                    public void onUpdateAvailable(AppBean appBean) {
+                        //有更新回调此方法
+                        Log.d("pgyer", "there is new version can update"
+                                + "new versionCode is " + appBean.getVersionCode());
+
                         if (appBean.getReleaseNote().startsWith("####")) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DialogTheme);
                             builder
@@ -318,12 +328,13 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                                     .setCancelable(false)
                                     .setMessage("更新到最新版?")
                                     .setNegativeButton("取消", (dialog, which) -> {
-                                       finish();
+                                        finish();
                                     })
                                     .setPositiveButton("确定", (dialog1, which) -> {
-                                        startDownloadTask(
-                                                MainActivity.this,
-                                                appBean.getDownloadURL());
+                                        // 下载
+                                        //调用以下方法，DownloadFileListener 才有效；
+                                        //如果完全使用自己的下载方法，不需要设置DownloadFileListener
+                                        PgyUpdateManager.downLoadApk(appBean.getDownloadURL());
                                         dialog1.dismiss();
                                     }).show();
                         } else {
@@ -335,23 +346,49 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                                         dialog.dismiss();
                                     })
                                     .setPositiveButton("更新", (dialog1, which) -> {
-                                        startDownloadTask(
-                                                MainActivity.this,
-                                                appBean.getDownloadURL());
+                                        // 下载
+                                        PgyUpdateManager.downLoadApk(appBean.getDownloadURL());
                                         dialog1.dismiss();
                                     }).show();
 
                         }
+
                     }
 
                     @Override
-                    public void onNoUpdateAvailable() {
-                        if (isShow) {
-                            android.widget.Toast.makeText(application, "已经是最新版", Toast.LENGTH_SHORT).show();
-                        }
+                    public void checkUpdateFailed(Exception e) {
+                        //更新检测失败回调
+                        //更新拒绝（应用被下架，过期，不在安装有效期，下载次数用尽）以及无网络情况会调用此接口
+                        Log.e("pgyer", "check update failed ", e);
                     }
-                });
+                })
+                //注意 ：
+                //下载方法调用 PgyUpdateManager.downLoadApk(appBean.getDownloadURL()); 此回调才有效
+                //此方法是方便用户自己实现下载进度和状态的 UI 提供的回调
+                //想要使用蒲公英的默认下载进度的UI则不设置此方法
+                .setDownloadFileListener(new DownloadFileListener() {
+                    @Override
+                    public void downloadFailed() {
+                        //下载失败
+                        Log.e("pgyer", "download apk failed");
+                    }
+
+                    @Override
+                    public void downloadSuccessful(Uri uri) {
+                        Log.e("pgyer", "download apk failed");
+                        // 使用蒲公英提供的安装方法提示用户 安装apk
+                        PgyUpdateManager.installApk(uri);
+                    }
+
+                    @Override
+                    public void onProgressUpdate(Integer... integers) {
+                        Log.e("pgyer", "update download apk progress" + integers);
+                    }})
+                .register();
+
     }
+
+
 
 
 }
