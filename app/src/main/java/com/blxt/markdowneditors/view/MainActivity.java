@@ -313,7 +313,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                     public void onNoUpdateAvailable() {
                         //没有更新是回调此方法
                         Log.d("pgyer", "there is no new version");
-                        Toast.showShort(mContext, "已经是最新版本");
+                        android.widget.Toast.makeText(application, "已经是最新版", Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onUpdateAvailable(AppBean appBean) {
