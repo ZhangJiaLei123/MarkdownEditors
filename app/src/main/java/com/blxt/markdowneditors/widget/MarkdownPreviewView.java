@@ -32,6 +32,10 @@ import android.widget.LinearLayout;
 import com.blxt.markdowneditors.base.BaseWebActivity;
 import com.blxt.markdowneditors.view.EditorMarkdownFragment;
 
+import java.io.File;
+
+import static com.blxt.markdowneditors.view.EditorMarkdownFragment.loadHtmlFile;
+
 /**
  * 基于WebView的Markdown预览
  * The type Markdown preview view.
@@ -90,7 +94,17 @@ public class MarkdownPreviewView extends LinearLayout {
      * @param str
      */
     public void loadHtmlStr(String str){
-        EditorMarkdownFragment.md2htmlString(this.mWebView, str);
+        File f = new File(getContext().getExternalCacheDir() + "/readme.html");
+        if(f.isFile()) {
+
+            loadHtmlFile(this.mWebView, f);
+           // this.mWebView.freeMemory();
+           // this.mWebView.loadDataWithBaseURL(null, FileUtils.readFileByLines(f), "text/html", "utf-8", null);
+
+        }
+        else{
+            EditorMarkdownFragment.md2htmlString(this.mWebView, str, f);
+        }
     }
     public void init2() {
 

@@ -7,6 +7,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/pBar_web_preview"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:tooltipText="正在解析"
+        android:tag="正在解析"/>
+
     <LinearLayout
         android:id="@+id/email_login_form"
         android:layout_width="match_parent"

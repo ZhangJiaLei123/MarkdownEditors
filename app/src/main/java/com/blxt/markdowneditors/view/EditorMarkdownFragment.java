@@ -16,8 +16,11 @@
 
 package com.blxt.markdowneditors.view;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,11 +28,15 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseFragment;
 import com.blxt.markdowneditors.event.RxEvent;
+import com.blxt.markdowneditors.utils.FileUtils;
+import com.blxt.markdowneditors.utils.MD5Utils;
+import com.blxt.markdowneditors.utils.Toast;
 import com.md2html.Markdown2Html;
 
 import java.io.File;
@@ -37,6 +44,7 @@ import java.io.File;
 import butterknife.Bind;
 
 import static com.blxt.markdowneditors.view.EditorFragment.isChangeContent;
+import static com.blxt.markdowneditors.view.FolderManagerFragment.file_select;
 
 
 /**
@@ -45,11 +53,13 @@ import static com.blxt.markdowneditors.view.EditorFragment.isChangeContent;
  */
 public class EditorMarkdownFragment extends BaseFragment {
     View view;
+
     @Bind(R.id.title)
     protected TextView mName;
     private String mContent;
     /** 用于显示md预览的web视图 */
     private WebView webView;
+    static private ProgressBar pBarWebPreview;
 
     private boolean isShowWeb = false;
 
@@ -79,12 +89,30 @@ public class EditorMarkdownFragment extends BaseFragment {
                 mContent = event.o[1].toString();
                 mName.setText(event.o[0].toString());
                 if (isPageFinish){
-                    // mMarkdownPreviewView.parseMarkdown(mEtContent, true);
-                    if(md2htmlString(this.webView, mContent)){
+
+                    String strName = MD5Utils.Str2MD5(file_select.getPath());
+                    File f = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
+
+                    if(f.exists()){
+                        loadHtmlFile(this.webView, f);
                         isShowWeb = true;
                     }
+                    else{
+                        if(md2htmlString(this.webView, mContent , f)){
+                            isShowWeb = true;
+                        }
+                    }
+
                 }
                 isChangeContent = false;
+            }else if(!isShowWeb){
+                String strName = MD5Utils.Str2MD5(file_select.getPath());
+                File f = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
+
+                if(f.exists()){
+                    loadHtmlFile(this.webView, f);
+                    isShowWeb = true;
+                }
             }
         }
     }
@@ -123,6 +151,7 @@ public class EditorMarkdownFragment extends BaseFragment {
 
     @Override
     public void initData() {
+
         webView = rootView.findViewById(R.id.mainViewWeb);
 
         // 设置可以支持缩放
@@ -148,6 +177,9 @@ public class EditorMarkdownFragment extends BaseFragment {
         webSettings.setDefaultTextEncodingName("utf-8");
         webView.setWebChromeClient(new chromClient());
 
+
+        pBarWebPreview = rootView.findViewById(R.id.pBar_web_preview);
+
     }
     //支持javascript
     private void enableJavascript() {
@@ -155,22 +187,71 @@ public class EditorMarkdownFragment extends BaseFragment {
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
     }
 
+
+    /** 加载html文件 */
+    public static boolean loadHtmlFile(WebView webView, File file){
+        Message message_star = new Message();
+        message_star.what = MSG_START_ANALYSIS;
+        message_star.obj = webView;
+        handler.sendMessage(message_star);
+
+        // 读取文件
+        String str =  FileUtils.readFileByLines(file);
+        Message message = new Message();
+        message.what = MSG_UP_WEB_VIEW;
+        message.obj = str;
+        handler.sendMessage(message);
+
+        return true;
+    }
+
     /**
      * md转 html
      *
      * @param strMd md代码
      */
-    public static boolean md2htmlString(WebView webView, String strMd) {
+    public static boolean md2htmlString(WebView webView, String strMd,File file) {
+
         if (strMd == null)
         {
             return false;
         }
-        Markdown2Html.clear();
-        Markdown2Html.setMdText(strMd);
-        Markdown2Html.analysis();
-        String str = Markdown2Html.getHtmlCode();
-        webView.freeMemory();
-        webView.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message message_star = new Message();
+                message_star.what = MSG_START_ANALYSIS;
+                message_star.obj = webView;
+
+                handler.sendMessage(message_star);
+
+                Markdown2Html.clear();
+                Markdown2Html.setMdText(strMd);
+                Markdown2Html.analysis();
+                String str = Markdown2Html.getHtmlCode();
+                Message message = new Message();
+                message.what = MSG_UP_WEB_VIEW;
+                message.obj = str;
+
+                handler.sendMessage(message);
+
+                if(file != null) {
+                    FileUtils.writeByte(file, str);
+                }
+            }
+        }).start();
+
+//
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                webView.freeMemory();
+//                webView.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
+//
+//            }
+//        });
 
         return true;
     }
@@ -189,5 +270,36 @@ public class EditorMarkdownFragment extends BaseFragment {
         }
     }
 
+    static WebView webView_show;
+    private static final int MSG_START_ANALYSIS = 99; //开始解析
+    private static final int MSG_UP_WEB_VIEW = 100; // 更新webview
+
+    @SuppressLint("HandlerLeak")
+    static Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_START_ANALYSIS:
+                    webView_show =  (WebView)msg.obj;
+                    webView_show.freeMemory();
+                    if(pBarWebPreview != null) {
+                        pBarWebPreview.setVisibility(View.VISIBLE);
+                    }
+                    android.widget.Toast.makeText(MainActivity.msContext, "正在解析", Toast.LENGTH_SHORT).show();
+                    break;
+                case MSG_UP_WEB_VIEW:
+                    String str = (String)msg.obj;
+                    webView_show.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
+                    if(pBarWebPreview != null) {
+                        pBarWebPreview.setVisibility(View.GONE);
+                    }
+                    android.widget.Toast.makeText(MainActivity.msContext, "解析完成", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    };
 
 }

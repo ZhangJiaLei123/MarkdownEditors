@@ -57,6 +57,7 @@ import static com.blxt.markdowneditors.utils.Toast.LENGTH_SHORT;
 public class MainActivity extends BaseDrawerLayoutActivity {
     private BaseFragment mCurrentFragment;
 
+    public static Context msContext;
 
     private int currentMenuId;
 
@@ -119,6 +120,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 
     @Override
     public void initData() {
+        msContext = this;
         SP = getSharedPreferences(this.getPackageName(), MODE_PRIVATE);
         spC = new spBaseControl(SP);
 
@@ -313,7 +315,9 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                     public void onNoUpdateAvailable() {
                         //没有更新是回调此方法
                         Log.d("pgyer", "there is no new version");
-                        android.widget.Toast.makeText(application, "已经是最新版", Toast.LENGTH_SHORT).show();
+                        if(isShow) {
+                            android.widget.Toast.makeText(application, "已经是最新版", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     @Override
                     public void onUpdateAvailable(AppBean appBean) {
@@ -359,6 +363,9 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                     public void checkUpdateFailed(Exception e) {
                         //更新检测失败回调
                         //更新拒绝（应用被下架，过期，不在安装有效期，下载次数用尽）以及无网络情况会调用此接口
+                        if(isShow) {
+                            android.widget.Toast.makeText(application, "检测更新失败", Toast.LENGTH_SHORT).show();
+                        }
                         Log.e("pgyer", "check update failed ", e);
                     }
                 })
@@ -371,6 +378,9 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                     public void downloadFailed() {
                         //下载失败
                         Log.e("pgyer", "download apk failed");
+                        if(isShow) {
+                            android.widget.Toast.makeText(application, "下载失败", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override

@@ -177,12 +177,23 @@ public class FileUtils {
         }
         if (!file.exists()) {
             try {
+
+                if(!file.getParentFile().exists()){
+                    file.getParentFile().mkdir();
+                }
+
+                file = new File(file.getParentFile(),file.getName());
+
                 file.createNewFile();
-            } catch (IOException e) {
+
+                if (!file.exists()){
+                    return false;
+                }
+            } catch (Exception e) {
             }
         }
         OutputStream out = null;
-        try {
+        try { // FileOutputStream
             out = new FileOutputStream(file);
             byte[] b = content.getBytes();
             out.write(b);

@@ -75,6 +75,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     private FloatingActionButton flbFabCreateFolder;
     private FloatingActionButton  flbFabCreateFile;
 
+    public static File file_select;
     private List<FileBean> files = new ArrayList<>();
     private FileListAdapter mAdapter;
 
@@ -299,6 +300,7 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
         if (fileBean.isDirectory) {//文件夹
             mPresenter.enterFolder(fileBean.absPath);
         } else {//文件
+            file_select = new File(fileBean.absPath);
             Intent intent = new Intent(mContext, EditorActivity.class);
             intent.setAction(Intent.ACTION_VIEW);
             //设置数据URI与数据类型匹配

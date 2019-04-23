@@ -43,6 +43,7 @@ import com.blxt.markdowneditors.event.RxEvent;
 import com.blxt.markdowneditors.event.RxEventBus;
 import com.blxt.markdowneditors.presenter.EditorFragmentPresenter;
 import com.blxt.markdowneditors.presenter.IEditorFragmentView;
+import com.blxt.markdowneditors.utils.MD5Utils;
 import com.blxt.markdowneditors.utils.SystemUtils;
 import com.blxt.markdowneditors.widget.MyEditText;
 
@@ -51,6 +52,8 @@ import java.io.File;
 import butterknife.Bind;
 import de.mrapp.android.bottomsheet.BottomSheet;
 import ren.qinc.edit.PerformEdit;
+
+import static com.blxt.markdowneditors.view.FolderManagerFragment.file_select;
 
 
 /**
@@ -129,6 +132,16 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             protected void onTextChanged(Editable s) {
                 //文本改变
                 mPresenter.textChange();
+                // 内容改变后，就删除缓存
+                if(file_select != null && file_select.getPath() != null){
+                    String strName = MD5Utils.Str2MD5(file_select.getPath());
+                    File f = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
+                    if(f.exists()){
+                        f.delete();
+                    }
+                }
+
+
                 isChangeContent = true;
             }
         };
