@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -122,8 +123,9 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             protected void onTextChanged(Editable s) {
                 //文本改变
                 mPresenter.textChange();
+                deleteTmp();
                 isChangeContent = true;
-                // Log.i("文本改变");
+                Log.i("文本改变", "");
             }
         };
 
@@ -133,15 +135,8 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
                 //文本改变
                 mPresenter.textChange();
                 // 内容改变后，就删除缓存
-                if(file_select != null && file_select.getPath() != null){
-                    String strName = MD5Utils.Str2MD5(file_select.getPath());
-                    File f = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
-                    if(f.exists()){
-                        f.delete();
-                    }
-                }
-
-
+                deleteTmp();
+                Log.i("文本改变", "");
                 isChangeContent = true;
             }
         };
@@ -155,6 +150,19 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         }
     }
 
+    /***
+     * 删除缓存
+     */
+    public void deleteTmp(){
+        if(file_select != null && file_select.getPath() != null){
+            String strName = MD5Utils.Str2MD5(file_select.getPath());
+            File f = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
+            Log.i("删除",f.getPath());
+            if(f.exists()){
+                f.delete();
+            }
+        }
+    }
 
     @Override
     public void initData() {

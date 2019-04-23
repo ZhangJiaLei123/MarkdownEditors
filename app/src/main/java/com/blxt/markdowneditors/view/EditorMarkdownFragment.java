@@ -18,7 +18,6 @@ package com.blxt.markdowneditors.view;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -190,6 +189,7 @@ public class EditorMarkdownFragment extends BaseFragment {
 
     /** 加载html文件 */
     public static boolean loadHtmlFile(WebView webView, File file){
+        isShowToast = false;
         Message message_star = new Message();
         message_star.what = MSG_START_ANALYSIS;
         message_star.obj = webView;
@@ -216,7 +216,7 @@ public class EditorMarkdownFragment extends BaseFragment {
         {
             return false;
         }
-
+        isShowToast = true;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -261,9 +261,9 @@ public class EditorMarkdownFragment extends BaseFragment {
         public void onProgressChanged(WebView view, int newProgress) {
             if(newProgress==100){
                 //页面加载完成执行的操作
-                String path= "file://"+ Environment.getExternalStorageDirectory()+ File.separator+"123.jpg";
-                String action="javascript:aa('"+path+"')";
-                Log.i("页面加载完成",action);
+              //  String path= "file://"+ Environment.getExternalStorageDirectory()+ File.separator+"123.jpg";
+              //  String action="javascript:aa('"+path+"')";
+                Log.i("页面加载完成","");
               //  runWebView(action);
             }
             super.onProgressChanged(view, newProgress);
@@ -271,6 +271,7 @@ public class EditorMarkdownFragment extends BaseFragment {
     }
 
     static WebView webView_show;
+    static boolean isShowToast = false;
     private static final int MSG_START_ANALYSIS = 99; //开始解析
     private static final int MSG_UP_WEB_VIEW = 100; // 更新webview
 
@@ -283,10 +284,12 @@ public class EditorMarkdownFragment extends BaseFragment {
                 case MSG_START_ANALYSIS:
                     webView_show =  (WebView)msg.obj;
                     webView_show.freeMemory();
-                    if(pBarWebPreview != null) {
+                    if(pBarWebPreview != null && isShowToast) {
                         pBarWebPreview.setVisibility(View.VISIBLE);
                     }
-                    android.widget.Toast.makeText(MainActivity.msContext, "正在解析", Toast.LENGTH_SHORT).show();
+                    if(isShowToast) {
+                        android.widget.Toast.makeText(MainActivity.msContext, "正在解析", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case MSG_UP_WEB_VIEW:
                     String str = (String)msg.obj;
@@ -294,7 +297,9 @@ public class EditorMarkdownFragment extends BaseFragment {
                     if(pBarWebPreview != null) {
                         pBarWebPreview.setVisibility(View.GONE);
                     }
-                    android.widget.Toast.makeText(MainActivity.msContext, "解析完成", Toast.LENGTH_SHORT).show();
+                    if(isShowToast) {
+                        android.widget.Toast.makeText(MainActivity.msContext, "解析完成", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 default:
                     super.handleMessage(msg);
