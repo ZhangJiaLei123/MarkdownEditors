@@ -88,6 +88,11 @@ public class FolderManagerFragment extends BaseRefreshFragment implements IFolde
     private ActionMode.Callback editModeCallback;
 
     @Override
+    public void resume() {
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mPresenter.detachView();//VP分离

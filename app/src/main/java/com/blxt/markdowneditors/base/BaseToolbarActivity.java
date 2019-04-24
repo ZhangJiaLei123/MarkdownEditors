@@ -16,7 +16,11 @@
 
 package com.blxt.markdowneditors.base;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -25,8 +29,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.ViewUtils;
@@ -41,20 +47,83 @@ import butterknife.Bind;
  * Created by 沈钦赐 on 16/1/25.
  */
 public abstract class BaseToolbarActivity extends BaseActivity {
+    final String TAG = "BaseToolbarActivity";
     @Bind(R.id.id_toolbar)
     protected Toolbar mToolbar;
     @Bind(R.id.id_appbar)
     protected AppBarLayout mAppBar;
 
+    public static final int HIDE_TOOL_BAR = 0;
+    public static final int SHOW_TOOL_BAR = 1;
+    @SuppressLint("HandlerLeak")
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case HIDE_TOOL_BAR:
+                    hineToolBar();
+                    break;
+                case SHOW_TOOL_BAR:
+                    showToolBar();
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    };
     @Override
     protected void init() {
         super.init();
+        BaseFragment.handler_toolbar = handler;
         if (mToolbar == null) // 如果布局文件没有找到toolbar,则不设置actionbar
         {
             throw new IllegalStateException(this.getClass().getSimpleName() + ":要使用BaseToolbarActivity，必须在布局里面增加id为‘id_toolbar’的Toolbar");
         }
         initActionBar(mToolbar);
         initAppBarLayout(mAppBar);
+
+        // 启用全面屏
+        if(AppConfig.swIsFullScreen){
+            hineToolBar();
+        }
+    }
+
+    public void showToolBar(){
+        Log.i(TAG,"显示");
+        rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+//        // 适配刘海屏，显示顶部状态栏
+//        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+//        rootView.setSystemUiVisibility(option);
+//
+//        //设置状态栏颜色为透明
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setStatusBarColor(Color.TRANSPARENT);
+//
+//        }
+
+        //隐藏标题栏
+        mAppBar.setVisibility(View.VISIBLE);
+    }
+
+
+    public void hineToolBar(){
+        Log.i(TAG,"隐藏");
+        //设置系统UI元素的可见性
+        rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+        //设置让应用主题内容占据状态栏和导航栏
+        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        rootView.setSystemUiVisibility(option);
+        //设置状态栏和导航栏颜色为透明
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        }
+
+        //隐藏标题栏
+        mAppBar.setVisibility(View.GONE);
     }
 
     protected void initAppBarLayout(AppBarLayout appBar) {

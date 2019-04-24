@@ -20,6 +20,17 @@
             android:text="文件设置" />
 
         <com.blxt.markdowneditors.widget.MySwitch
+            android:id="@+id/sw_is_full_screen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:checked="true"
+            android:tag="@string/sw_is_full_screen"
+            android:text="@string/sw_is_full_screen" />
+
+
+        <com.blxt.markdowneditors.widget.MySwitch
             android:id="@+id/sw_is_only_md"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

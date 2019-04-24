@@ -27,9 +27,7 @@ public class SetActivity extends AppCompatActivity {
         private MySwitch swIsHideSystemMkdir;
         private MySwitch swIsShowHideMkdir;
         private MySwitch swIsUseTtf;
-
-
-
+        private MySwitch swIsFullScreen;
 
 
         public ViewHolder(View viewRoot) {
@@ -43,6 +41,9 @@ public class SetActivity extends AppCompatActivity {
             swIsHideSystemMkdir = viewRoot.findViewById(R.id.sw_is_hide_system_mkdir);
             swIsShowHideMkdir = viewRoot.findViewById(R.id.sw_is_show_hide_mkdir);
             swIsUseTtf = viewRoot.findViewById(R.id.sw_is_use_ttf);
+            swIsFullScreen = viewRoot.findViewById(R.id.sw_is_full_screen);
+
+
         }
 
         @Override
@@ -52,10 +53,13 @@ public class SetActivity extends AppCompatActivity {
             swIsHideSystemMkdir.setOnCheckedChangeListener(this);
             swIsShowHideMkdir.setOnCheckedChangeListener(this);
             swIsUseTtf.setOnCheckedChangeListener(this);
+            swIsFullScreen.setOnCheckedChangeListener(this);
         }
 
         @Override
         protected void initData() {
+
+            AppConfig.swIsFullScreen = swIsFullScreen.getFalData().getValue();
             AppConfig.isOnlyShowMd = swIsOnlyMd.getFalData().getValue();
             AppConfig.isOnlyShowMoreDir = swIsShowMoreMkdir.getFalData().getValue();
             AppConfig.isHideSystemMkdir = swIsHideSystemMkdir.getFalData().getValue();
@@ -78,6 +82,9 @@ public class SetActivity extends AppCompatActivity {
                     break;
                 case R.id.sw_is_show_hide_mkdir:
                     AppConfig.isShowHideMkdir = swIsShowHideMkdir.getFalData().getValue();
+                    break;
+                case R.id.sw_is_full_screen:
+                    AppConfig.swIsFullScreen = swIsShowHideMkdir.getFalData().getValue();
                     break;
                 case R.id.sw_is_use_ttf:
                     Toast.showShort(context,"暂未开发,敬请期待");

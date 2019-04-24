@@ -30,6 +30,7 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseFragment;
 import com.blxt.markdowneditors.event.RxEvent;
@@ -42,6 +43,7 @@ import java.io.File;
 
 import butterknife.Bind;
 
+import static com.blxt.markdowneditors.base.BaseToolbarActivity.HIDE_TOOL_BAR;
 import static com.blxt.markdowneditors.view.EditorFragment.isChangeContent;
 import static com.blxt.markdowneditors.view.FolderManagerFragment.file_select;
 
@@ -52,7 +54,7 @@ import static com.blxt.markdowneditors.view.FolderManagerFragment.file_select;
  */
 public class EditorMarkdownFragment extends BaseFragment {
     View view;
-
+    final String TAG = "编辑预览界面";
     @Bind(R.id.title)
     protected TextView mName;
     private String mContent;
@@ -69,6 +71,14 @@ public class EditorMarkdownFragment extends BaseFragment {
     public static EditorMarkdownFragment getInstance() {
         EditorMarkdownFragment editorFragment = new EditorMarkdownFragment();
         return editorFragment;
+    }
+
+    @Override
+    public void resume() {
+        Log.i(TAG,"onResume");
+        if(AppConfig.swIsFullScreen){
+            handler_toolbar.sendEmptyMessage(HIDE_TOOL_BAR);
+        }
     }
 
     @Override

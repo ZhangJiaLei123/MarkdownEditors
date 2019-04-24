@@ -27,6 +27,8 @@ import com.bigbai.mfileutils.spControl.FalBoolean;
  * @author Zhang
  */
 public class AppConfig {
+    /** 使用全面屏 */
+    public static Boolean swIsFullScreen = true;
     /** 只显示md文件 */
     public static boolean isOnlyShowMd = true;
     /** 显示更多文件夹,如QQ文件夹,微信文件夹等 */
