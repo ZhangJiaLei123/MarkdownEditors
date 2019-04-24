@@ -83,7 +83,7 @@ public class EditorMarkdownFragment extends BaseFragment {
     public void onEventMainThread(RxEvent event) {
         if (event.isTypeAndData(RxEvent.TYPE_REFRESH_DATA)) {
             //页面还没有加载完成
-            if(isChangeContent || !isShowWeb) // 文本改变后,才刷新
+            if(!isShowWeb) // 文本改变后,才刷新
             {
                 mContent = event.o[1].toString();
                 mName.setText(event.o[0].toString());
@@ -104,14 +104,6 @@ public class EditorMarkdownFragment extends BaseFragment {
 
                 }
                 isChangeContent = false;
-            }else if(!isShowWeb){
-                String strName = MD5Utils.Str2MD5(file_select.getPath());
-                File f = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
-
-                if(f.exists()){
-                    loadHtmlFile(this.webView, f);
-                    isShowWeb = true;
-                }
             }
         }
     }
@@ -242,16 +234,6 @@ public class EditorMarkdownFragment extends BaseFragment {
             }
         }).start();
 
-//
-//        handler.post(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                webView.freeMemory();
-//                webView.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
-//
-//            }
-//        });
 
         return true;
     }
