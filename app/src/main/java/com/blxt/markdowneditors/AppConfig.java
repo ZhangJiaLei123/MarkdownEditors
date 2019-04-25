@@ -38,7 +38,11 @@ public class AppConfig {
     /** 隐藏系统文件夹 */
     public static boolean isHideSystemMkdir = true;
     /** 文件夹屏蔽列表 */
-    public static String[] hideFileRm = {"360","10086","Android","DCIM","MIUI","Movies","Music","Ccb","MIUI"};
+    public static String[] hideFileRm = {"360","10086","DCIM","MIUI","Movies","Music","Ccb","MIUI"};
+
+
+    /** 是否有网络 */
+    public static Boolean isNetwork = false;
 
     public static void initAppConfig(SharedPreferences SP, Context context){
 

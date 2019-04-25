@@ -111,7 +111,7 @@ public class CheckNet {
 		 * 判断是否有网络连接,如果没有联网就弹出Dialog并提示
 		 * @param activity
 		 */
-		public static void CheckNetworkState(Activity activity) {
+		public static boolean CheckNetworkState(Activity activity) {
 			ConnectivityManager manager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 			State mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
 					.getState();
@@ -119,16 +119,20 @@ public class CheckNet {
 					.getState();
 			// 如果3G、wifi、2G等网络状态是连接的，则退出，否则显示提示信息进入网络设置界面
 			if (mobile == State.CONNECTED || mobile == State.CONNECTING) {
-				return;
+				return true;
 			}
 
 			if (wifi == State.CONNECTED || wifi == State.CONNECTING) {
-				return;
+				return true;
 			}
-			showTips(activity);
+			return false;
 		}
-		
-		private static void showTips(final Activity activity) {
+
+	/***
+	 * 弹出Dialog并提示没有联网
+	 * @param activity
+	 */
+	private static void showTips(final Activity activity) {
 			DialogUtil.showDialog(activity, android.R.drawable.ic_dialog_alert,
 				"没有可用网络", "当前网络不可用，是否设置网络？", new OnClickListener() {
 

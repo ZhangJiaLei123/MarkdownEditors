@@ -189,6 +189,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         Markdown2Html.mdEndtitys.clear();
 
         Markdown2Html.init("file://" + sdCardRoot + "/HtmlPlugin/");
+        Markdown2Html.setCachePath(getExternalCacheDir() + "/");  // 图片缓存路径
         String styleStr = FileUtils.ReadTxtFile(sdCardRoot + "/HtmlPlugin/style/style.style");
         //  MdBaseConfig.htmlStytle.addData(styleStr);
 

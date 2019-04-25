@@ -50,6 +50,7 @@ import com.blxt.markdowneditors.utils.FileUtils;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
 import com.blxt.markdowneditors.utils.Toast;
 import com.blxt.markdowneditors.widget.TabIconView;
+import com.md2html.Markdown2Html;
 
 import java.io.File;
 
@@ -57,6 +58,8 @@ import butterknife.Bind;
 
 
 public class EditorActivity extends BaseToolbarActivity implements IEditorActivityView, View.OnClickListener {
+    static final String TAG = "EditorActivity";
+
     public static final String SHARED_ELEMENT_NAME = "SHARED_ELEMENT_NAME";
     public static final String SHARED_ELEMENT_COLOR_NAME = "SHARED_ELEMENT_COLOR_NAME";
     private static final String SCHEME_FILE = "file";
@@ -303,6 +306,10 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             case R.id.action_helper: // 参考语法
                 HelpActivity.startHelper(this);
                 return true;
+            case R.id.action_clear_md_cache: // 清理md解析缓存
+                Log.i(TAG,"清理md解析缓存");
+                Markdown2Html.clear();
+                break;
 //            case R.id.action_setting://设置
 //                return true;
             default:

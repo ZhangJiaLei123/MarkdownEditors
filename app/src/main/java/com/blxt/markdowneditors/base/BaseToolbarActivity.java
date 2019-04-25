@@ -87,6 +87,8 @@ public abstract class BaseToolbarActivity extends BaseActivity {
         if(AppConfig.swIsFullScreen){
             hineToolBar();
         }
+
+
     }
 
     public void showToolBar(){

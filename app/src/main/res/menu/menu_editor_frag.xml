@@ -33,7 +33,7 @@
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_preview"
-        android:icon="@drawable/ic_action_preview_menu"
+        android:icon="@drawable/ic_action_preview"
         android:orderInCategory="86"
         android:title="@string/action_preview"
         app:showAsAction="never"/>

@@ -34,10 +34,12 @@ import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseFragment;
 import com.blxt.markdowneditors.event.RxEvent;
+import com.blxt.markdowneditors.utils.CheckNet;
 import com.blxt.markdowneditors.utils.FileUtils;
 import com.blxt.markdowneditors.utils.MD5Utils;
 import com.blxt.markdowneditors.utils.Toast;
 import com.md2html.Markdown2Html;
+import com.mdEntity.MdBaseConfig;
 
 import java.io.File;
 
@@ -152,6 +154,13 @@ public class EditorMarkdownFragment extends BaseFragment {
 
     @Override
     public void initData() {
+
+      //  isNetwork = CheckNet.CheckNetworkState(getActivity());
+
+        // 如果有网络，就开启下载
+        MdBaseConfig.isCheckCache = CheckNet.CheckNetworkState(getActivity());
+        // 开启优先使用网络图片
+        MdBaseConfig.isFirstUrl = CheckNet.CheckNetworkState(getActivity());
 
         webView = rootView.findViewById(R.id.mainViewWeb);
 

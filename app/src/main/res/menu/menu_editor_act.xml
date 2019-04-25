@@ -42,9 +42,16 @@
 
     <item
         android:id="@+id/action_helper"
-        android:icon="@drawable/ic_help_menu"
+        android:icon="@drawable/ic_help"
         android:orderInCategory="85"
         android:title="@string/action_helper"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_clear_md_cache"
+        android:icon="@mipmap/ic_clear_24"
+        android:orderInCategory="85"
+        android:title="@string/action_clear_md_cache"
         app:showAsAction="never"/>
 
 

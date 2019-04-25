@@ -67,7 +67,7 @@ import static com.blxt.markdowneditors.view.FolderManagerFragment.file_select;
  * @date 19/04/17
  */
 public class EditorFragment extends BaseFragment implements IEditorFragmentView, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-    public static final String TAG = "Constraints";
+    public static final String TAG = "EditorFragment";
     public static final String FILE_PATH_KEY = "FILE_PATH_KEY";
     /** 编辑内容改变 */
     public static boolean isChangeContent = true;
