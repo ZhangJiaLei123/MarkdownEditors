@@ -96,5 +96,26 @@
             android:tag="@string/sw_is_auto_md_size"
             android:text="@string/sw_is_auto_md_size" />
 
+        <com.blxt.markdowneditors.widget.MySwitch
+            android:id="@+id/sw_is_multithreading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:checked="false"
+            android:tag="@string/sw_is_multithreading"
+            android:text="@string/sw_is_multithreading" />
+
+        <com.blxt.markdowneditors.widget.MySwitch
+            android:id="@+id/sw_is_full_face"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:checked="false"
+            android:tag="@string/sw_is_full_face"
+            android:text="@string/sw_is_full_face" />
+
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

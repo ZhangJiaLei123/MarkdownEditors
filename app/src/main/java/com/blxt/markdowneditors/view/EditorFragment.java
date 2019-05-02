@@ -33,7 +33,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.AppContext;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseApplication;
@@ -55,9 +54,7 @@ import butterknife.Bind;
 import de.mrapp.android.bottomsheet.BottomSheet;
 import ren.qinc.edit.PerformEdit;
 
-import static com.blxt.markdowneditors.base.BaseToolbarActivity.HIDE_TOOL_BAR;
-import static com.blxt.markdowneditors.base.BaseToolbarActivity.SHOW_TOOL_BAR;
-import static com.blxt.markdowneditors.view.FolderManagerFragment.file_select;
+import static com.blxt.markdowneditors.view.FolderFragment.file_select;
 
 
 /**
@@ -168,20 +165,12 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         }
     }
 
+    /***
+     * 刷新
+     */
     @Override
     public void resume() {
         Log.i(TAG,"onResume");
-        if(cbIsOnlyRead.isChecked()){
-            if(AppConfig.swIsFullScreen){
-                handler_toolbar.sendEmptyMessage(HIDE_TOOL_BAR);
-            }
-        }
-        else{
-
-            handler_toolbar.sendEmptyMessage(SHOW_TOOL_BAR);
-
-        }
-
     }
 
     @Override
@@ -463,17 +452,6 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
             case R.id.cb_is_only_read:
                 mEtContent.setEnabled(!isChecked);
                 mName.setEnabled(!isChecked);
-                if(isChecked){
-                    if(AppConfig.swIsFullScreen) {
-                        handler_toolbar.sendEmptyMessage(HIDE_TOOL_BAR);
-                    }
-                }
-                else{
-                    if(AppConfig.swIsFullScreen){
-                        handler_toolbar.sendEmptyMessage(SHOW_TOOL_BAR);
-                    }
-
-                }
                 break;
             default:
         }

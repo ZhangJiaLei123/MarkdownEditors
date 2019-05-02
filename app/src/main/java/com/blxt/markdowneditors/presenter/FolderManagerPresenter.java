@@ -18,7 +18,6 @@ package com.blxt.markdowneditors.presenter;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.base.mvp.BasePresenter;
@@ -98,7 +97,7 @@ public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
 
                                @Override
                                public void onNext(List<FileBean> fileBeans) {
-                                   if(AppConfig.isOnlyShowMoreDir && fileStack.size() <= 1){ // 目录等级为1时,添加默认文件夹
+                                   if(AppConfig.isShowMoreDir && fileStack.size() <= 1){ // 目录等级为1时,添加默认文件夹
                                        fileBeans.addAll(mDataManager.getDefaultPath());
                                    }
 

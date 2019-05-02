@@ -9,6 +9,9 @@ import android.widget.EditText;
 
 import com.blxt.markdowneditors.utils.Check;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 输入监听
  *
@@ -19,9 +22,21 @@ public class PerformInputAfter {
 
     private final Editable editable;
     private boolean flag = false;
+    /** 自动插入列表 */
+    public static List<String> autoInsert = new ArrayList<String>();
 
     public static void start(@NonNull EditText editText) {
         new PerformInputAfter(editText);
+        autoInsert.add("| ");
+        autoInsert.add("* ");
+        autoInsert.add("- ");
+        autoInsert.add("1. ");
+        autoInsert.add("[] ");
+        autoInsert.add("[ ] ");
+        autoInsert.add("[X] ");
+        autoInsert.add("[x] ");
+        autoInsert.add("```");
+        autoInsert.add("~~~");
     }
 
     private PerformInputAfter(@NonNull EditText editText) {
@@ -121,14 +136,19 @@ public class PerformInputAfter {
 
         String mString = tempStr.trim();
         String startSpace = getStartChar(tempStr, ' ');
-
-        if (mString.startsWith("* ") && mString.length() > 2) {//* 开头
-            editable.insert(start + 1, startSpace + "* ");
-        } else if (mString.startsWith("1. ") && mString.length() > 3) {//1. 开头
-            editable.insert(start + 1, startSpace + "1. ");
-        } else if (mString.length() > 1) {
+        Boolean isFind = false;
+        // 自动插入匹配
+        for(String s : autoInsert ){
+            if (mString.startsWith(s) && mString.length() > s.length()) {//查找 开头
+                editable.insert(start + 1, startSpace + s);
+                isFind = true;
+                break;
+            }
+        }
+        if(!isFind && mString.length() > 1){
             editable.insert(start + 1, startSpace);
         }
+
 
     }
 

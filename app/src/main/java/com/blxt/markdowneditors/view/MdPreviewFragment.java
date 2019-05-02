@@ -28,7 +28,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.R;
@@ -38,27 +37,25 @@ import com.blxt.markdowneditors.utils.CheckNet;
 import com.blxt.markdowneditors.utils.FileUtils;
 import com.blxt.markdowneditors.utils.MD5Utils;
 import com.blxt.markdowneditors.utils.Toast;
+import com.md2html.CallBack;
 import com.md2html.Markdown2Html;
-import com.mdEntity.MdBaseConfig;
 
 import java.io.File;
 
-import butterknife.Bind;
-
-import static com.blxt.markdowneditors.base.BaseToolbarActivity.HIDE_TOOL_BAR;
 import static com.blxt.markdowneditors.view.EditorFragment.isChangeContent;
-import static com.blxt.markdowneditors.view.FolderManagerFragment.file_select;
+import static com.blxt.markdowneditors.view.FolderFragment.file_select;
 
 
 /**
- * 编辑预览界面
- * Created by 沈钦赐 on 16/1/21.
+ * md预览界面
+ *
+ * @author 沈钦赐
+ * @date 16/1/21
  */
-public class EditorMarkdownFragment extends BaseFragment {
+public class MdPreviewFragment extends BaseFragment implements CallBack {
     View view;
     final String TAG = "编辑预览界面";
-    @Bind(R.id.title)
-    protected TextView mName;
+    String title = "MdReader";
     private String mContent;
     /** 用于显示md预览的web视图 */
     private WebView webView;
@@ -66,21 +63,19 @@ public class EditorMarkdownFragment extends BaseFragment {
 
     private boolean isShowWeb = false;
 
-    public EditorMarkdownFragment() {
+    public MdPreviewFragment() {
     }
 
 
-    public static EditorMarkdownFragment getInstance() {
-        EditorMarkdownFragment editorFragment = new EditorMarkdownFragment();
+    public static MdPreviewFragment getInstance() {
+        MdPreviewFragment editorFragment = new MdPreviewFragment();
         return editorFragment;
     }
 
     @Override
     public void resume() {
         Log.i(TAG,"onResume");
-        if(AppConfig.swIsFullScreen){
-            handler_toolbar.sendEmptyMessage(HIDE_TOOL_BAR);
-        }
+
     }
 
     @Override
@@ -91,6 +86,8 @@ public class EditorMarkdownFragment extends BaseFragment {
 
     boolean isPageFinish = false;
 
+    File fileMarkdown;
+
     @Override
     public void onEventMainThread(RxEvent event) {
         if (event.isTypeAndData(RxEvent.TYPE_REFRESH_DATA)) {
@@ -98,18 +95,18 @@ public class EditorMarkdownFragment extends BaseFragment {
             if(!isShowWeb) // 文本改变后,才刷新
             {
                 mContent = event.o[1].toString();
-                mName.setText(event.o[0].toString());
+                title = event.o[0].toString();
                 if (isPageFinish){
 
                     String strName = MD5Utils.Str2MD5(file_select.getPath());
-                    File f = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
+                    fileMarkdown = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
 
-                    if(f.exists()){
-                        loadHtmlFile(this.webView, f);
+                    if(fileMarkdown.exists()){
+                        loadHtmlFile(this.webView, fileMarkdown);
                         isShowWeb = true;
                     }
                     else{
-                        if(md2htmlString(this.webView, mContent , f)){
+                        if(md2htmlString(this.webView, mContent)){
                             isShowWeb = true;
                         }
                     }
@@ -158,9 +155,9 @@ public class EditorMarkdownFragment extends BaseFragment {
       //  isNetwork = CheckNet.CheckNetworkState(getActivity());
 
         // 如果有网络，就开启下载
-        MdBaseConfig.isCheckCache = CheckNet.CheckNetworkState(getActivity());
+        AppConfig.config.isCheckCache = CheckNet.CheckNetworkState(getActivity());
         // 开启优先使用网络图片
-        MdBaseConfig.isFirstUrl = CheckNet.CheckNetworkState(getActivity());
+        AppConfig.config.isFirstUrl = CheckNet.CheckNetworkState(getActivity());
 
         webView = rootView.findViewById(R.id.mainViewWeb);
 
@@ -216,46 +213,82 @@ public class EditorMarkdownFragment extends BaseFragment {
         return true;
     }
 
+    Markdown2Html md;
+
     /**
      * md转 html
      *
      * @param strMd md代码
      */
-    public static boolean md2htmlString(WebView webView, String strMd,File file) {
+    public boolean md2htmlString(WebView webView, String strMd) {
 
         if (strMd == null)
         {
             return false;
         }
         isShowToast = true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Message message_star = new Message();
-                message_star.what = MSG_START_ANALYSIS;
-                message_star.obj = webView;
 
-                handler.sendMessage(message_star);
+        if(md != null){
+            md.clear();
+        }
 
-                Markdown2Html.clear();
-                Markdown2Html.setMdText(strMd);
-                Markdown2Html.analysis();
-                String str = Markdown2Html.getHtmlCode();
-                Message message = new Message();
-                message.what = MSG_UP_WEB_VIEW;
-                message.obj = str;
+        Message message_star;
+        message_star = new Message();
+        message_star.what = MSG_START_ANALYSIS;
+        message_star.obj = webView;
+        handler.sendMessage(message_star);
 
-                handler.sendMessage(message);
+        // 多线程
+        AppConfig.config.multithreading = AppConfig.isMultithreading;
+        // 表情
+        AppConfig.config.isFace = AppConfig.isFullFace;
 
-                if(file != null) {
-                    FileUtils.writeByte(file, str);
-                }
-            }
-        }).start();
+        md = new Markdown2Html(AppConfig.config);
+        md.setMdText(strMd);
+        md.setTitle(title);
+        md.setCallBack(this);
+        md.analysis();
 
 
         return true;
     }
+
+    @Override
+    public void analysisOK() {
+        Log.i(TAG,"解析完成");
+        // 如果是非多线程，就开始组装
+        if(!AppConfig.config.multithreading) {
+            md.makeHtml();
+        }
+
+    }
+
+    @Override
+    public void end() {
+        if(AppConfig.config.multithreading) {
+            md.makeHtml();
+        }
+        String str = md.getResult();
+        Message message = new Message();
+        message.what = MSG_UP_WEB_VIEW;
+        message.obj = str;
+        handler.sendMessage(message);
+        if(fileMarkdown != null) {
+            FileUtils.writeByte(fileMarkdown, str);
+        }
+
+    }
+    @Override
+    public void add(Object o) {
+
+    }
+
+    @Override
+    public void sub(Object o) {
+
+    }
+
+
 
     private class chromClient extends WebChromeClient {
         @Override
@@ -307,5 +340,16 @@ public class EditorMarkdownFragment extends BaseFragment {
             }
         }
     };
+
+    /***
+     * 返回按钮
+     * @return
+     */
+    @Override
+    public boolean onBackPressed() {
+        super.onBackPressed();
+        Log.i(TAG,"预览页返回");
+        return true;
+    }
 
 }

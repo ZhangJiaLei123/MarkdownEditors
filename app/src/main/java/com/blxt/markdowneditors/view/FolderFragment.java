@@ -59,9 +59,11 @@ import butterknife.Bind;
 
 /**
  * 文件管理界面
- * Created by 沈钦赐 on 16/1/27.
+ *
+ * @author 沈钦赐
+ * @date 16/1/27
  */
-public class FolderManagerFragment extends BaseRefreshFragment implements IFolderManagerView, View.OnClickListener, OnItemClickLitener {
+public class FolderFragment extends BaseRefreshFragment implements IFolderManagerView, View.OnClickListener, OnItemClickLitener {
 
     @Bind(R.id.content_view)
     protected RecyclerView mfileList;

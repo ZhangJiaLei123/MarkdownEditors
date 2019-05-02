@@ -28,7 +28,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.bigbai.mfileutils.FileUtils;
 import com.bigbai.mfileutils.spControl.FalBoolean;
 import com.bigbai.mfileutils.spControl.spBaseControl;
 import com.bigbai.mlog.LOG;
@@ -40,13 +39,12 @@ import com.blxt.markdowneditors.base.BaseFragment;
 import com.blxt.markdowneditors.utils.Toast;
 import com.blxt.markdowneditors.utils.UnzipFromAssets;
 import com.blxt.markdowneditors.utils.mPermissionsUnit;
-import com.md2html.Markdown2Html;
-import com.mdEntity.MdBaseConfig;
 import com.pgyersdk.update.DownloadFileListener;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 import com.pgyersdk.update.javabean.AppBean;
 
+import java.io.File;
 import java.io.IOException;
 
 import static com.blxt.markdowneditors.utils.Toast.LENGTH_SHORT;
@@ -95,7 +93,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
     }
 
     private void setDefaultFragment(@IdRes int fragmentId) {
-        mCurrentFragment = new FolderManagerFragment();
+        mCurrentFragment = new FolderFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(fragmentId, mCurrentFragment)
@@ -123,7 +121,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         msContext = this;
         SP = getSharedPreferences(this.getPackageName(), MODE_PRIVATE);
         spC = new spBaseControl(SP);
-
+        initConfig();
         // 权限检查和初始文件解压
         mPermissions.setActivity(this);
 
@@ -162,8 +160,9 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 
         boolean isRes = isNewResult.getValue();
 
+        File file = new File(sdCardRoot + "/HtmlPlugin");
         // 首次运行解压资源
-        if ( (!isNewApp.getValue() || spC.getFirstRun()) || !isRes ) {
+        if ( (!isNewApp.getValue() || spC.getFirstRun()) || !isRes || !file.exists()) {
             LOG.i("解压资源");
 
             try {
@@ -185,18 +184,11 @@ public class MainActivity extends BaseDrawerLayoutActivity {
     }
 
     void initDataM() {
-        // md2html 初始化
-        Markdown2Html.mdEndtitys.clear();
 
-        Markdown2Html.init("file://" + sdCardRoot + "/HtmlPlugin/");
-        Markdown2Html.setCachePath(getExternalCacheDir() + "/");  // 图片缓存路径
-        String styleStr = FileUtils.ReadTxtFile(sdCardRoot + "/HtmlPlugin/style/style.style");
-        //  MdBaseConfig.htmlStytle.addData(styleStr);
+        AppConfig.config.resourcesPath = "file://" + sdCardRoot + "/HtmlPlugin/";
+        AppConfig.config.cachePath = getExternalCacheDir() + "/";  // 图片缓存路径
+        AppConfig.config.isUseFlash = true;
 
-        Markdown2Html.isUseFlash = true;
-        Markdown2Html.isActionMenu = true;
-        Markdown2Html.isTocTop = true;
-        MdBaseConfig.isMobile = true;
 
         WindowManager wm = (WindowManager) this
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -205,17 +197,24 @@ public class MainActivity extends BaseDrawerLayoutActivity {
       //  MdBaseConfig.iMobileWidth = width - 50;
       //  MdBaseConfig.iMobileHeight = width * 3 / 4
 
-        Markdown2Html.initHighlightSty();
-        Markdown2Html.loadMdFormat();
-        Markdown2Html.loadFont();
-        Markdown2Html.loadHeader();
-        Markdown2Html.loadStyle();
-        Markdown2Html.loadActionFrame();
-        Markdown2Html.loadActionMenuBtn(30,30);
-        Markdown2Html.loadTableList();
-
     }
 
+    void initConfig(){
+        AppConfig.swIsFullScreen =
+                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_full_screen),AppConfig.swIsFullScreen).getValue();
+        AppConfig.isOnlyShowMd =
+                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_only_md ),AppConfig.isOnlyShowMd).getValue();
+        AppConfig.isShowMoreDir =
+                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_show_more_mkdir ),AppConfig.isShowMoreDir).getValue();
+        AppConfig.isHideSystemMkdir =
+                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_hide_system_mkdir ),AppConfig.isHideSystemMkdir).getValue();
+        AppConfig.isShowHideMkdir =
+                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_show_hide_mkdir ),AppConfig.isShowHideMkdir).getValue();
+        AppConfig.isMultithreading =
+                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_multithreading ),AppConfig.isMultithreading).getValue();
+        AppConfig.isFullFace =
+                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_full_face ),AppConfig.isFullFace).getValue();
+    }
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -281,7 +280,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
      */
     @Override
     public void onBackPressed() {
-       // super.onBackPressed();
+        super.onBackPressed();
 
         if (getDrawerLayout().isDrawerOpen(GravityCompat.START)) {//侧滑菜单打开，关闭菜单
             getDrawerLayout().closeDrawer(GravityCompat.START);

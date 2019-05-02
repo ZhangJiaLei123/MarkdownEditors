@@ -32,10 +32,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
-import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.ViewUtils;
+import com.blxt.markdowneditors.view.EditorActivity;
 
 import java.lang.reflect.Method;
 
@@ -75,20 +75,13 @@ public abstract class BaseToolbarActivity extends BaseActivity {
     @Override
     protected void init() {
         super.init();
-        BaseFragment.handler_toolbar = handler;
+        EditorActivity.handler_toolbar = handler;
         if (mToolbar == null) // 如果布局文件没有找到toolbar,则不设置actionbar
         {
             throw new IllegalStateException(this.getClass().getSimpleName() + ":要使用BaseToolbarActivity，必须在布局里面增加id为‘id_toolbar’的Toolbar");
         }
         initActionBar(mToolbar);
         initAppBarLayout(mAppBar);
-
-        // 启用全面屏
-        if(AppConfig.swIsFullScreen){
-            hineToolBar();
-        }
-
-
     }
 
     public void showToolBar(){

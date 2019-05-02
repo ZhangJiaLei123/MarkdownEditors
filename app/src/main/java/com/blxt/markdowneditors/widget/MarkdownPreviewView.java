@@ -29,12 +29,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
+import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.base.BaseWebActivity;
-import com.blxt.markdowneditors.view.EditorMarkdownFragment;
+import com.blxt.markdowneditors.utils.FileUtils;
+import com.m2h.model.Config;
+import com.md2html.Markdown2Html;
 
 import java.io.File;
 
-import static com.blxt.markdowneditors.view.EditorMarkdownFragment.loadHtmlFile;
+import static com.blxt.markdowneditors.view.MdPreviewFragment.loadHtmlFile;
 
 /**
  * 基于WebView的Markdown预览
@@ -103,7 +106,19 @@ public class MarkdownPreviewView extends LinearLayout {
 
         }
         else{
-            EditorMarkdownFragment.md2htmlString(this.mWebView, str, f);
+            Config config = AppConfig.config;
+            config.multithreading = false;  // 多线程
+            config.isFace = true;  // 表情
+            Markdown2Html md;
+            md = new Markdown2Html(config);
+            md.setMdText(str);
+            md.setTitle("语法支持");
+            md.analysis();
+            md.makeHtml();
+            String strRes = md.getResult();
+            this.mWebView.loadDataWithBaseURL(null, strRes, "text/html", "utf-8", null);
+            FileUtils.writeByte(f, strRes);
+
         }
     }
     public void init2() {
@@ -129,7 +144,7 @@ public class MarkdownPreviewView extends LinearLayout {
         this.mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         //设置编码方式
         webSettings.setDefaultTextEncodingName("utf-8");
-       // this.mWebView.setWebChromeClient(new EditorMarkdownFragment.chromClient());
+       // this.mWebView.setWebChromeClient(new MdPreviewFragment.chromClient());
 
     }
 

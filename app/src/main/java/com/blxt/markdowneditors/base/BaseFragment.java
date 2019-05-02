@@ -18,7 +18,6 @@ package com.blxt.markdowneditors.base;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +43,7 @@ public abstract class BaseFragment extends BaseStatedFragment implements BaseVie
     protected View rootView;
     protected BaseApplication application;
 
-    public static Handler handler_toolbar;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

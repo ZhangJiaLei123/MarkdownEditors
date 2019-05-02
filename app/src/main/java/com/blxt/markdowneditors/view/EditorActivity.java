@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -38,6 +39,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseApplication;
 import com.blxt.markdowneditors.base.BaseToolbarActivity;
@@ -50,7 +52,6 @@ import com.blxt.markdowneditors.utils.FileUtils;
 import com.blxt.markdowneditors.utils.SystemBarUtils;
 import com.blxt.markdowneditors.utils.Toast;
 import com.blxt.markdowneditors.widget.TabIconView;
-import com.md2html.Markdown2Html;
 
 import java.io.File;
 
@@ -65,8 +66,9 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
     private static final String SCHEME_FILE = "file";
     private static final String SCHEME_Folder = "folder";
 
+    public static Handler handler_toolbar;
     private EditorFragment mEditorFragment;
-    private EditorMarkdownFragment mEditorMarkdownFragment;
+    private MdPreviewFragment mMdPreviewFragment;
 
     private String mName;
     private String currentFilePath;
@@ -85,19 +87,17 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
     @Override
     public void onCreateAfter(Bundle savedInstanceState) {
         ViewCompat.setTransitionName(mViewPager, SHARED_ELEMENT_NAME);
-//        ViewCompat.setTransitionName(mViewPager, SHARED_ELEMENT_COLOR_NAME);
-//        mExpandLayout = (ExpandableLinearLayout) getLayoutInflater().inflate(R.layout.view_edit_operate, getAppBar(), false);
-//        getAppBar().addView(mExpandLayout);
 
         getIntentData();
         mEditorFragment = EditorFragment.getInstance(currentFilePath);
-        mEditorMarkdownFragment = EditorMarkdownFragment.getInstance();
+        mMdPreviewFragment = MdPreviewFragment.getInstance();
 
         initViewPager();
         initTab();
     }
 
     private void initViewPager() {
+
         mViewPager.setAdapter(new EditFragmentAdapter(getSupportFragmentManager()));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -116,6 +116,14 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
                 //刷新渲染数据
                 if (position == 1) {
                     RxEventBus.getInstance().send(new RxEvent(RxEvent.TYPE_REFRESH_NOTIFY));
+                }
+
+                if(position == 0){
+                    handler_toolbar.sendEmptyMessage(SHOW_TOOL_BAR);
+                }else{
+                    if(AppConfig.swIsFullScreen){
+                        handler_toolbar.sendEmptyMessage(HIDE_TOOL_BAR);
+                    }
                 }
             }
 
@@ -215,7 +223,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             if (position == 0) {
                 return mEditorFragment;
             }
-            return mEditorMarkdownFragment;
+            return mMdPreviewFragment;
         }
 
         @Override
@@ -279,11 +287,13 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Log.i("菜单选择","onOptionsItemSelected" + item.getItemId());
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Log.i("返回按钮","onOptionsItemSelected");
-                if (mEditorFragment.onBackPressed()) {
+                if(mMdPreviewFragment.onBackPressed()){
+                    Log.i(TAG,"预览");
+                    return true;
+                }
+                else if (mEditorFragment.onBackPressed()) {
                     return true;
                 }
                 break;
@@ -308,10 +318,8 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
                 return true;
             case R.id.action_clear_md_cache: // 清理md解析缓存
                 Log.i(TAG,"清理md解析缓存");
-                Markdown2Html.clear();
+              //  md.clear();
                 break;
-//            case R.id.action_setting://设置
-//                return true;
             default:
         }
         return super.onOptionsItemSelected(item);
@@ -345,6 +353,19 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
         super.onPause();
     }
 
+    /**
+     * 返回按钮
+     */
+    @Override
+    public void onBackPressed() {
+        if(mViewPager.getCurrentItem() == 1)
+        {
+            mViewPager.setCurrentItem(0);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -354,7 +375,6 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
             String[] pojo = {MediaStore.Images.Media.DATA};
             Cursor cursor = this.managedQuery(uri, pojo, null, null, null);
             if (cursor != null) {
-//                    ContentResolver cr = this.getContentResolver();
                 int colunm_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 String path = cursor.getString(colunm_index);

@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.bigbai.mfileutils.spControl.FalBoolean;
+import com.m2h.model.Config;
 
 
 /**
@@ -27,19 +28,23 @@ import com.bigbai.mfileutils.spControl.FalBoolean;
  * @author Zhang
  */
 public class AppConfig {
+    public static Config config = new Config();
     /** 使用全面屏 */
     public static Boolean swIsFullScreen = true;
     /** 只显示md文件 */
     public static boolean isOnlyShowMd = true;
     /** 显示更多文件夹,如QQ文件夹,微信文件夹等 */
-    public static boolean isOnlyShowMoreDir = true;
+    public static boolean isShowMoreDir = true;
     /** 显示隐藏文件夹 */
     public static boolean isShowHideMkdir = true;
     /** 隐藏系统文件夹 */
     public static boolean isHideSystemMkdir = true;
     /** 文件夹屏蔽列表 */
     public static String[] hideFileRm = {"360","10086","DCIM","MIUI","Movies","Music","Ccb","MIUI"};
-
+    /** 多线程解析 */
+    public static boolean isMultithreading = false;
+    /** 支持全部表情 */
+    public static boolean isFullFace = false;
 
     /** 是否有网络 */
     public static Boolean isNetwork = false;
@@ -52,10 +57,10 @@ public class AppConfig {
         FalBoolean f4 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_show_hide_mkdir),false );
 
         AppConfig.isOnlyShowMd = f1.getValue();
-        AppConfig.isOnlyShowMoreDir = f2.getValue();
+        AppConfig.isShowMoreDir = f2.getValue();
         AppConfig.isHideSystemMkdir = f3.getValue();
         AppConfig.isShowHideMkdir = f4.getValue();
-//        AppConfig.isOnlyShowMoreDir = swIsShowMoreMkdir.getFalData().getValue();
+//        AppConfig.isShowMoreDir = swIsShowMoreMkdir.getFalData().getValue();
 //        AppConfig.isHideSystemMkdir = swIsHideSystemMkdir.getFalData().getValue();
 //        AppConfig.isShowHideMkdir = swIsShowHideMkdir.getFalData().getValue();
     }
