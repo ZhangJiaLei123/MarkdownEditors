@@ -37,7 +37,7 @@
 
 支持的Markdown语法
 
-![Image](image/预览.jpg)
+![Image](image/preview.png)
 
 ---
 
