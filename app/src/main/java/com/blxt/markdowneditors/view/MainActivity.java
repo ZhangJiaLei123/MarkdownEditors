@@ -103,7 +103,6 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 
     public static String sdCardRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-    static boolean isPermissions = false;
     boolean isReadLockStyle;
     mPermissionsUnit mPermissions = new mPermissionsUnit();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -118,10 +117,11 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 
     @Override
     public void initData() {
+
         msContext = this;
         SP = getSharedPreferences(this.getPackageName(), MODE_PRIVATE);
         spC = new spBaseControl(SP);
-        initConfig();
+
         // 权限检查和初始文件解压
         mPermissions.setActivity(this);
 
@@ -181,6 +181,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
         initDataM();
 
         AppConfig.initAppConfig(SP,this);
+
     }
 
     void initDataM() {
@@ -199,22 +200,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 
     }
 
-    void initConfig(){
-        AppConfig.swIsFullScreen =
-                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_full_screen),AppConfig.swIsFullScreen).getValue();
-        AppConfig.isOnlyShowMd =
-                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_only_md ),AppConfig.isOnlyShowMd).getValue();
-        AppConfig.isShowMoreDir =
-                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_show_more_mkdir ),AppConfig.isShowMoreDir).getValue();
-        AppConfig.isHideSystemMkdir =
-                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_hide_system_mkdir ),AppConfig.isHideSystemMkdir).getValue();
-        AppConfig.isShowHideMkdir =
-                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_show_hide_mkdir ),AppConfig.isShowHideMkdir).getValue();
-        AppConfig.isMultithreading =
-                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_multithreading ),AppConfig.isMultithreading).getValue();
-        AppConfig.isFullFace =
-                new FalBoolean(MainActivity.SP,getResources().getString(R.string.sw_is_full_face ),AppConfig.isFullFace).getValue();
-    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -280,8 +266,6 @@ public class MainActivity extends BaseDrawerLayoutActivity {
      */
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         if (getDrawerLayout().isDrawerOpen(GravityCompat.START)) {//侧滑菜单打开，关闭菜单
             getDrawerLayout().closeDrawer(GravityCompat.START);
             return;
@@ -293,6 +277,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
 
         //没有东西可以返回了，剩下软件退出逻辑
         if (Math.abs(customTime - System.currentTimeMillis()) < 2000) {
+            Log.i("退出","MainActivity");
             finish();
         } else {// 提示用户退出
             customTime = System.currentTimeMillis();
@@ -397,6 +382,7 @@ public class MainActivity extends BaseDrawerLayoutActivity {
                 .register();
 
     }
+
 
 
 

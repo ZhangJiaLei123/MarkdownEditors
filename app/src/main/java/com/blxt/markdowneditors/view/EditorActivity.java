@@ -39,7 +39,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.R;
 import com.blxt.markdowneditors.base.BaseApplication;
 import com.blxt.markdowneditors.base.BaseToolbarActivity;
@@ -65,6 +64,8 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
     public static final String SHARED_ELEMENT_COLOR_NAME = "SHARED_ELEMENT_COLOR_NAME";
     private static final String SCHEME_FILE = "file";
     private static final String SCHEME_Folder = "folder";
+    /** 缓存路径 */
+    public static String Cachepath = null;
 
     public static Handler handler_toolbar;
     private EditorFragment mEditorFragment;
@@ -96,6 +97,9 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
         initTab();
     }
 
+    /***
+     * 初始化 ViewPager，添加监听
+     */
     private void initViewPager() {
 
         mViewPager.setAdapter(new EditFragmentAdapter(getSupportFragmentManager()));
@@ -120,10 +124,10 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
                 if(position == 0){
                     handler_toolbar.sendEmptyMessage(SHOW_TOOL_BAR);
+                    initStatusBar();
                 }else{
-                    if(AppConfig.swIsFullScreen){
-                        handler_toolbar.sendEmptyMessage(HIDE_TOOL_BAR);
-                    }
+                    handler_toolbar.sendEmptyMessage(HIDE_TOOL_BAR);
+
                 }
             }
 
@@ -234,6 +238,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
     @Override
     public void initData() {
+        Cachepath = getExternalCacheDir() + "/";
     }
 
     private void getIntentData() {
@@ -270,6 +275,11 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
     private MenuItem mActionOtherOperate;
 
+    /***
+     * 菜单项构建
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_editor_act, menu);
@@ -285,6 +295,11 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
     }
 
 
+    /**
+     * 菜单项选择
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -318,7 +333,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
                 return true;
             case R.id.action_clear_md_cache: // 清理md解析缓存
                 Log.i(TAG,"清理md解析缓存");
-              //  md.clear();
+                MdPreviewFragment.handler.sendEmptyMessage(MdPreviewFragment.MSG_CLEAR);
                 break;
             default:
         }
@@ -327,7 +342,7 @@ public class EditorActivity extends BaseToolbarActivity implements IEditorActivi
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // Log.i("按键响应","onKeyDown" + keyCode);
+
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             if (!mExpandLayout.isExpanded())
                 //没有展开，但是接下来就是展开，设置向上箭头

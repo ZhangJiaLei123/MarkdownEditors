@@ -2,25 +2,14 @@
 
 ## MarkdownEditors
 
-[91市场下载地址](http://apk.91.com/Soft/Android/ren.qinc.markdowneditors-1-0.1.html)
-
-[百度应用下载地址](http://shouji.baidu.com/software/9609110.html)
-
-[应用宝市场下载地址](http://android.app.qq.com/myapp/detail.htm?apkName=ren.qinc.markdowneditors)
-
-[安卓市场下载地址](http://apk.hiapk.com/appinfo/ren.qinc.markdowneditors/1)
-
-[小米应用商店下载地址](http://app.mi.com/detail/422745)
-
-~~[应用下载](http://fir.im/mde)~~
+[下载地址](https://www.pgyer.com/Markdown)
 
 基于Android的Markdown编辑器
 
-> 第一个版本，可能存在bug，欢迎指正
+> 交互框架来自qinci/MarkdownEditors
 
-> 功能本身不难，但是细节很多
+> md解析内核是国内独立自主开发的Mark2Html，语法兼容性高，符合国人使用习惯，可自定义
 
-> 部分界面和功能仿未开源的MarkdownX软件
 
 其他
 ---
@@ -46,6 +35,12 @@
 
 **欢迎star、fork**
 
+支持的Markdown语法
+
+![Image](image/预览.jpg)
+
+---
+
 未完成的功能（后续版本要完成的功能）
 ---
 
@@ -69,8 +64,4 @@
 
 ![首页图片](image/markdown.gif)
 
-
-历史版本
----
-[v0.1](https://github.com/qinci/MarkdownEditors/tree/v0.1)
 

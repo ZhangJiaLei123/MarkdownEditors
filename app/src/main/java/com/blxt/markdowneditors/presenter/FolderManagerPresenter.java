@@ -18,6 +18,7 @@ package com.blxt.markdowneditors.presenter;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.blxt.markdowneditors.AppConfig;
 import com.blxt.markdowneditors.base.mvp.BasePresenter;
@@ -120,6 +121,7 @@ public class FolderManagerPresenter extends BasePresenter<IFolderManagerView> {
      */
     public boolean backFolder() {
         if (fileStack.size() > 1) {
+            Log.i("返回上一级","" + fileStack.size());
             fileStack.pop();//最后一个不要了
             //设置tab
             callOtherSuccess(IFolderManagerView.CALL_REMOVE_TAB);

@@ -36,13 +36,11 @@ import com.blxt.markdowneditors.event.RxEvent;
 import com.blxt.markdowneditors.utils.CheckNet;
 import com.blxt.markdowneditors.utils.FileUtils;
 import com.blxt.markdowneditors.utils.MD5Utils;
-import com.blxt.markdowneditors.utils.Toast;
 import com.md2html.CallBack;
 import com.md2html.Markdown2Html;
 
 import java.io.File;
 
-import static com.blxt.markdowneditors.view.EditorFragment.isChangeContent;
 import static com.blxt.markdowneditors.view.FolderFragment.file_select;
 
 
@@ -59,9 +57,16 @@ public class MdPreviewFragment extends BaseFragment implements CallBack {
     private String mContent;
     /** 用于显示md预览的web视图 */
     private WebView webView;
+    static Markdown2Html md;
+    static WebView webView_show;
+    static boolean isShowToast = false;
+    public static final int MSG_START_ANALYSIS = 99; //开始解析
+    public static final int MSG_UP_WEB_VIEW = 100; // 更新webview
+    public static final int MSG_CLEAR = 101; // 清理缓存
+
     static private ProgressBar pBarWebPreview;
 
-    private boolean isShowWeb = false;
+    private static boolean isShowWeb = false;
 
     public MdPreviewFragment() {
     }
@@ -75,7 +80,6 @@ public class MdPreviewFragment extends BaseFragment implements CallBack {
     @Override
     public void resume() {
         Log.i(TAG,"onResume");
-
     }
 
     @Override
@@ -86,33 +90,39 @@ public class MdPreviewFragment extends BaseFragment implements CallBack {
 
     boolean isPageFinish = false;
 
-    File fileMarkdown;
+    static File fileMarkdown;
 
+    /**
+     * 事件分发接收
+     * @param event
+     */
     @Override
     public void onEventMainThread(RxEvent event) {
-        if (event.isTypeAndData(RxEvent.TYPE_REFRESH_DATA)) {
+        if (event.isTypeAndData(RxEvent.TYPE_REFRESH_DATA)
+           || event.isTypeAndData(RxEvent.TYPE_REFRESH_NOTIFY)) {
             //页面还没有加载完成
+            Log.i("预览", "事件");
             if(!isShowWeb) // 文本改变后,才刷新
             {
+                Log.i("预览", "开始解析");
                 mContent = event.o[1].toString();
                 title = event.o[0].toString();
-                if (isPageFinish){
 
-                    String strName = MD5Utils.Str2MD5(file_select.getPath());
-                    fileMarkdown = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
+                String strName = MD5Utils.Str2MD5(file_select.getPath());
+                fileMarkdown = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
 
-                    if(fileMarkdown.exists()){
-                        loadHtmlFile(this.webView, fileMarkdown);
+                if(fileMarkdown.exists()){
+                    Log.i("预览", "加载历史");
+                    loadHtmlFile(this.webView, fileMarkdown);
+                    isShowWeb = true;
+                }
+                else{
+                    Log.i("预览", "开始解析");
+                    if(md2htmlString(this.webView, mContent)){
                         isShowWeb = true;
                     }
-                    else{
-                        if(md2htmlString(this.webView, mContent)){
-                            isShowWeb = true;
-                        }
-                    }
-
                 }
-                isChangeContent = false;
+
             }
         }
     }
@@ -152,25 +162,22 @@ public class MdPreviewFragment extends BaseFragment implements CallBack {
     @Override
     public void initData() {
 
-      //  isNetwork = CheckNet.CheckNetworkState(getActivity());
-
         // 如果有网络，就开启下载
         AppConfig.config.isCheckCache = CheckNet.CheckNetworkState(getActivity());
         // 开启优先使用网络图片
         AppConfig.config.isFirstUrl = CheckNet.CheckNetworkState(getActivity());
 
         webView = rootView.findViewById(R.id.mainViewWeb);
-
+        //自适应屏幕
+        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        enableJavascript();
         // 设置可以支持缩放
         webView.getSettings().setSupportZoom(true);
         // 设置出现缩放工具
         webView.getSettings().setBuiltInZoomControls(true);
         //扩大比例的缩放
         webView.getSettings().setUseWideViewPort(true);
-        //自适应屏幕
-        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        enableJavascript();
 
         WebSettings webSettings=webView.getSettings();
         //允许webview对文件的操作
@@ -213,7 +220,7 @@ public class MdPreviewFragment extends BaseFragment implements CallBack {
         return true;
     }
 
-    Markdown2Html md;
+
 
     /**
      * md转 html
@@ -295,45 +302,56 @@ public class MdPreviewFragment extends BaseFragment implements CallBack {
         public void onProgressChanged(WebView view, int newProgress) {
             if(newProgress==100){
                 //页面加载完成执行的操作
-              //  String path= "file://"+ Environment.getExternalStorageDirectory()+ File.separator+"123.jpg";
-              //  String action="javascript:aa('"+path+"')";
                 Log.i("页面加载完成","");
-              //  runWebView(action);
             }
             super.onProgressChanged(view, newProgress);
         }
     }
 
-    static WebView webView_show;
-    static boolean isShowToast = false;
-    private static final int MSG_START_ANALYSIS = 99; //开始解析
-    private static final int MSG_UP_WEB_VIEW = 100; // 更新webview
 
+    /***
+     * Md处理handler
+     */
     @SuppressLint("HandlerLeak")
     static Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case MSG_START_ANALYSIS:
+                case MSG_START_ANALYSIS: // 开始解析
                     webView_show =  (WebView)msg.obj;
                     webView_show.freeMemory();
                     if(pBarWebPreview != null && isShowToast) {
                         pBarWebPreview.setVisibility(View.VISIBLE);
                     }
-                    if(isShowToast) {
-                        android.widget.Toast.makeText(MainActivity.msContext, "正在解析", Toast.LENGTH_SHORT).show();
-                    }
+
                     break;
-                case MSG_UP_WEB_VIEW:
+                case MSG_UP_WEB_VIEW: // 解析完成
                     String str = (String)msg.obj;
                     webView_show.loadDataWithBaseURL(null, str, "text/html", "utf-8", null);
+
                     if(pBarWebPreview != null) {
                         pBarWebPreview.setVisibility(View.GONE);
                     }
-                    if(isShowToast) {
-                        android.widget.Toast.makeText(MainActivity.msContext, "解析完成", Toast.LENGTH_SHORT).show();
+
+                    isShowWeb = false;
+                    break;
+                case MSG_CLEAR: // 清理缓存
+                    if(md != null){
+                        md.clearCache();
+                        md.clear();
                     }
+
+                    String strName = MD5Utils.Str2MD5(file_select.getPath());
+                    fileMarkdown = new File( EditorActivity.Cachepath + strName + ".html");
+                    if(fileMarkdown.exists()) {
+                        Log.i("清理缓存","ok");
+                        fileMarkdown.delete();
+                    }
+                    else{
+                        Log.i("清理缓存", "no");
+                    }
+
                     break;
                 default:
                     super.handleMessage(msg);

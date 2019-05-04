@@ -147,7 +147,6 @@
     <string name="pref_title_vibrate">Vibrate</string>
 
     // ID
-    <string name="sw_is_full_screen" translatable="false">使用全面屏</string>
     <string name="sw_is_only_md" translatable="false">只显示md文件</string>
     <string name="sw_is_show_more_mkdir" translatable="false">显示更多文件夹</string>
     <string name="sw_is_hide_system_mkdir" translatable="false">隐藏系统文件夹</string>

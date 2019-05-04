@@ -29,8 +29,6 @@ import com.m2h.model.Config;
  */
 public class AppConfig {
     public static Config config = new Config();
-    /** 使用全面屏 */
-    public static Boolean swIsFullScreen = true;
     /** 只显示md文件 */
     public static boolean isOnlyShowMd = true;
     /** 显示更多文件夹,如QQ文件夹,微信文件夹等 */
@@ -51,18 +49,19 @@ public class AppConfig {
 
     public static void initAppConfig(SharedPreferences SP, Context context){
 
-        FalBoolean f1 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_only_md),true );
-        FalBoolean f2 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_show_more_mkdir),true );
-        FalBoolean f3 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_hide_system_mkdir),true );
-        FalBoolean f4 =  new FalBoolean(SP, context.getResources().getString( R.string.sw_is_show_hide_mkdir),false );
+        AppConfig.isOnlyShowMd =
+                new FalBoolean(SP,context.getResources().getString(R.string.sw_is_only_md ),AppConfig.isOnlyShowMd).getValue();
+        AppConfig.isShowMoreDir =
+                new FalBoolean(SP,context.getResources().getString(R.string.sw_is_show_more_mkdir ),AppConfig.isShowMoreDir).getValue();
+        AppConfig.isHideSystemMkdir =
+                new FalBoolean(SP,context.getResources().getString(R.string.sw_is_hide_system_mkdir ),AppConfig.isHideSystemMkdir).getValue();
+        AppConfig.isShowHideMkdir =
+                new FalBoolean(SP,context.getResources().getString(R.string.sw_is_show_hide_mkdir ),AppConfig.isShowHideMkdir).getValue();
+        AppConfig.isMultithreading =
+                new FalBoolean(SP,context.getResources().getString(R.string.sw_is_multithreading ),AppConfig.isMultithreading).getValue();
+        AppConfig.isFullFace =
+                new FalBoolean(SP,context.getResources().getString(R.string.sw_is_full_face ),AppConfig.isFullFace).getValue();
 
-        AppConfig.isOnlyShowMd = f1.getValue();
-        AppConfig.isShowMoreDir = f2.getValue();
-        AppConfig.isHideSystemMkdir = f3.getValue();
-        AppConfig.isShowHideMkdir = f4.getValue();
-//        AppConfig.isShowMoreDir = swIsShowMoreMkdir.getFalData().getValue();
-//        AppConfig.isHideSystemMkdir = swIsHideSystemMkdir.getFalData().getValue();
-//        AppConfig.isShowHideMkdir = swIsShowHideMkdir.getFalData().getValue();
     }
 //    //==================缓存文件相关==================
 //    // 设置文件sharedPreference的文件名字

@@ -17,7 +17,6 @@
 package com.blxt.markdowneditors.base;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -85,41 +84,19 @@ public abstract class BaseToolbarActivity extends BaseActivity {
     }
 
     public void showToolBar(){
-        Log.i(TAG,"显示");
-        rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-
-//        // 适配刘海屏，显示顶部状态栏
-//        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-//        rootView.setSystemUiVisibility(option);
-//
-//        //设置状态栏颜色为透明
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            getWindow().setStatusBarColor(Color.TRANSPARENT);
-//
-//        }
-
         //隐藏标题栏
         mAppBar.setVisibility(View.VISIBLE);
+
     }
 
 
     public void hineToolBar(){
-        Log.i(TAG,"隐藏");
-        //设置系统UI元素的可见性
-        rootView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-
-        //设置让应用主题内容占据状态栏和导航栏
-        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-        rootView.setSystemUiVisibility(option);
-        //设置状态栏和导航栏颜色为透明
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-            getWindow().setNavigationBarColor(Color.TRANSPARENT);
-        }
-
         //隐藏标题栏
         mAppBar.setVisibility(View.GONE);
     }
+
+
+
 
     protected void initAppBarLayout(AppBarLayout appBar) {
         if (appBar == null) {

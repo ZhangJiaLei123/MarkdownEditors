@@ -100,6 +100,10 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         return R.layout.fragment_editor;
     }
 
+    /***
+     * 设置文本监听等
+     * @param savedInstanceState
+     */
     @Override
     public void onCreateAfter(Bundle savedInstanceState) {
 
@@ -158,8 +162,8 @@ public class EditorFragment extends BaseFragment implements IEditorFragmentView,
         if(file_select != null && file_select.getPath() != null){
             String strName = MD5Utils.Str2MD5(file_select.getPath());
             File f = new File( getContext().getExternalCacheDir() + "/" + strName + ".html");
-            Log.i("删除",f.getPath());
             if(f.exists()){
+                Log.i("删除",f.getPath());
                 f.delete();
             }
         }

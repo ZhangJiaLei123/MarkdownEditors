@@ -29,6 +29,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,6 +51,7 @@ import com.blxt.markdowneditors.utils.Check;
 import com.blxt.markdowneditors.utils.ViewUtils;
 import com.blxt.markdowneditors.widget.TabView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,6 +78,8 @@ public class FolderFragment extends BaseRefreshFragment implements IFolderManage
 
     private FloatingActionButton flbFabCreateFolder;
     private FloatingActionButton  flbFabCreateFile;
+    private FloatingActionsMenu flbMenu;
+
 
     public static File file_select;
     private List<FileBean> files = new ArrayList<>();
@@ -140,14 +144,18 @@ public class FolderFragment extends BaseRefreshFragment implements IFolderManage
     public void initData() {
         mPresenter.initRoot(mContext);
 
+        flbMenu = rootView.findViewById(R.id.flb_menu);
 
         flbFabCreateFolder = rootView.findViewById(R.id.flb_fab_create_folder);
         flbFabCreateFile = rootView.findViewById(R.id.flb_fab_create_file);
         flbFabCreateFolder.setIcon(R.drawable.ic_action_create_folder);
         flbFabCreateFile.setIcon(R.drawable.ic_action_create_file_w_24);
 
+        flbMenu.setOnClickListener(this);
         flbFabCreateFolder.setOnClickListener(this);
         flbFabCreateFile.setOnClickListener(this);
+
+
     }
 
     /**
@@ -337,7 +345,7 @@ public class FolderFragment extends BaseRefreshFragment implements IFolderManage
 
     @Override
     public void onClick(View v) {
-        // Log.i("点击","onClick");
+        flbMenu.collapse();
         switch (v.getId()) {
             case R.id.file_name:
                 Object tag = v.getTag(R.id.tag);
@@ -487,6 +495,7 @@ public class FolderFragment extends BaseRefreshFragment implements IFolderManage
         rootView.findViewById(R.id.cancel).setOnClickListener(v -> {
             mInputDialog.dismiss();
         });
+        rootView.findViewById(R.id.delete).setVisibility(View.GONE);
         mInputDialog.show();
     }
 
@@ -495,9 +504,9 @@ public class FolderFragment extends BaseRefreshFragment implements IFolderManage
 
     @Override
     public boolean onBackPressed() {//返回按钮
-        // Log.i("返回按钮",getClass().getName());
+         Log.i("按钮", "返回");
         if(mPresenter.closeEditMode()){ // 关闭文件夹编辑模式
-            // Log.i("返回按钮","关闭文件夹编辑模式");
+
             this.refresh();
 
             return true;
@@ -509,6 +518,7 @@ public class FolderFragment extends BaseRefreshFragment implements IFolderManage
             return true;
         }
         else if(mPresenter.backFolder()){
+            Log.i("返回按钮","返回上一级");
             return true;
         }
         else{
@@ -677,6 +687,13 @@ public class FolderFragment extends BaseRefreshFragment implements IFolderManage
             mPresenter.refreshCurrentPath();
             dialog.dismiss();
         });
+
+
+        rootView.findViewById(R.id.delete).setOnClickListener(v -> {
+            dialog.dismiss();
+            deleteFiles();
+        });
+
 
         dialog.show();
 
